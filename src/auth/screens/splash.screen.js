@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Image, Text } from 'react-native';
+import { Image, Text, Platform, Linking } from 'react-native';
+import queryString from 'query-string';
+// import CookieManager from 'react-native-cookies';
 import { colors } from '../../config'
 
 const LogoContainer = styled.View`
@@ -15,6 +17,8 @@ const Logo = styled.Image`
   height: 100;
 `;
 
+let stateRandom = Math.random().toString();
+
 class Splash extends React.Component {
 	render() {
 		return (
@@ -24,5 +28,15 @@ class Splash extends React.Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isLoggingIn: state.auth.isLoggingIn,
+	isAuthenticated: state.auth.isAuthenticated,
+	hasInitialUser: state.auth.hasInitialUser
+});
+
+const mapDispatchToProps = dispatch => ({
+	auth: (code, state) => dispatch(doAuth(code, state)),
+});
 
 export default Splash;
