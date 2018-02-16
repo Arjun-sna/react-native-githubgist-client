@@ -5,6 +5,7 @@ import {
 	Linking,
 	WebView,
 	Platform,
+	ActivityIndicator,
 } from 'react-native';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
@@ -30,6 +31,22 @@ const ContentSection = styled.View`
 	align-items: center;
 `;
 
+const BrowserLoader = styled.View`
+	flex: 1;
+	position: absolute;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	background-color: ${colors.githubDark};
+`;
+
+const LoaderText = styled.Text`
+	fontSize: 20;
+	color: ${colors.white};
+	padding-bottom: 20;
+`;
+
 const StyledButton = styled(Button).attrs({
 	buttonStyle: {
 		backgroundColor: colors.transparent,
@@ -52,6 +69,15 @@ export default class Auth extends React.Component {
 
 		}
 	}
+
+	toggleCancelButton = (e, disabled) => {
+		const url = e.nativeEvent.url;
+
+		if (url === 'https://github.com/session') {
+			this.setState({ cancelDisabled: disabled });
+		}
+	}
+
 	handleOpenURL = ({ url }) => {
 		if (url && url.substring(0, 12) === 'gitgistrn://') {
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
@@ -78,6 +104,21 @@ export default class Auth extends React.Component {
 		}
 	}
 
+	onNavigationStateChange = navState => {
+		const url = navState.url;
+
+		this.handleOpenURL({ url });
+	};
+
+	renderLoading() {
+		return (
+			<BrowserLoader>
+				<LoaderText>Loading...</LoaderText>
+				<ActivityIndicator color={colors.white} size="large" />
+			</BrowserLoader>
+		);
+	};
+
 	componentDidMount() {
 		if (this.props.isAuthenticated) {
 			this.props.navigation.navigate('Main');
@@ -99,12 +140,12 @@ export default class Auth extends React.Component {
 				<BrowserSection>
 					<WebView
 						source={{
-							uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitpoint://welcome&scope=user%20repo&state=${stateRandom}`,
+							uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20repo&state=${stateRandom}`,
 						}}
-						// onLoadStart={e => this.toggleCancelButton(e, true)}
-						// onLoadEnd={e => this.toggleCancelButton(e, false)}
-						// onNavigationStateChange={e => this.onNavigationStateChange(e)}
-						// renderLoading={() => this.renderLoading()}
+						onLoadStart={e => this.toggleCancelButton(e, true)}
+						onLoadEnd={e => this.toggleCancelButton(e, false)}
+						onNavigationStateChange={e => this.onNavigationStateChange(e)}
+						renderLoading={() => this.renderLoading()}
 						startInLoadingState
 						javaScriptEnabled
 					/>
