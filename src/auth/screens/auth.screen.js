@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
+import queryString from 'query-string';
 import { colors } from '../../config'
+import { resetNavigationTo } from '../../utils';
 
-export const CLIENT_ID = '87c7f05700c052937cfb';
-export const CLIENT_SECRET = '3a70aee4d5e26c457720a31c3efe2f9062a4997a';
+export const CLIENT_ID = '9ad8569261681e200601';
+export const CLIENT_SECRET = '3b825b8ab987cfce15404837ac3dc0abdbdae4cc';
 let stateRandom = Math.random().toString();
 
 const SignInContainer = styled.View`
@@ -92,14 +94,15 @@ export default class Auth extends React.Component {
 				});
 
 				stateRandom = Math.random().toString();
-
-				CookieManager.clearAll().then(() => {
-					auth(code, state).then(() => {
-						getUser().then(() => {
-							resetNavigationTo('Main', navigation);
-						});
-					});
-				});
+				
+				resetNavigationTo('Main', this.props.navigation);
+				// CookieManager.clearAll().then(() => {
+				// 	auth(code, state).then(() => {
+				// 		getUser().then(() => {
+				// 			resetNavigationTo('Main', navigation);
+				// 		});
+				// 	});
+				// });
 			}
 		}
 	}

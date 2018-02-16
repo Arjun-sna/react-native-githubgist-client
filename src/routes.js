@@ -4,6 +4,7 @@ import {
 } from 'react-navigation';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
+import MainScreen from './main/screens/gistlist.screen';
 
 export const GistApp = StackNavigator({
 	Splash: {
@@ -14,6 +15,12 @@ export const GistApp = StackNavigator({
 	},
 	Login: {
 		screen: LoginScreen,
+		navigationOptions: {
+			header: null
+		}
+	},
+	Main: {
+		screen: MainScreen,
 		navigationOptions: {
 			header: null
 		}
