@@ -8,11 +8,16 @@ import {
 } from 'react-native';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
+import { colors } from '../../config'
+
+export const CLIENT_ID = '87c7f05700c052937cfb';
+export const CLIENT_SECRET = '3a70aee4d5e26c457720a31c3efe2f9062a4997a';
+let stateRandom = Math.random().toString();
 
 const SignInContainer = styled.View`
 	flex: 1;
 	padding-top: 20;
-	background-color: '#1f2327';
+	background-color: #1f2327;
 `;
 
 const BrowserSection = styled.View`
@@ -36,11 +41,17 @@ const StyledButton = styled(Button).attrs({
 		shadowColor: colors.transparent,
 	},
 	textStyle: {
-		fontSize: '12px',
+		fontSize: 12,
 	}
 }) ``;
 
-export default class AuthScreen extends React.Component {
+export default class Auth extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+
+		}
+	}
 	handleOpenURL = ({ url }) => {
 		if (url && url.substring(0, 12) === 'gitgistrn://') {
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
@@ -56,13 +67,13 @@ export default class AuthScreen extends React.Component {
 
 				stateRandom = Math.random().toString();
 
-				// CookieManager.clearAll().then(() => {
-				// 	auth(code, state).then(() => {
-				// 		getUser().then(() => {
-				// 			resetNavigationTo('Main', navigation);
-				// 		});
-				// 	});
-				// });
+				CookieManager.clearAll().then(() => {
+					auth(code, state).then(() => {
+						getUser().then(() => {
+							resetNavigationTo('Main', navigation);
+						});
+					});
+				});
 			}
 		}
 	}
@@ -100,7 +111,7 @@ export default class AuthScreen extends React.Component {
 				</BrowserSection>
 				<ContentSection>
 					<StyledButton
-						title={translate('auth.login.cancel', locale)}
+						title="Cancel"
 						disabled={this.state.cancelDisabled}
 						onPress={() => { }}
 					/>

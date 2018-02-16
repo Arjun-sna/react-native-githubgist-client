@@ -4,6 +4,7 @@ import { Image, Text, Platform, Linking } from 'react-native';
 import queryString from 'query-string';
 // import CookieManager from 'react-native-cookies';
 import { colors } from '../../config'
+import { delay, resetNavigationTo } from '../../utils';
 
 const LogoContainer = styled.View`
 	background-color: ${colors.white};
@@ -17,9 +18,12 @@ const Logo = styled.Image`
   height: 100;
 `;
 
-let stateRandom = Math.random().toString();
-
 class Splash extends React.Component {
+	componentDidMount() {
+		const { navigation } = this.props;
+		delay(resetNavigationTo('Login', navigation), 2000);
+	}
+
 	render() {
 		return (
 			<LogoContainer>
