@@ -143,7 +143,7 @@ export default class Auth extends React.Component {
 				<BrowserSection>
 					<WebView
 						source={{
-							uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20repo&state=${stateRandom}`,
+							uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
 						}}
 						onLoadStart={e => this.toggleCancelButton(e, true)}
 						onLoadEnd={e => this.toggleCancelButton(e, false)}
