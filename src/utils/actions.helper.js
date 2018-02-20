@@ -19,3 +19,8 @@ export const createSagaActionSet = actionName => ({
 		payload,
 	}),
 });
+
+export const createReducer = (reducerMap, defaultState) =>
+	(state = { ...defaultState }, action) =>
+		reducerMap.hasOwnProperty(action.type) ? reducerMap[action.type](state, action) : state;
+

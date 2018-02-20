@@ -10,6 +10,7 @@ function* loginAndFetchUser() {
 			const { loginPayload } = yield take(LOGIN.ACTION);
 			yield put(logIn.progress);
 			const loginResponse = yield call(fetchAccessToken, loginPayload);
+			console.log("login response " + JSON.stringify(loginResponse))
 			yield put(logIn.success(loginResponse));
 			yield put(fetchAuthUser.action);
 		} catch (err) {
@@ -22,6 +23,7 @@ function* fetchAuthUser() {
 	try {
 		yield put(fetchAuthUser.progress);
 		const userResponse = yield call(fetchUser, tokenSelector);
+		console.log("user response " + JSON.stringify(loginResponse))		
 		yield put(fetchAuthUser.success(userResponse));
 	} catch (error) {
 		yield put(fetchAuthUser.error(error));
