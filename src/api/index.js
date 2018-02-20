@@ -39,10 +39,37 @@ export const v3 = {
 		if (withBody.indexOf(method) !== -1) {
 			params.data = JSON.stringify(data);
 			if (method === METHOD.PUT) {
-        params.headers['Content-Length'] = 0;
-      }
+				params.headers['Content-Length'] = 0;
+			}
 		}
 
 		return params;
+	},
+	getJson: async (url, accessToken) => {
+		const response = await call(url, parameters(accessToken));
+
+		return response.json();
 	}
 }
+
+export const fetchAccessToken = async ({ code, state }) => {
+	const GITHUB_OAUTH_ENDPOINT = 'https://github.com/login/oauth/access_token';
+
+	const response = await axios(GITHUB_OAUTH_ENDPOINT, {
+		method: METHOD.POST,
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			client_id: CLIENT_ID,
+			client_secret: CLIENT_SECRET,
+			code,
+			state,
+		}),
+	});
+
+	return response;
+}
+
+export const getUser = accessToken => v3.getJson('/user', accessToken);
