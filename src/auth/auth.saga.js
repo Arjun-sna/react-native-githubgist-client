@@ -1,6 +1,7 @@
 import { call, select, all, put, take } from 'redux-saga/effects';
 import { logIn, fetchAuthUser } from './auth.actiontype';
 import { fetchAccessToken } from '../api';
+import navigatorService from '../utils/navigatorService';
 
 const tokenSelector = (state) => state.access_token;
 
@@ -14,6 +15,7 @@ function* loginAndFetchUser() {
 			const loginResponse = yield call(fetchAccessToken, payload);
 			console.log("login response " + JSON.stringify(loginResponse))
 			yield put(logIn.success(loginResponse));
+			navigatorService.reset('Main');
 			yield put(fetchAuthUser.action());
 		} catch (error) {
 			yield put(logIn.error(error));

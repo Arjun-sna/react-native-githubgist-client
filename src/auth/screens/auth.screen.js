@@ -11,10 +11,11 @@ import {
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
+import CookieManager from 'react-native-cookies';
 import queryString from 'query-string';
 import { colors } from '../../config'
 import { resetNavigationTo } from '../../utils';
-import { CLIENT_ID, CLIENT_SECRET } from '../../api';
+import { CLIENT_ID } from '../../api';
 
 let stateRandom = Math.random().toString();
 
@@ -90,8 +91,8 @@ class Auth extends React.Component {
 	}
 
 	handleOpenURL = ({ url }) => {
+		console.log('handle url method ' + url)
 		if (url && url.substring(0, 12) === 'gitgistrn://') {
-			console.log('handle url method ' + url)
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
 			const { state, code } = queryString.parse(queryStringFromUrl);
 			const { auth, getUser, navigation } = this.props;
@@ -107,13 +108,9 @@ class Auth extends React.Component {
 				this.props.login(code, state);
 				console.log('Here handle url ' + code + ' ' + state)
 				// resetNavigationTo('Main', this.props.navigation);
-				// CookieManager.clearAll().then(() => {
-				// 	auth(code, state).then(() => {
-				// 		getUser().then(() => {
-				// 			resetNavigationTo('Main', navigation);
-				// 		});
-				// 	});
-				// });
+				CookieManager.clearAll().then(() => {
+					this.props.login(code, state);
+				});
 			}
 		}
 	}
@@ -152,9 +149,9 @@ class Auth extends React.Component {
 	}
 
 	shouldShowLogin = () => {
-		const { isLoggingIn, isAuthenticated } = this.props;
+		const { isRequestInProgress, isAuthenticated } = this.props;
 
-		return !isLoggingIn && !isAuthenticated;
+		return !isRequestInProgress && !isAuthenticated;
 	}
 
 	render() {
@@ -179,12 +176,12 @@ class Auth extends React.Component {
 							<StyledButton
 								title="Cancel"
 								disabled={this.state.cancelDisabled}
-								onPress={() => { console.log('press');this.props.login('da', 'adf') }}
+								onPress={() => { console.log('press'); this.props.login('da', 'adf') }}
 							/>
 						</ContentSection>
 					</SignInContainer>)}
 				{
-					this.props.isLoggingIn && (
+					this.props.isRequestInProgress && (
 						this.renderLoading()
 					)
 				}
@@ -200,7 +197,7 @@ class Auth extends React.Component {
 };
 
 const mapStateToProps = state => ({
-	isLoggingIn: state.auth.inprogress,
+	isRequestInProgress: state.auth.inprogress || state.loggedInUser.inprogress,
 	isAuthenticated: state.auth.isAuthenticated
 });
 
