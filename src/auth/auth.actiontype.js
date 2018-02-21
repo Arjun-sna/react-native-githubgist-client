@@ -1,5 +1,5 @@
 import { createActionSet, createSagaActionSet } from '../utils';
 
-export const LOGIN = createSagaActionSet('LOGIN');
-export const LOGOUT = createActionSet('LOGOUT');
-export const FETCH_AUTH_USER = createActionSet('FETCH_AUTH_USER');
+export const logIn = createSagaActionSet('LOGIN');
+export const logOut = createActionSet('LOGOUT');
+export const fetchAuthUser = createSagaActionSet('FETCH_AUTH_USER');

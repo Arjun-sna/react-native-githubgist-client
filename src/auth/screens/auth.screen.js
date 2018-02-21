@@ -1,4 +1,5 @@
 import React from 'react';
+import { logIn, fetchAuthUser } from '../auth.actiontype';
 import {
 	View,
 	StyleSheet,
@@ -7,14 +8,14 @@ import {
 	Platform,
 	ActivityIndicator,
 } from 'react-native';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
 import queryString from 'query-string';
 import { colors } from '../../config'
 import { resetNavigationTo } from '../../utils';
+import { CLIENT_ID, CLIENT_SECRET } from '../../api';
 
-export const CLIENT_ID = '9ad8569261681e200601';
-export const CLIENT_SECRET = '3b825b8ab987cfce15404837ac3dc0abdbdae4cc';
 let stateRandom = Math.random().toString();
 
 const SignInContainer = styled.View`
@@ -64,7 +65,7 @@ const StyledButton = styled(Button).attrs({
 	}
 }) ``;
 
-export default class Auth extends React.Component {
+class Auth extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -94,8 +95,9 @@ export default class Auth extends React.Component {
 				});
 
 				stateRandom = Math.random().toString();
-				
-				resetNavigationTo('Main', this.props.navigation);
+
+				this.props.login(code, state);
+				// resetNavigationTo('Main', this.props.navigation);
 				// CookieManager.clearAll().then(() => {
 				// 	auth(code, state).then(() => {
 				// 		getUser().then(() => {
@@ -157,7 +159,7 @@ export default class Auth extends React.Component {
 					<StyledButton
 						title="Cancel"
 						disabled={this.state.cancelDisabled}
-						onPress={() => { }}
+						onPress={() => { this.props.login('ad', 'adf') }}
 					/>
 				</ContentSection>
 			</SignInContainer>
@@ -170,3 +172,11 @@ export default class Auth extends React.Component {
 		}
 	}
 };
+
+const mapStateToProps = state => ({ });
+
+const mapStateToDispatch = dispatch => ({
+	login: (code, state) => dispatch(logIn.action({ code, state })),
+});
+
+export default connect(mapStateToProps, mapStateToDispatch)(Auth);

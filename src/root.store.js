@@ -5,10 +5,12 @@ import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import Reactotron from 'reactotron-react-native'
 import { rootReducer } from './root.reducer';
+import rootSaga from './root.saga';
 
+const sagaMiddleware = createSagaMiddleware();
 
 const getMiddlewares = () => {
-	const middlewares = [createSagaMiddleware()];
+	const middlewares = [sagaMiddleware];
 
 	if (__DEV__) {
 		if (process.env.LOGGER_ENABLED) {
@@ -38,5 +40,7 @@ if (__DEV__) {
 		composeWithDevTools(getMiddlewares(), ...getEnhancers())
 	);
 }
+
+sagaMiddleware.run(rootSaga);
 
 export default store;

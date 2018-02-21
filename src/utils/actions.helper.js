@@ -4,21 +4,40 @@ export const createActionSet = actionName => ({
 	ERROR: `${actionName}_ERROR`,
 });
 
-export const createSagaActionSet = actionName => ({
-	action: (payload) => ({
-		type: `DO_${actionName}`,
+export function createSagaActionSet(actionName) {
+	return new Action(actionName);
+}
+
+function Action(actionName) {
+	this.actionType = `DO_${actionName}`;
+	this.progressType = `${actionName}_PROGRESS`;
+	this.errorType = `${actionName}_ERROR`;
+	this.successType = `${actionName}_SUCCESS`;
+}
+
+Action.prototype.action = function (payload) {
+	return {
+		type: this.actionType,
 		payload,
-	}),
-	progress: `${actionName}_progress`,
-	error: (error) => ({
-		type: `${actionName}_ERROR`,
+	}
+};
+Action.prototype.progress = function () {
+	return {
+		type: this.progressType,
+	}
+};
+Action.prototype.error = function (error) {
+	return {
+		type: this.errorType,
 		error,
-	}),
-	success: (payload) => ({
-		type: `${actionName}_SUCCESS`,
+	}
+};
+Action.prototype.success = function (payload) {
+	return {
+		type: this.successType,
 		payload,
-	}),
-});
+	}
+};
 
 export const createReducer = (reducerMap, defaultState) =>
 	(state = { ...defaultState }, action) =>

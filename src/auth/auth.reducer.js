@@ -21,7 +21,7 @@ const setError = (state, { error }) => ({
 	...state,
 	inprogress: false,
 	error,
-})
+});
 
 export default {
 	auth: createReducer({

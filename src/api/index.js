@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const CLIENT_ID = '';
-export const CLIENT_SECRET = '';
+export const CLIENT_ID = '9ad8569261681e200601';
+export const CLIENT_SECRET = '3b825b8ab987cfce15404837ac3dc0abdbdae4cc';
 
 const METHOD = {
 	GET: 'GET',
