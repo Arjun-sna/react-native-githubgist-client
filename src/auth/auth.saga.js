@@ -7,12 +7,11 @@ const tokenSelector = (state) => state.access_token;
 function* loginAndFetchUser() {
 	while (true) {
 		try {
-			console.log("login response before " + JSON.stringify(logIn))			
-			const { loginPayload } = yield take(logIn.actionType);
-			console.log("login response inp " + loginPayload)			
+			const { payload } = yield take(logIn.actionType);
+			console.log("login req rec " + JSON.stringify(payload))
 			
 			yield put(logIn.progress());
-			const loginResponse = yield call(fetchAccessToken, loginPayload);
+			const loginResponse = yield call(fetchAccessToken, payload);
 			console.log("login response " + JSON.stringify(loginResponse))
 			yield put(logIn.success(loginResponse));
 			yield put(fetchAuthUser.action());

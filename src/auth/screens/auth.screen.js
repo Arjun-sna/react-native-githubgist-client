@@ -50,6 +50,14 @@ const LoaderText = styled.Text`
 	padding-bottom: 20;
 `;
 
+const ViewContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: ${colors.white};
+`;
+
 const StyledButton = styled(Button).attrs({
 	buttonStyle: {
 		backgroundColor: colors.transparent,
@@ -83,6 +91,7 @@ class Auth extends React.Component {
 
 	handleOpenURL = ({ url }) => {
 		if (url && url.substring(0, 12) === 'gitgistrn://') {
+			console.log('handle url method ' + url)
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
 			const { state, code } = queryString.parse(queryStringFromUrl);
 			const { auth, getUser, navigation } = this.props;
@@ -95,8 +104,8 @@ class Auth extends React.Component {
 				});
 
 				stateRandom = Math.random().toString();
-
 				this.props.login(code, state);
+				console.log('Here handle url ' + code + ' ' + state)
 				// resetNavigationTo('Main', this.props.navigation);
 				// CookieManager.clearAll().then(() => {
 				// 	auth(code, state).then(() => {
@@ -110,6 +119,7 @@ class Auth extends React.Component {
 	}
 
 	onNavigationStateChange = navState => {
+		console.log('Navigation state change')
 		const url = navState.url;
 
 		this.handleOpenURL({ url });
@@ -132,6 +142,8 @@ class Auth extends React.Component {
 				Linking.addEventListener('url', this.handleOpenURL);
 				Linking.getInitialURL().then(url => {
 					if (url) {
+						console.log('Linking')
+
 						this.handleOpenURL({ url });
 					}
 				});
@@ -139,30 +151,44 @@ class Auth extends React.Component {
 		}
 	}
 
+	shouldShowLogin = () => {
+		const { isLoggingIn, isAuthenticated } = this.props;
+
+		return !isLoggingIn && !isAuthenticated;
+	}
+
 	render() {
 		return (
-			<SignInContainer>
-				<BrowserSection>
-					<WebView
-						source={{
-							uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
-						}}
-						onLoadStart={e => this.toggleCancelButton(e, true)}
-						onLoadEnd={e => this.toggleCancelButton(e, false)}
-						onNavigationStateChange={e => this.onNavigationStateChange(e)}
-						renderLoading={() => this.renderLoading()}
-						startInLoadingState
-						javaScriptEnabled
-					/>
-				</BrowserSection>
-				<ContentSection>
-					<StyledButton
-						title="Cancel"
-						disabled={this.state.cancelDisabled}
-						onPress={() => { this.props.login('ad', 'adf') }}
-					/>
-				</ContentSection>
-			</SignInContainer>
+			<ViewContainer>
+				{this.shouldShowLogin() && (
+					<SignInContainer>
+						<BrowserSection>
+							<WebView
+								source={{
+									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
+								}}
+								onLoadStart={e => this.toggleCancelButton(e, true)}
+								onLoadEnd={e => this.toggleCancelButton(e, false)}
+								onNavigationStateChange={e => this.onNavigationStateChange(e)}
+								renderLoading={() => this.renderLoading()}
+								startInLoadingState
+								javaScriptEnabled
+							/>
+						</BrowserSection>
+						<ContentSection>
+							<StyledButton
+								title="Cancel"
+								disabled={this.state.cancelDisabled}
+								onPress={() => { console.log('press');this.props.login('da', 'adf') }}
+							/>
+						</ContentSection>
+					</SignInContainer>)}
+				{
+					this.props.isLoggingIn && (
+						this.renderLoading()
+					)
+				}
+			</ViewContainer>
 		)
 	}
 
@@ -173,7 +199,10 @@ class Auth extends React.Component {
 	}
 };
 
-const mapStateToProps = state => ({ });
+const mapStateToProps = state => ({
+	isLoggingIn: state.auth.inprogress,
+	isAuthenticated: state.auth.isAuthenticated
+});
 
 const mapStateToDispatch = dispatch => ({
 	login: (code, state) => dispatch(logIn.action({ code, state })),

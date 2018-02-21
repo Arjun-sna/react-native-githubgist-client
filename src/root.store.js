@@ -10,7 +10,7 @@ import rootSaga from './root.saga';
 const sagaMiddleware = createSagaMiddleware();
 
 const getMiddlewares = () => {
-	const middlewares = [sagaMiddleware];
+	const middlewares = [sagaMiddleware, createLogger()];
 
 	if (__DEV__) {
 		if (process.env.LOGGER_ENABLED) {

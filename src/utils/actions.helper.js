@@ -39,7 +39,7 @@ Action.prototype.success = function (payload) {
 	}
 };
 
-export const createReducer = (reducerMap, defaultState) =>
+export const createReducer = (reducerMap, defaultState = {}) =>
 	(state = { ...defaultState }, action) =>
 		reducerMap.hasOwnProperty(action.type) ? reducerMap[action.type](state, action) : state;
 

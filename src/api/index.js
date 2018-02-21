@@ -61,7 +61,7 @@ export const fetchAccessToken = async ({ code, state }) => {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({
+		data: JSON.stringify({
 			client_id: CLIENT_ID,
 			client_secret: CLIENT_SECRET,
 			code,

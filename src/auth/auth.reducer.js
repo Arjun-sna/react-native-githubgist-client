@@ -1,14 +1,24 @@
 import { createReducer } from '../utils';
 import { logIn, fetchAuthUser } from './auth.actiontype';
 
-const setInProgress = state => ({
+const setUserFetchInProgress = state => ({
 	...state,
 	inprogress: true,
 });
 
+const setAuthProgress = state => {
+	console.log('In reducer');
+	return ({
+		...state,
+		inprogress: true,
+		isAuthenticated: false,
+	})
+};
+
 const setAuthData = (state, { access_token }) => ({
 	...state,
 	inprogress: false,
+	isAuthenticated: true,
 	access_token,
 });
 
@@ -25,13 +35,13 @@ const setError = (state, { error }) => ({
 
 export default {
 	auth: createReducer({
-		[logIn.progress]: setInProgress,
-		[logIn.success]: setAuthData,
-		[logIn.error]: setError,
+		[logIn.progressType]: setAuthProgress,
+		[logIn.successType]: setAuthData,
+		[logIn.errorType]: setError,
 	}),
-	loggeInUser: createReducer({
-		[fetchAuthUser.progress]: setInProgress,
-		[fetchAuthUser.success]: setUserData,
-		[fetchAuthUser.error]: setError,
+	loggedInUser: createReducer({
+		[fetchAuthUser.progressType]: setUserFetchInProgress,
+		[fetchAuthUser.successType]: setUserData,
+		[fetchAuthUser.errorType]: setError,
 	})
 };
