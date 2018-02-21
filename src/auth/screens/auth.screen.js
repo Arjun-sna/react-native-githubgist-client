@@ -108,9 +108,9 @@ class Auth extends React.Component {
 				this.props.login(code, state);
 				console.log('Here handle url ' + code + ' ' + state)
 				// resetNavigationTo('Main', this.props.navigation);
-				CookieManager.clearAll().then(() => {
+				// CookieManager.clearAll().then(() => {
 					this.props.login(code, state);
-				});
+				// });
 			}
 		}
 	}

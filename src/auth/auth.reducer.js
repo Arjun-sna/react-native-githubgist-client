@@ -6,25 +6,23 @@ const setUserFetchInProgress = state => ({
 	inprogress: true,
 });
 
-const setAuthProgress = state => {
-	console.log('In reducer');
-	return ({
-		...state,
-		inprogress: true,
-		isAuthenticated: false,
-	})
-};
+const setAuthProgress = state => ({
+	...state,
+	inprogress: true,
+	isAuthenticated: false,
+});
 
-const setAuthData = (state, { access_token }) => ({
+const setAuthData = (state, { payload: { access_token } }) => ({
 	...state,
 	inprogress: false,
 	isAuthenticated: true,
 	access_token,
 });
 
-const setUserData = (state, { }) => ({
+const setUserData = (state, { payload }) => ({
 	...state,
-	inprogress: false
+	inprogress: false,
+	userData: payload
 });
 
 const setError = (state, { error }) => ({

@@ -16,13 +16,13 @@ export const v3 = {
 	root: 'https://api.github.com',
 	call: async (url, parameters) => {
 		const finalUrl = url.indexOf(v3.root) === 0 ? url : `${v3.root}${url}`;
-		const response = await axios(url, parameters);
-
+		const response = await axios(finalUrl, parameters);
+		
 		return response;
 	},
 	parameters: (
 		accessToken,
-		method = Method.GET,
+		method = METHOD.GET,
 		accept = 'application/vnd.github.v3+json',
 		data = {}
 	) => {
@@ -46,9 +46,9 @@ export const v3 = {
 		return params;
 	},
 	getJson: async (url, accessToken) => {
-		const response = await call(url, parameters(accessToken));
+		const response = await v3.call(url, v3.parameters(accessToken));
 
-		return response.json();
+		return response.data;
 	}
 }
 
@@ -69,7 +69,7 @@ export const fetchAccessToken = async ({ code, state }) => {
 		}),
 	});
 
-	return response;
+	return response.data;
 }
 
-export const getUser = accessToken => v3.getJson('/user', accessToken);
+export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
