@@ -1,5 +1,6 @@
 import { compose, createStore, applyMiddleware } from 'redux';
-import { autoRehydrate } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
+import { AsyncStorage } from 'react-native';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -10,12 +11,10 @@ import rootSaga from './root.saga';
 const sagaMiddleware = createSagaMiddleware();
 
 const getMiddlewares = () => {
-	const middlewares = [sagaMiddleware, createLogger()];
+	const middlewares = [sagaMiddleware];
 
 	if (__DEV__) {
-		if (process.env.LOGGER_ENABLED) {
-			middlewares.push(createLogger());
-		}
+		middlewares.push(createLogger());
 	}
 	return applyMiddleware(...middlewares);
 };
@@ -23,24 +22,30 @@ const getMiddlewares = () => {
 const getEnhancers = () => {
 	const enhancers = [];
 
-	// enhancers.push(autoRehydrate());
 	return enhancers;
 };
 
 let store;
 
+const persistConfig = {
+	key: 'root',
+	storage: AsyncStorage,
+}
+
 if (__DEV__) {
 	store = createStore(
-		rootReducer,
+		persistReducer(persistConfig, rootReducer),
 		compose(getMiddlewares(), ...getEnhancers())
 	);
 } else {
 	store = createStore(
-		rootReducer,
+		persistReducer(persistConfig, rootReducer),
 		composeWithDevTools(getMiddlewares(), ...getEnhancers())
 	);
 }
 
 sagaMiddleware.run(rootSaga);
+
+export const persistor = persistStore(store);
 
 export default store;
