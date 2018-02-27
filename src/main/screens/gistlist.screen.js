@@ -1,6 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
- 
-export default () => (
-	<Text> This is the main Screen </Text>
-);
+import navigatorService from '../../utils/navigatorService';
+
+export default () => {
+	navigatorService.printRoutes();
+	return (
+		<Text> This is the main Screen </Text>
+	)
+};

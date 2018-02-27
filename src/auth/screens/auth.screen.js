@@ -14,7 +14,7 @@ import { Button } from 'react-native-elements';
 import CookieManager from 'react-native-cookies';
 import queryString from 'query-string';
 import { colors } from '../../config'
-import { resetNavigationTo } from '../../utils';
+import navigatorService from '../../utils/navigatorService';
 import { CLIENT_ID } from '../../api';
 
 let stateRandom = Math.random().toString();
@@ -76,6 +76,7 @@ const StyledButton = styled(Button).attrs({
 
 class Auth extends React.Component {
 	constructor(props) {
+		console.log('New created')
 		super(props);
 		this.state = {
 
@@ -133,7 +134,9 @@ class Auth extends React.Component {
 
 	componentDidMount() {
 		if (this.props.isAuthenticated) {
-			this.props.navigation.navigate('Main');
+			// console.log('Resetting  ain');
+			// navigatorService.printRoutes();
+			navigatorService.reset('Main');
 		} else {
 			if (Platform.OS === 'android') {
 				Linking.addEventListener('url', this.handleOpenURL);
@@ -155,6 +158,7 @@ class Auth extends React.Component {
 	}
 
 	render() {
+		console.log('rendering aut ' + this.shouldShowLogin());
 		return (
 			<ViewContainer>
 				{this.shouldShowLogin() && (

@@ -10,7 +10,8 @@ function setContainer(container: Object) {
 function reset(routeName: string, params?: NavigationParams) {
   _container.dispatch(
     NavigationActions.reset({
-      index: 0,
+			index: 0,
+			key: null,
       actions: [
         NavigationActions.navigate({
           type: 'Navigation/NAVIGATE',
@@ -55,10 +56,19 @@ function getCurrentRoute(): NavigationRoute | null {
   return _container.state.nav.routes[_container.state.nav.index] || null;
 }
 
+function printRoutes(): NavigationRoute | null {
+  // if (!_container || !_container.state.nav) {
+  //   return null;
+  // }
+	console.log(_container.state.nav.routes.length + " length of screeens");
+  _container.state.nav.routes.forEach(console.log);
+}
+
 export default {
   setContainer,
   navigateDeep,
   navigate,
   reset,
-  getCurrentRoute,
+	getCurrentRoute,
+	printRoutes
 };
