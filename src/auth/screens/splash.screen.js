@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Image, Text, Platform, Linking } from 'react-native';
-import queryString from 'query-string';
-// import CookieManager from 'react-native-cookies';
+import { Image } from 'react-native';
 import { colors } from '../../config'
-import navigatorService from '../../utils/navigatorService';
 
 const LogoContainer = styled.View`
 	background-color: ${colors.white};
@@ -18,16 +15,7 @@ const Logo = styled.Image`
   height: 100;
 `;
 
-class Splash extends React.Component {
-	componentDidMount() {
-		// console.log('didmount resetting now')
-		setTimeout(() => { console.log('resetting now');navigatorService.reset('Login')}, 2000);
-	}
-
-	componentWillUnmount() {
-		// console.log('splash will unmount ' + navigatorService.printRoutes());		
-	}
-
+export default class Splash extends React.Component {
 	render() {
 		return (
 			<LogoContainer>
@@ -36,15 +24,3 @@ class Splash extends React.Component {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	isLoggingIn: state.auth.isLoggingIn,
-	isAuthenticated: state.auth.isAuthenticated,
-	hasInitialUser: state.auth.hasInitialUser
-});
-
-const mapDispatchToProps = dispatch => ({
-	auth: (code, state) => dispatch(doAuth(code, state)),
-});
-
-export default Splash;

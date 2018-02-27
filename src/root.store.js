@@ -25,27 +25,27 @@ const getEnhancers = () => {
 	return enhancers;
 };
 
-let store;
-
 const persistConfig = {
 	key: 'root',
 	storage: AsyncStorage,
 }
 
-if (__DEV__) {
-	store = createStore(
-		persistReducer(persistConfig, rootReducer),
-		compose(getMiddlewares(), ...getEnhancers())
-	);
-} else {
-	store = createStore(
-		persistReducer(persistConfig, rootReducer),
-		composeWithDevTools(getMiddlewares(), ...getEnhancers())
-	);
-}
+export default getStore = async () => {
+	let store;
 
-sagaMiddleware.run(rootSaga);
+	if (__DEV__) {
+		store = createStore(
+			persistReducer(persistConfig, rootReducer),
+			compose(getMiddlewares(), ...getEnhancers())
+		);
+	} else {
+		store = createStore(
+			persistReducer(persistConfig, rootReducer),
+			composeWithDevTools(getMiddlewares(), ...getEnhancers())
+		);
+	}
+	sagaMiddleware.run(rootSaga);
+	const persistor = persistStore(store);
 
-export const persistor = persistStore(store);
-
-export default store;
+	return { persistor, store };
+};
