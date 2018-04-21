@@ -1,7 +1,4 @@
-import React from 'react';
-import {
-	StackNavigator, TabNavigator
-} from 'react-navigation';
+import { StackNavigator, TabNavigator } from 'react-navigation';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './main/screens/mygists.screen';
@@ -13,24 +10,24 @@ const MainScreen = TabNavigator({
 		screen: MyGistsScreen,
 		navigationOptions: {
 			tabBarLabel: 'My Gists',
-		}
+		},
 	},
 	StarredGists: {
 		screen: StarredGistsScreen,
 		navigationOptions: {
 			tabBarLabel: 'Starred',
-		}
+		},
 	},
 	PublicGists: {
 		screen: PublicGistsScreen,
 		navigationOptions: {
 			tabBarLabel: 'Public Gists',
-		}
-	}
+		},
+	},
 }, {
 	tabBarOptions: {
 		showLabel: true,
-	}
+	},
 });
 
 export const GistApp = StackNavigator(
@@ -38,21 +35,21 @@ export const GistApp = StackNavigator(
 		Splash: {
 			screen: SplashScreen,
 			navigationOptions: {
-				header: null
-			}
+				header: null,
+			},
 		},
 		Login: {
 			screen: LoginScreen,
 			navigationOptions: {
-				header: null
-			}
+				header: null,
+			},
 		},
 		Main: {
 			screen: MainScreen,
 			navigationOptions: {
-				header: null
-			}
-		}
+				header: null,
+			},
+		},
 	},
 	{
 		URIPrefix: 'gitgistrn://',
