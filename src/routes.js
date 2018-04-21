@@ -1,9 +1,9 @@
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
-import MyGistsScreen from './main/screens/mygists.screen';
-import PublicGistsScreen from './main/screens/publicgists.screen';
-import StarredGistsScreen from './main/screens/starredgists.screen';
+import MyGistsScreen from './gists/screens/mygists.screen';
+import PublicGistsScreen from './gists/screens/publicgists.screen';
+import StarredGistsScreen from './gists/screens/starredgists.screen';
 
 const MainScreen = TabNavigator({
 	MyGists: {

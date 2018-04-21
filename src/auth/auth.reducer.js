@@ -19,10 +19,18 @@ const setAuthData = (state, { payload: { access_token } }) => ({
 	access_token,
 });
 
-const setUserData = (state, { payload }) => ({
+const setUserData = (state, { payload: userData }) => ({
 	...state,
 	inprogress: false,
-	userData: payload
+	userId: userData.id,
+	pic: userData.avatar_url,
+	email: userData.email,
+	followers: userData.followers,
+	following: userData.following,
+	displayName: userData.name,
+	userName: userData.login,
+	privateGistsCount: userData.private_gists,
+	publicGistsCount: userData.public_gists
 });
 
 const setError = (state, { error }) => ({
