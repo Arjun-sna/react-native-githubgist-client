@@ -1,10 +1,37 @@
 import React from 'react';
 import {
-	StackNavigator
+	StackNavigator, TabNavigator
 } from 'react-navigation';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
-import MainScreen from './main/screens/gistlist.screen';
+import MyGistsScreen from './main/screens/mygists.screen';
+import PublicGistsScreen from './main/screens/publicgists.screen';
+import StarredGistsScreen from './main/screens/starredgists.screen';
+
+const MainScreen = TabNavigator({
+	MyGists: {
+		screen: MyGistsScreen,
+		navigationOptions: {
+			tabBarLabel: 'My Gists',
+		}
+	},
+	StarredGists: {
+		screen: StarredGistsScreen,
+		navigationOptions: {
+			tabBarLabel: 'Starred',
+		}
+	},
+	PublicGists: {
+		screen: PublicGistsScreen,
+		navigationOptions: {
+			tabBarLabel: 'Public Gists',
+		}
+	}
+}, {
+	tabBarOptions: {
+		showLabel: true,
+	}
+});
 
 export const GistApp = StackNavigator(
 	{
