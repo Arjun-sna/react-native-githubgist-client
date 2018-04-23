@@ -13,8 +13,9 @@ const MyGists = (props) => {
 };
 
 
-const mapStateToProps = (state) => ({
-
+const mapStateToProps = ({ userGistsData }) => ({
+	userGists: userGistsData.userGists,
+	inProgress: userGistsData.inProgress,
 });
 
 const mapDispatchToProps = (dispatch) => ({
