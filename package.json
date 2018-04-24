@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
+    "babel-plugin-functional-hmr": "^1.0.24",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
