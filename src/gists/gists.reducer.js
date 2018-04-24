@@ -34,15 +34,15 @@ export default {
 		[userGistsFetch.progressType]: setInProgressState,
 		[userGistsFetch.successType]: setUserGistData,
 		[userGistsFetch.errorType]: setError,
-	}),
+	}, { userGists: [], inProgress: false }),
 	publicGistsData: createReducer({
 		[publicGistsFetch.progressType]: setInProgressState,
 		[publicGistsFetch.successType]: setPublicGistData,
 		[publicGistsFetch.errorType]: setError,
-	}),
+	}, { publicGists: [], inProgress: false }),
 	starredGistsData: createReducer({
 		[starredGistsFetch.progressType]: setInProgressState,
 		[starredGistsFetch.successType]: setStarredGistData,
 		[starredGistsFetch.errorType]: setError,
-	}),
+	}, { starredGists: [], inProgress: false }),
 }
