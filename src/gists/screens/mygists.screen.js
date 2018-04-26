@@ -6,6 +6,7 @@ import { userGistsFetch } from '../gists.actiontype';
 import navigatorService from '../../utils/navigatorService';
 import GistItem from './components/SingleGistOverview';
 import EmptyList from './components/EmptyListComponent';
+import ListItemSeparator from './components/ListItemSeparator';
 
 const Container = styled.View`
 	flex: 1;
@@ -21,6 +22,7 @@ class MyGists extends React.Component {
 	renderListItem = ({item}) => (
 		<GistItem 
 			gistData={item}
+			onClickGist={(id) => console.log('Clicked ' +  id)}
 		/>
 	)
 
@@ -36,6 +38,7 @@ class MyGists extends React.Component {
 								data={userGists}
 								keyExtractor={item => item.id}
 								renderItem={this.renderListItem}
+								ItemSeparatorComponent={() => <ListItemSeparator />}
 							/> :
 							<EmptyList message="This user has not created any Gist yet" />
 				}
