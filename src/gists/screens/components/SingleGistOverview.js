@@ -15,6 +15,7 @@ const Title = styled.Text`
 	margin: 3px 0;
 	color: ${colors.black}
 `
+
 const DetailsContainer = styled.View`;
 	display: flex;
 	flex-direction: row;
@@ -28,9 +29,10 @@ const DetailsText = styled.Text`
 `;
 
 const GistOverview = ({ gistData, onClickGist }) => {
+	const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0]
 	return (
 		<Container onPress={() => onClickGist(gistData.id)}>
-			<Title>{gistData.description}</Title>
+			<Title>{title}</Title>
 			<DetailsContainer>
 				<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
 				<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>

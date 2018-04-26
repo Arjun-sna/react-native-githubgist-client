@@ -1,10 +1,59 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { publicGistsFetch } from '../gists.actiontype';
 import navigatorService from '../../utils/navigatorService';
+import GistItem from './components/SingleGistOverview';
+import EmptyList from './components/EmptyListComponent';
+import ListItemSeparator from './components/ListItemSeparator';
 
-export default () => {
-	navigatorService.printRoutes();
-	return (
-		<Text> This is the Public gists Screen </Text>
+const Container = styled.View`
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+`;
+
+class PublicGist extends React.Component {
+	componentDidMount() {
+		this.props.fetchPublicGists();
+	}
+
+	renderListItem = ({item}) => (
+		<GistItem 
+			gistData={item}
+			onClickGist={(id) => console.log('Clicked ' +  id)}
+		/>
 	)
-};
+
+	render() {
+		const { publicGists, requestInProgress } = this.props; 
+		return (
+			<Container>
+				{
+					requestInProgress ?
+						<ActivityIndicator size="small"/> :
+						publicGists.length > 0 ? 
+							<FlatList
+								data={publicGists}
+								keyExtractor={item => item.id}
+								renderItem={this.renderListItem}
+								ItemSeparatorComponent={() => <ListItemSeparator />}
+							/> :
+							<EmptyList message="No public gists to display" />
+				}
+			</Container>
+		)
+	}
+}
+
+const mapStateToProps = ({ publicGistsData }) => ({
+	publicGists: publicGistsData.publicGists,
+	requestInProgress: publicGistsData.inProgress,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	fetchPublicGists: () => dispatch(publicGistsFetch.action()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PublicGist);

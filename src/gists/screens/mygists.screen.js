@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { userGistsFetch } from '../gists.actiontype';
