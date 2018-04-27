@@ -16,6 +16,8 @@ const Container = styled.View`
 
 class PublicGist extends React.Component {
 	componentDidMount() {
+		console.log('did mount user')
+		
 		this.props.fetchPublicGists();
 	}
 
@@ -48,7 +50,7 @@ class PublicGist extends React.Component {
 }
 
 const mapStateToProps = ({ publicGistsData }) => ({
-	publicGists: publicGistsData.publicGists,
+	publicGists: publicGistsData.gists,
 	requestInProgress: publicGistsData.inProgress,
 });
 

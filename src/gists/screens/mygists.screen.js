@@ -48,7 +48,7 @@ class MyGists extends React.Component {
 }
 
 const mapStateToProps = ({ userGistsData }) => ({
-	userGists: userGistsData.userGists,
+	userGists: userGistsData.gists,
 	requestInProgress: userGistsData.inProgress,
 });
 

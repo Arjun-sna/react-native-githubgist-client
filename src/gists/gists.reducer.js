@@ -7,54 +7,43 @@ const setInProgressState = state => ({
 	inProgress: true,
 });
 
-const setUserGistData = (state, { payload }) => ({
-	...state,
-	inProgress: false,
-	userGists: payload,
-});
-
-const setPublicGistData = (state, { payload }) => {
+const setGistData = (state, { payload }) => {
 	const { data, links } = payload;
 	const isLinkAvailable = links && links.next;
-
 	let newDataItems = data;
-	if (state.nextPageNo) {
-		newDataItems = array.concat(state.publicGists, data)
+	if (state.nextPageNo > 1) {
+		newDataItems = array.concat(state.gists, data)
 	}
+
 	return {
 		...state,
 		inProgress: false,
 		linkToNextPage: isLinkAvailable ? links.next.url : '',
 		nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
-		publicGists: newDataItems,
+		gists: newDataItems,
 	}
 };
 
-const setStarredGistData = (state, { payload }) => ({
-	...state,
-	inProgress: false,
-	starredGists: payload,
-});
-
 const setError = (state, { error }) => ({
 	...state,
+	inProgress: false,
 	error,
 });
 
 export default {
 	userGistsData: createReducer({
 		[userGistsFetch.progressType]: setInProgressState,
-		[userGistsFetch.successType]: setUserGistData,
+		[userGistsFetch.successType]: setGistData,
 		[userGistsFetch.errorType]: setError,
-	}, { userGists: [], inProgress: false }),
+	}, { gists: [], inProgress: false, nextPageNo: 1 }),
 	publicGistsData: createReducer({
 		[publicGistsFetch.progressType]: setInProgressState,
-		[publicGistsFetch.successType]: setPublicGistData,
+		[publicGistsFetch.successType]: setGistData,
 		[publicGistsFetch.errorType]: setError,
-	}, { publicGists: [], inProgress: false }),
+	}, { gists: [], inProgress: false, nextPageNo: 1 }),
 	starredGistsData: createReducer({
 		[starredGistsFetch.progressType]: setInProgressState,
-		[starredGistsFetch.successType]: setStarredGistData,
+		[starredGistsFetch.successType]: setGistData,
 		[starredGistsFetch.errorType]: setError,
-	}, { starredGists: [], inProgress: false }),
+	}, { gists: [], inProgress: false, nextPageNo: 1 }),
 }

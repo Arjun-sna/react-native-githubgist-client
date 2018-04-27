@@ -48,7 +48,7 @@ class StarredGist extends React.Component {
 }
 
 const mapStateToProps = ({ starredGistsData }) => ({
-	starredGists: starredGistsData.starredGists,
+	starredGists: starredGistsData.gists,
 	requestInProgress: starredGistsData.inProgress,
 });
 

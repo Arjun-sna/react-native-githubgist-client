@@ -10,8 +10,9 @@ function* fetchUserGists() {
 	try {
 		yield put(userGistsFetch.progress());
 		const requestData = yield all([select(tokenSelector), select(userNameSelector)]);
-		const response = yield call(requestUserGists, requestData[0], requestData[1]);
-		yield put(userGistsFetch.success(response));
+		const { headers, data } = yield call(requestUserGists, requestData[0], requestData[1]);
+		const links = headerparser(headers.link)
+		yield put(userGistsFetch.success({ data, links }));
 	} catch(err) {
 		yield put(userGistsFetch.error(err));
 	}
@@ -21,8 +22,9 @@ function* fetchStarredGists() {
 	try {
 		yield put(starredGistsFetch.progress());
 		const token = yield select(tokenSelector);
-		const response = yield call(requestStarredGists, token);
-		yield put(starredGistsFetch.success(response));
+		const { headers, data } = yield call(requestStarredGists, token);
+		const links = headerparser(headers.link)
+		yield put(starredGistsFetch.success({ data, links }));
 	} catch(err) {
 		yield put(starredGistsFetch.error(err));
 	}
