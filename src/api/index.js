@@ -47,9 +47,15 @@ export const v3 = {
 	},
 	getJson: async (url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken));
-
+		
 		return response.data;
-	}
+	},
+	getJsonWithHeader: async (url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken));
+		const { headers, data } = response;
+
+		return { headers, data };
+	},
 }
 
 export const fetchAccessToken = async ({ code, state }) => {
@@ -74,8 +80,8 @@ export const fetchAccessToken = async ({ code, state }) => {
 
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
 
-export const requestUserGists = async (accessToken, userName) => await v3.getJson(`/users/${userName}/gists`, accessToken)
+export const requestUserGists = async (accessToken, userName) => await v3.getJsonWithHeader(`/users/${userName}/gists`, accessToken)
 
-export const requestStarredGists = async accessToken => await v3.getJson('/gists/starred', accessToken)
+export const requestStarredGists = async accessToken => await v3.getJsonWithHeader('/gists/starred', accessToken)
 
-export const requestPublicGists = async accessToken => await v3.getJson('/gists/public', accessToken);
+export const requestPublicGists = async accessToken => await v3.getJsonWithHeader('/gists/public', accessToken);

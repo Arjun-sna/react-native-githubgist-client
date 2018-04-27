@@ -1,4 +1,5 @@
 import { call, select, put, all, takeLatest } from 'redux-saga/effects';
+import headerparser from 'parse-link-header';
 import { userGistsFetch, starredGistsFetch, publicGistsFetch } from './gists.actiontype';
 import { requestUserGists, requestPublicGists, requestStarredGists } from '../api';
 
@@ -31,8 +32,9 @@ function* fetchPublicGists() {
 	try {
 		yield put(publicGistsFetch.progress());
 		const token = yield select(tokenSelector);
-		const response = yield call(requestPublicGists, token);
-		yield put(publicGistsFetch.success(response));
+		const { headers, data } = yield call(requestPublicGists, token);
+		const links = headerparser(headers.link)
+		yield put(publicGistsFetch.success({ data, links }));
 	} catch(err) {
 		yield put(publicGistsFetch.error(err));
 	}

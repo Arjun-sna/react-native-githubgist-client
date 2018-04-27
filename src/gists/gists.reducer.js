@@ -1,3 +1,4 @@
+import array from 'lodash/array';
 import { createReducer } from '../utils';
 import { userGistsFetch, starredGistsFetch, publicGistsFetch } from './gists.actiontype';
 
@@ -12,11 +13,22 @@ const setUserGistData = (state, { payload }) => ({
 	userGists: payload,
 });
 
-const setPublicGistData = (state, { payload }) => ({
-	...state,
-	inProgress: false,
-	publicGists: payload,
-});
+const setPublicGistData = (state, { payload }) => {
+	const { data, links } = payload;
+	const isLinkAvailable = links && links.next;
+
+	let newDataItems = data;
+	if (state.nextPageNo) {
+		newDataItems = array.concat(state.publicGists, data)
+	}
+	return {
+		...state,
+		inProgress: false,
+		linkToNextPage: isLinkAvailable ? links.next.url : '',
+		nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
+		publicGists: newDataItems,
+	}
+};
 
 const setStarredGistData = (state, { payload }) => ({
 	...state,
