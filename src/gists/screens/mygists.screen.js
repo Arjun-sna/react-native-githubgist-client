@@ -16,7 +16,9 @@ const Container = styled.View`
 
 class MyGists extends React.Component {
 	componentDidMount() {
-		this.props.fetchUserGists();
+		if (this.props.userGists.length < 1) {
+			this.props.fetchUserGists();
+		}
 	}
 
 	renderListItem = ({item}) => (

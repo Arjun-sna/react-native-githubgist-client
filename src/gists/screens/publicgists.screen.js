@@ -16,9 +16,9 @@ const Container = styled.View`
 
 class PublicGist extends React.Component {
 	componentDidMount() {
-		console.log('did mount user')
-		
-		this.props.fetchPublicGists();
+		if (this.props.publicGists.length < 1) {
+			this.props.fetchPublicGists();
+		}
 	}
 
 	renderListItem = ({item}) => (

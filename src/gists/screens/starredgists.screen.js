@@ -16,7 +16,9 @@ const Container = styled.View`
 
 class StarredGist extends React.Component {
 	componentDidMount() {
-		this.props.fetchStarredGists();
+		if (this.props.starredGists.length < 1) {
+			this.props.fetchStarredGists();
+		}
 	}
 
 	renderListItem = ({item}) => (
