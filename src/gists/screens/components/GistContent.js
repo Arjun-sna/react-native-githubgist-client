@@ -38,6 +38,7 @@ export default class GistListContent extends React.Component {
 								keyExtractor={item => item.id}
 								renderItem={this.renderListItem}
 								ItemSeparatorComponent={() => <ListItemSeparator />}
+								onEndReached={this.props.fetchGists}
 							/> :
 							<EmptyList message={this.props.empltyListMessage} />
 				}

@@ -8,11 +8,14 @@ const userNameSelector = (state) => state.loggedInUser.userName;
 
 function* fetchUserGists() {
 	try {
-		yield put(userGistsFetch.progress());
-		const requestData = yield all([select(tokenSelector), select(userNameSelector)]);
-		const { headers, data } = yield call(requestUserGists, requestData[0], requestData[1]);
-		const links = headerparser(headers.link)
-		yield put(userGistsFetch.success({ data, links }));
+		const moreDataAvailabe = yield select(state => state.userGistsData.hasMoreData)
+		if (moreDataAvailabe) {
+			yield put(userGistsFetch.progress());
+			const requestData = yield all([select(tokenSelector), select(userNameSelector), select(state => state.userGistsData.nextPageNo)]);
+			const { headers, data } = yield call(requestUserGists, requestData[0], requestData[1], requestData[2]);
+			const links = headerparser(headers.link)
+			yield put(userGistsFetch.success({ data, links }));
+		}
 	} catch(err) {
 		yield put(userGistsFetch.error(err));
 	}
@@ -20,11 +23,14 @@ function* fetchUserGists() {
 
 function* fetchStarredGists() {
 	try {
-		yield put(starredGistsFetch.progress());
-		const token = yield select(tokenSelector);
-		const { headers, data } = yield call(requestStarredGists, token);
-		const links = headerparser(headers.link)
-		yield put(starredGistsFetch.success({ data, links }));
+		const moreDataAvailabe = yield select(state => state.starredGistsData.hasMoreData)
+		if (moreDataAvailabe) {
+			yield put(starredGistsFetch.progress());
+			const requestData = yield all([select(tokenSelector), select(state => state.starredGistsData.nextPageNo)]);		
+			const { headers, data } = yield call(requestStarredGists, requestData[0], requestData[1]);
+			const links = headerparser(headers.link)
+			yield put(starredGistsFetch.success({ data, links }));
+		}
 	} catch(err) {
 		yield put(starredGistsFetch.error(err));
 	}
@@ -32,11 +38,14 @@ function* fetchStarredGists() {
 
 function* fetchPublicGists() {
 	try {
-		yield put(publicGistsFetch.progress());
-		const token = yield select(tokenSelector);
-		const { headers, data } = yield call(requestPublicGists, token);
-		const links = headerparser(headers.link)
-		yield put(publicGistsFetch.success({ data, links }));
+		const moreDataAvailabe = yield select(state => state.publicGistsData.hasMoreData)
+		if (moreDataAvailabe) {
+			yield put(publicGistsFetch.progress());
+			const requestData = yield all([select(tokenSelector), select(state => state.publicGistsData.nextPageNo)]);		
+			const { headers, data } = yield call(requestPublicGists, requestData[0], requestData[1]);
+			const links = headerparser(headers.link)
+			yield put(publicGistsFetch.success({ data, links }));
+		}
 	} catch(err) {
 		yield put(publicGistsFetch.error(err));
 	}

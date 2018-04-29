@@ -19,6 +19,7 @@ const setGistData = (state, { payload }) => {
 		...state,
 		inProgress: false,
 		linkToNextPage: isLinkAvailable ? links.next.url : '',
+		hasMoreData: isLinkAvailable ? true : false,
 		nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
 		gists: newDataItems,
 	}
@@ -35,15 +36,15 @@ export default {
 		[userGistsFetch.progressType]: setInProgressState,
 		[userGistsFetch.successType]: setGistData,
 		[userGistsFetch.errorType]: setError,
-	}, { gists: [], inProgress: false, nextPageNo: 1 }),
+	}, { gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true }),
 	publicGistsData: createReducer({
 		[publicGistsFetch.progressType]: setInProgressState,
 		[publicGistsFetch.successType]: setGistData,
 		[publicGistsFetch.errorType]: setError,
-	}, { gists: [], inProgress: false, nextPageNo: 1 }),
+	}, { gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true }),
 	starredGistsData: createReducer({
 		[starredGistsFetch.progressType]: setInProgressState,
 		[starredGistsFetch.successType]: setGistData,
 		[starredGistsFetch.errorType]: setError,
-	}, { gists: [], inProgress: false, nextPageNo: 1 }),
+	}, { gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true }),
 }

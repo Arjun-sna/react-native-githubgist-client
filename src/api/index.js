@@ -80,8 +80,8 @@ export const fetchAccessToken = async ({ code, state }) => {
 
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
 
-export const requestUserGists = async (accessToken, userName) => await v3.getJsonWithHeader(`/users/${userName}/gists`, accessToken)
+export const requestUserGists = async (accessToken, userName, pageNo) => await v3.getJsonWithHeader(`/users/${userName}/gists?page=${pageNo}`, accessToken)
 
-export const requestStarredGists = async accessToken => await v3.getJsonWithHeader('/gists/starred', accessToken)
+export const requestStarredGists = async (accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/starred?page=${pageNo}`, accessToken)
 
-export const requestPublicGists = async accessToken => await v3.getJsonWithHeader('/gists/public', accessToken);
+export const requestPublicGists = async (accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/public?page=${pageNo}`, accessToken);
