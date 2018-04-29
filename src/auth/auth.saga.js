@@ -26,9 +26,8 @@ function* getUser() {
 			yield put(fetchAuthUser.progress());
 			const token = yield select(tokenSelector);			
 			const userResponse = yield call(getAuthUser, token);
-			console.log("user response " + JSON.stringify(userResponse))
+			yield put(fetchAuthUser.success(userResponse));			
 			navigatorService.reset('Main');			
-			yield put(fetchAuthUser.success(userResponse));
 		} catch (error) {
 			yield put(fetchAuthUser.error(error));
 		}
