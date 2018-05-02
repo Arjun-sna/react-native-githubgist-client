@@ -8,7 +8,6 @@ import ListItemSeparator from './ListItemSeparator';
 const Container = styled.View`
 	flex: 1;
 	justify-content: center;
-	align-items: center;
 `;
 
 export default class GistListContent extends React.Component {
