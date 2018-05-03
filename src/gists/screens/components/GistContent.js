@@ -63,6 +63,6 @@ GistListContent.defaultProps = {
 	emptyListMessage: 'This user has not created any Gist yet',
 	showLoader: false,
 	gistList: [],
-}
+};
 
 export default GistListContent;

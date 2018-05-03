@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import styled from 'styled-components';
 import moment from 'moment';
 import pluralize from 'pluralize';
@@ -29,7 +28,8 @@ const DetailsText = styled.Text`
 `;
 
 const GistOverview = ({ gistData, onClickGist }) => {
-	const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0]
+	const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
+
 	return (
 		<Container onPress={() => onClickGist(gistData.id)}>
 			<Title>{title}</Title>
