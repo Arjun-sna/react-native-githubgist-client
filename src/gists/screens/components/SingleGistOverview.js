@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import isEqual from 'lodash/isEqual';
 import pluralize from 'pluralize';
 import { colors } from '../../../config';
 
@@ -27,18 +28,29 @@ const DetailsText = styled.Text`
 	color: ${colors.greyDark}	
 `;
 
-const GistOverview = ({ gistData, onClickGist }) => {
-	const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
+class GistOverview extends React.Component {
+	shouldComponentUpdate(nextProps) {
+		return !(isEqual(this.props.gistData, nextProps.gistData));
+	}
 
-	return (
-		<Container onPress={() => onClickGist(gistData.id)}>
-			<Title>{title}</Title>
-			<DetailsContainer>
-				<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
-				<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
-			</DetailsContainer>
-		</Container>
-	)
+	render() {
+		const {
+			gistData,
+			onClickGist,
+		} = this.props;
+
+		const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
+		
+		return (
+			<Container onPress={() => onClickGist(gistData.id)}>
+				<Title>{title}</Title>
+				<DetailsContainer>
+					<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
+					<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
+				</DetailsContainer>
+			</Container>
+		)
+	}
 }
 
 export default GistOverview;
