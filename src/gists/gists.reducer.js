@@ -31,20 +31,29 @@ const setError = (state, { error }) => ({
 	error,
 });
 
+const clearCache = () => ({
+	gists: [],
+	hasMoreData: true,
+	nextPageNo: 1,
+});
+
 export default {
 	userGistsData: createReducer({
 		[userGistsFetch.progressType]: setInProgressState,
 		[userGistsFetch.successType]: setGistData,
 		[userGistsFetch.errorType]: setError,
+		CLEAR_CACHE: clearCache,
 	}, { gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true }),
 	publicGistsData: createReducer({
 		[publicGistsFetch.progressType]: setInProgressState,
 		[publicGistsFetch.successType]: setGistData,
 		[publicGistsFetch.errorType]: setError,
+		CLEAR_CACHE: clearCache,
 	}, { gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true }),
 	starredGistsData: createReducer({
 		[starredGistsFetch.progressType]: setInProgressState,
 		[starredGistsFetch.successType]: setGistData,
 		[starredGistsFetch.errorType]: setError,
+		CLEAR_CACHE: clearCache,
 	}, { gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true }),
 }
