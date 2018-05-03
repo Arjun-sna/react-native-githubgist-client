@@ -27,7 +27,8 @@ const MainScreen = TabNavigator({
 }, {
 	tabBarOptions: {
 		showLabel: true,
-	},
+  },
+  tabBarPosition: 'top',
 });
 
 export const GistApp = StackNavigator(

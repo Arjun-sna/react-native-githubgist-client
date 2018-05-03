@@ -1,24 +1,28 @@
 import React from 'react';
+import pick from 'lodash/pick';
 import { connect } from 'react-redux';
 import { userGistsFetch } from '../gists.actiontype';
 import GistContent from './components/GistContent';
 
-const MyGists = ({ userGists, requestInProgress, fetchUserGists }) => (
+const MyGistsProps = [
+	'gistList',
+	'showLoader',
+	'fetchGists',
+];
+
+const MyGists = props => (
 	<GistContent
-		gistList={userGists}
-		fetchGists={fetchUserGists}
-		showLoader={requestInProgress}
-		empltyListMessage="This user has not created any Gist yet"
+		{...pick(props, MyGistsProps)}
 	/>
-)
+);
 
 const mapStateToProps = ({ userGistsData }) => ({
-	userGists: userGistsData.gists,
-	requestInProgress: userGistsData.inProgress,
+	gistList: userGistsData.gists,
+	showLoader: userGistsData.inProgress,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	fetchUserGists: () => dispatch(userGistsFetch.action()),
+const mapDispatchToProps = dispatch => ({
+	fetchGists: () => dispatch(userGistsFetch.action()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyGists);
