@@ -96,6 +96,7 @@ GistListContent.propTypes = {
 	showLoader: PropTypes.bool,
 	fetchGists: PropTypes.func.isRequired,
 	gistList: PropTypes.array, // eslint-disable-line
+	hasMoreData: PropTypes.bool.isRequired,
 };
 
 GistListContent.defaultProps = {
@@ -103,5 +104,18 @@ GistListContent.defaultProps = {
 	showLoader: false,
 	gistList: [],
 };
+
+const styles = StyleSheet.create({
+	endOfViewStyle: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 20,
+		padding: 20,
+	},
+	noMoreGistText: {
+		fontSize: 25,
+	},
+});
 
 export default GistListContent;
