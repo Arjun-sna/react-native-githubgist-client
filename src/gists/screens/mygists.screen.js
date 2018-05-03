@@ -8,7 +8,6 @@ const MyGists = ({ userGists, requestInProgress, fetchUserGists }) => (
 		gistList={userGists}
 		fetchGists={fetchUserGists}
 		showLoader={requestInProgress}
-		empltyListMessage="This user has not created any Gist yet"
 	/>
 )
 
