@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import GistItem from './SingleGistOverview';
@@ -13,10 +13,15 @@ const Container = styled.View`
 `;
 
 class GistListContent extends React.Component {
+
 	componentDidMount() {
 		if (this.props.gistList.length < 1) {
 			this.props.fetchGists();
 		}
+	}
+
+	handleListEndReached = () => {
+		this.props.fetchGists();
 	}
 
 	renderListItem = ({ item }) => (
@@ -32,7 +37,7 @@ class GistListContent extends React.Component {
 		const { gistList, showLoader } = this.props;
 
 		return (
-			<Container>
+			<View>
 				{
 					showLoader ? (
 						<ActivityIndicator size="small" />
@@ -42,12 +47,13 @@ class GistListContent extends React.Component {
 							keyExtractor={item => item.id}
 							renderItem={this.renderListItem}
 							ItemSeparatorComponent={() => <ListItemSeparator />}
-							onEndReached={this.props.fetchGists}
+							onEndReachedThreshold={0.01}
+							onEndReached={this.handleListEndReached}
 							ListEmptyComponent={() => <EmptyList message={this.props.emptyListMessage} />}
 						/>
 					)
 				}
-			</Container>
+			</View>
 		);
 	}
 }
