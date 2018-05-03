@@ -7,4 +7,4 @@ export default () => (
 		height: 0.5,
 		backgroundColor: `${colors.grey}`,
 	}} />
-)
+);

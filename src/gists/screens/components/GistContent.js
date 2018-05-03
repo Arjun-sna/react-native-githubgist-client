@@ -7,7 +7,8 @@ import ListItemSeparator from './ListItemSeparator';
 
 const Container = styled.View`
 	flex: 1;
-	justify-content: center;
+  justify-content: center;
+  marginTop: 25;
 `;
 
 export default class GistListContent extends React.Component {
@@ -17,29 +18,31 @@ export default class GistListContent extends React.Component {
 		}
 	}
 
-	renderListItem = ({item}) => (
-		<GistItem 
+	renderListItem = ({ item }) => (
+    <GistItem
 			gistData={item}
 			onClickGist={(id) => console.log('Clicked ' +  id)}
 		/>
 	)
 
 	render() {
-		const { gistList, showLoader } = this.props; 
+    const { gistList, showLoader } = this.props; 
+    
 		return (
-			<Container>
+      <Container>
 				{
-					showLoader ?
-						<ActivityIndicator size="small"/> :
-						gistList.length > 0 ? 
-							<FlatList
-								data={gistList}
-								keyExtractor={item => item.id}
-								renderItem={this.renderListItem}
-								ItemSeparatorComponent={() => <ListItemSeparator />}
-								onEndReached={this.props.fetchGists}
-							/> :
-							<EmptyList message={this.props.empltyListMessage} />
+					showLoader ? (
+            <ActivityIndicator size="small"/>
+          ) : (
+            <FlatList
+              data={gistList}
+              keyExtractor={item => item.id}
+              renderItem={this.renderListItem}
+              ItemSeparatorComponent={() => <ListItemSeparator />}
+              onEndReached={this.props.fetchGists}
+              ListEmptyComponent={() => <EmptyList message={this.props.empltyListMessage} />}
+            />
+          )
 				}
 			</Container>
 		)
