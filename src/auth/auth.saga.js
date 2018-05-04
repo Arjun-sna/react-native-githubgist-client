@@ -27,7 +27,7 @@ function* getUser() {
 			const token = yield select(tokenSelector);			
 			const userResponse = yield call(getAuthUser, token);
 			yield put(fetchAuthUser.success(userResponse));			
-			navigatorService.reset('Main');			
+			navigatorService.reset('Home');			
 		} catch (error) {
 			yield put(fetchAuthUser.error(error));
 		}

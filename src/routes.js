@@ -1,4 +1,4 @@
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './gists/screens/mygists.screen';
@@ -29,13 +29,19 @@ const MainScreen = TabNavigator({
 		screen: ClearCacheScreen,
 		navigationOptions: {
 			tabBarLabel: 'Clear Cache'
-		}
-	}
+		},
+	},
 }, {
 	tabBarOptions: {
 		showLabel: true,
 	},
 	tabBarPosition: 'top',
+});
+
+const Home = DrawerNavigator({
+	Home: {
+		screen: MainScreen,
+	},
 });
 
 export const GistApp = StackNavigator(
@@ -52,8 +58,8 @@ export const GistApp = StackNavigator(
 				header: null,
 			},
 		},
-		Main: {
-			screen: MainScreen,
+		Home: {
+			screen: Home,
 			navigationOptions: {
 				header: null,
 			},

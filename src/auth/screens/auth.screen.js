@@ -52,11 +52,11 @@ const LoaderText = styled.Text`
 `;
 
 const ViewContainer = styled.View`
-  flex: 1;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  background-color: ${colors.white};
+	flex: 1;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: stretch;
+	background-color: ${colors.white};
 `;
 
 const StyledButton = styled(Button).attrs({
@@ -76,7 +76,6 @@ const StyledButton = styled(Button).attrs({
 
 class Auth extends React.Component {
 	constructor(props) {
-		console.log('New created')
 		super(props);
 		this.state = {
 
@@ -92,7 +91,6 @@ class Auth extends React.Component {
 	}
 
 	handleOpenURL = ({ url }) => {
-		console.log('handle url method ' + url)
 		if (url && url.substring(0, 12) === 'gitgistrn://') {
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
 			const { state, code } = queryString.parse(queryStringFromUrl);
@@ -107,10 +105,9 @@ class Auth extends React.Component {
 
 				stateRandom = Math.random().toString();
 				this.props.login(code, state);
-				console.log('Here handle url ' + code + ' ' + state)
 				// resetNavigationTo('Main', this.props.navigation);
 				// CookieManager.clearAll().then(() => {
-					this.props.login(code, state);
+				this.props.login(code, state);
 				// });
 			}
 		}
@@ -123,7 +120,7 @@ class Auth extends React.Component {
 		this.handleOpenURL({ url });
 	};
 
-	renderLoading() {
+	renderLoading = () => {
 		return (
 			<BrowserLoader>
 				<LoaderText>Loading...</LoaderText>
@@ -136,14 +133,13 @@ class Auth extends React.Component {
 		if (this.props.isAuthenticated) {
 			// console.log('Resetting  ain');
 			// navigatorService.printRoutes();
-			navigatorService.reset('Main');
+			navigatorService.reset('Home');
 		} else {
 			if (Platform.OS === 'android') {
 				Linking.addEventListener('url', this.handleOpenURL);
 				Linking.getInitialURL().then(url => {
 					if (url) {
 						console.log('Linking')
-
 						this.handleOpenURL({ url });
 					}
 				});
