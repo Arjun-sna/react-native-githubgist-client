@@ -21,6 +21,8 @@ const Container = styled.View`
 	marginTop: 25;
 `;
 
+const getGistItem = item => ({ type: item, id: item });
+
 class GistListContent extends React.Component {
 	componentDidMount() {
 		if (this.props.gistList.length < 1) {
@@ -45,9 +47,9 @@ class GistListContent extends React.Component {
 		case 'noData':
 			return (
 				<View style={styles.endOfViewStyle}>
-					<Text style={styles.noMoreGistText}>
-						No More Gists exists.
-					</Text>
+					<EmptyList
+						message="No more gists found for this category"
+					/>
 				</View>
 			);
 		default:
@@ -64,13 +66,8 @@ class GistListContent extends React.Component {
 
 	render() {
 		const { gistList, showLoader, hasMoreData } = this.props;
-		const toAppendData = hasMoreData ? {
-			type: 'preloader',
-			id: 'preloader'
-		} : {
-			type: 'noData',
-			id: 'noData',
-		};
+		
+		const toAppendData = hasMoreData ? getGistItem('preloader') : getGistItem('noData');
 
 		const uniqGists = uniqBy(concat(gistList, toAppendData), ({ id }) => (id));
 
