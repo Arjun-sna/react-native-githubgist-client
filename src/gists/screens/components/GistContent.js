@@ -1,6 +1,15 @@
 import React from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import {
+	ActivityIndicator,
+	FlatList,
+	View,
+	Text,
+	StyleSheet,
+} from 'react-native';
+
 import PropTypes from 'prop-types';
+import concat from 'lodash/concat';
+import uniqBy from 'lodash/uniqBy';
 import styled from 'styled-components';
 import GistItem from './SingleGistOverview';
 import EmptyList from './EmptyListComponent';
@@ -12,6 +21,8 @@ const Container = styled.View`
 	marginTop: 25;
 `;
 
+const getGistItem = item => ({ type: item, id: item });
+
 class GistListContent extends React.Component {
 	componentDidMount() {
 		if (this.props.gistList.length < 1) {
@@ -19,35 +30,60 @@ class GistListContent extends React.Component {
 		}
 	}
 
-	renderListItem = ({ item }) => (
-		<GistItem
-			gistData={item}
-			onClickGist={id => {
-				console.log('clicked ', id);
-			}}
-		/>
-	)
+	handleListEndReached = () => {
+		this.props.fetchGists();
+	}
+
+	renderListItem = ({ item }) => {
+		switch (item.type) {
+		case 'preloader':
+			return (
+				<View style={styles.endOfViewStyle}>
+					<ActivityIndicator
+						size="large"
+					/>
+				</View>
+			);
+		case 'noData':
+			return (
+				<View style={styles.endOfViewStyle}>
+					<EmptyList
+						message="No more gists found for this category"
+					/>
+				</View>
+			);
+		default:
+			return (
+				<GistItem
+					gistData={item}
+					onClickGist={id => {
+						console.log('clicked ', id);
+					}}
+				/>
+			);
+		}
+	}
 
 	render() {
-		const { gistList, showLoader } = this.props;
+		const { gistList, showLoader, hasMoreData } = this.props;
+		
+		const toAppendData = hasMoreData ? getGistItem('preloader') : getGistItem('noData');
+
+		const uniqGists = uniqBy(concat(gistList, toAppendData), ({ id }) => (id));
 
 		return (
-			<Container>
-				{
-					showLoader ? (
-						<ActivityIndicator size="small" />
-					) : (
-						<FlatList
-							data={gistList}
-							keyExtractor={item => item.id}
-							renderItem={this.renderListItem}
-							ItemSeparatorComponent={() => <ListItemSeparator />}
-							onEndReached={this.props.fetchGists}
-							ListEmptyComponent={() => <EmptyList message={this.props.emptyListMessage} />}
-						/>
-					)
-				}
-			</Container>
+			<View>
+				<FlatList
+					data={uniqGists}
+					keyExtractor={item => item.id}
+					renderItem={this.renderListItem}
+					ItemSeparatorComponent={() => <ListItemSeparator />}
+					onEndReachedThreshold={0.01}
+					onEndReached={this.handleListEndReached}
+					ListEmptyComponent={() => <EmptyList message={this.props.emptyListMessage} />}
+					removeClippedSubviews
+				/>
+			</View>
 		);
 	}
 }
@@ -57,6 +93,7 @@ GistListContent.propTypes = {
 	showLoader: PropTypes.bool,
 	fetchGists: PropTypes.func.isRequired,
 	gistList: PropTypes.array, // eslint-disable-line
+	hasMoreData: PropTypes.bool.isRequired,
 };
 
 GistListContent.defaultProps = {
@@ -64,5 +101,18 @@ GistListContent.defaultProps = {
 	showLoader: false,
 	gistList: [],
 };
+
+const styles = StyleSheet.create({
+	endOfViewStyle: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 20,
+		padding: 20,
+	},
+	noMoreGistText: {
+		fontSize: 25,
+	},
+});
 
 export default GistListContent;

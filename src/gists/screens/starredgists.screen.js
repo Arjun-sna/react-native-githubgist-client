@@ -1,24 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import pick from 'lodash/pick';
 import { starredGistsFetch } from '../gists.actiontype';
 import GistContent from './components/GistContent';
 
-const StarredGist = ({ starredGists, requestInProgress, fetchStarredGists }) => (
+const MyGistsProps = [
+	'gistList',
+	'showLoader',
+  'fetchGists',
+  'hasMoreData',
+];
+
+const StarredGists = props => (
 	<GistContent
-		gistList={starredGists}
-		fetchGists={fetchStarredGists}
-		showLoader={requestInProgress}
-		empltyListMessage="No public gists to display"
+		{...pick(props, MyGistsProps)}
 	/>
-)
+);
 
 const mapStateToProps = ({ starredGistsData }) => ({
-	starredGists: starredGistsData.gists,
-	requestInProgress: starredGistsData.inProgress,
+	gistList: starredGistsData.gists,
+  showLoader: starredGistsData.inProgress,
+  hasMoreData: starredGistsData.hasMoreData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchStarredGists: () => dispatch(starredGistsFetch.action()),
+	fetchGists: () => dispatch(starredGistsFetch.action()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StarredGist);
+export default connect(mapStateToProps, mapDispatchToProps)(StarredGists);

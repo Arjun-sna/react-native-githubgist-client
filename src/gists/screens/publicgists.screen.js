@@ -1,25 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import pick from 'lodash/pick';
 import { publicGistsFetch } from '../gists.actiontype';
 import GistContent from './components/GistContent';
 
+const PublicGistsProps = [
+	'gistList',
+	'showLoader',
+  'fetchGists',
+  'hasMoreData',
+];
 
-const PublicGist = ({ publicGists, requestInProgress, fetchPublicGists }) => (
+const PublicGists = props => (
 	<GistContent
-		gistList={publicGists}
-		fetchGists={fetchPublicGists}
-		showLoader={requestInProgress}
-		empltyListMessage="No public gists to display"
+		{...pick(props, PublicGistsProps)}
 	/>
-)
+);
 
 const mapStateToProps = ({ publicGistsData }) => ({
-	publicGists: publicGistsData.gists,
-	requestInProgress: publicGistsData.inProgress,
+	gistList: publicGistsData.gists,
+  showLoader: publicGistsData.inProgress,
+  hasMoreData: publicGistsData.hasMoreData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchPublicGists: () => dispatch(publicGistsFetch.action()),
+	fetchGists: () => dispatch(publicGistsFetch.action()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicGist);
+export default connect(mapStateToProps, mapDispatchToProps)(PublicGists);

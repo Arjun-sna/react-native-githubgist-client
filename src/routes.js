@@ -4,6 +4,7 @@ import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './gists/screens/mygists.screen';
 import PublicGistsScreen from './gists/screens/publicgists.screen';
 import StarredGistsScreen from './gists/screens/starredgists.screen';
+import ClearCacheScreen from './cache/screens/cache.screen.js';
 
 const MainScreen = TabNavigator({
 	MyGists: {
@@ -24,11 +25,17 @@ const MainScreen = TabNavigator({
 			tabBarLabel: 'Public Gists',
 		},
 	},
+	ClearCache: {
+		screen: ClearCacheScreen,
+		navigationOptions: {
+			tabBarLabel: 'Clear Cache'
+		}
+	}
 }, {
 	tabBarOptions: {
 		showLabel: true,
-  },
-  tabBarPosition: 'top',
+	},
+	tabBarPosition: 'top',
 });
 
 export const GistApp = StackNavigator(
