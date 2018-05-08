@@ -1,10 +1,22 @@
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
+import { StyleSheet } from 'react-native';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './gists/screens/mygists.screen';
 import PublicGistsScreen from './gists/screens/publicgists.screen';
 import StarredGistsScreen from './gists/screens/starredgists.screen';
 import ClearCacheScreen from './cache/screens/cache.screen.js';
+
+const styles = StyleSheet.create({
+  tabStyle: {
+    backgroundColor: '#33B5E5',
+  },
+  labelStyle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff'
+  }
+});
 
 const MainScreen = TabNavigator({
 	MyGists: {
@@ -27,8 +39,12 @@ const MainScreen = TabNavigator({
 	},
 }, {
 	tabBarOptions: {
-		showLabel: true,
-	},
+    showLabel: true,
+    tintColor: 'blue',
+    style: styles.tabStyle,
+    labelStyle: styles.labelStyle,
+  },
+  animationEnabled: true,
 	tabBarPosition: 'top',
 });
 
