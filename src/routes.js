@@ -25,12 +25,6 @@ const MainScreen = TabNavigator({
 			tabBarLabel: 'Public Gists',
 		},
 	},
-	ClearCache: {
-		screen: ClearCacheScreen,
-		navigationOptions: {
-			tabBarLabel: 'Clear Cache'
-		},
-	},
 }, {
 	tabBarOptions: {
 		showLabel: true,
@@ -41,6 +35,9 @@ const MainScreen = TabNavigator({
 const Home = DrawerNavigator({
 	Home: {
 		screen: MainScreen,
+  },
+  ClearCache: {
+		screen: ClearCacheScreen,
 	},
 });
 
