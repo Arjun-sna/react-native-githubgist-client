@@ -24,22 +24,28 @@ export default class GistDetails extends React.Component {
 
 	processFiles = (gistFiles) => {
 		const filesList = [];
-		forOwn(gistFiles, (value) => 	filesList.push(value))
-		return filesList;
+		let totalFileSize = 0;
+		forOwn(gistFiles, (value) => 	{
+			filesList.push(value);
+			totalFileSize += value.size;
+		})
+		return { filesList, totalFileSize };
 	};
 
 	render() {
 		const { navigation } = this.props;
 		const gistData = navigation.getParam('gistData', {});
 		const { owner } = gistData;
-		const gistFiles = this.processFiles(gistData.files);
+		const { filesList:gistFiles, totalFileSize } = this.processFiles(gistData.files);
 
 		return(
 			<View>
 				<Header 
 					userImage={owner.avatar_url}
 					userName={owner.login}
-					createdAt={gistData.created_At}/>
+					description={gistData.description}
+					createdAt={gistData.created_At}
+					gistSize={totalFileSize}/>
 				<FlatList
 					data={gistFiles}
 					renderItem={this.renderItem}

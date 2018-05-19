@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styled from 'styled-components';
-import CardView from 'react-native-cardview'
+import CardView from 'react-native-cardview';
 import { colors, normalizeFont } from '../../../config';
 
 const Container = styled(CardView)`
@@ -22,12 +22,12 @@ const FileName = styled.Text`
 	flex: 1;
 	font-weight: bold;
 	padding: 5px;
-	font-size: ${normalizeFont(16)};
+	font-size: ${normalizeFont(14)};
 `;
 
 const MetaDetail = styled.Text`
 	flex: 1;
-	font-size: ${normalizeFont(14)};
+	font-size: ${normalizeFont(12)};
 	color: ${colors.greyDark}
 `;
 
