@@ -11,7 +11,7 @@ const Container = styled.View`
 	align-items: center;
 	flex-direction: row;
 	padding-top: 20;
-	margin: 10px;
+	margin: 8px;
 `;
 
 const DetailsContainer = styled.View`
@@ -19,7 +19,7 @@ const DetailsContainer = styled.View`
 	flex: 1;
 	flex-direction: column;
 	justify-content: center;
-	margin: 0 10px;
+	margin: 0 8px;
 `;
 
 const Avatar = styled.Image`

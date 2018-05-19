@@ -4,23 +4,25 @@ import pick from 'lodash/pick';
 import { starredGistsFetch } from '../gists.actiontype';
 import GistContent from './components/GistContent';
 
-const MyGistsProps = [
+const StarredGistsProps = [
 	'gistList',
 	'showLoader',
   'fetchGists',
   'hasMoreData',
+	'navigation',
 ];
 
 const StarredGists = props => (
 	<GistContent
-		{...pick(props, MyGistsProps)}
+		{...pick(props, StarredGistsProps)}
 	/>
 );
 
-const mapStateToProps = ({ starredGistsData }) => ({
+const mapStateToProps = ({ starredGistsData }, props) => ({
 	gistList: starredGistsData.gists,
   showLoader: starredGistsData.inProgress,
   hasMoreData: starredGistsData.hasMoreData,
+	navigation: props.navigation,
 });
 
 const mapDispatchToProps = (dispatch) => ({

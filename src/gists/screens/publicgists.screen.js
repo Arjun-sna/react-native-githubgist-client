@@ -9,6 +9,7 @@ const PublicGistsProps = [
 	'showLoader',
   'fetchGists',
   'hasMoreData',
+	'navigation',
 ];
 
 const PublicGists = props => (
@@ -17,10 +18,11 @@ const PublicGists = props => (
 	/>
 );
 
-const mapStateToProps = ({ publicGistsData }) => ({
+const mapStateToProps = ({ publicGistsData }, props) => ({
 	gistList: publicGistsData.gists,
   showLoader: publicGistsData.inProgress,
   hasMoreData: publicGistsData.hasMoreData,
+	navigation: props.navigation,
 });
 
 const mapDispatchToProps = (dispatch) => ({
