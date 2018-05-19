@@ -34,6 +34,12 @@ class GistListContent extends React.Component {
 		this.props.fetchGists();
 	}
 
+	handleGistItemClick = (gistData) => {
+		this.props.navigation.navigate('GistDetails', {
+			'gistData': gistData,
+		})
+	}
+
 	renderListItem = ({ item }) => {
 		switch (item.type) {
 		case 'preloader':
@@ -56,9 +62,7 @@ class GistListContent extends React.Component {
 			return (
 				<GistItem
 					gistData={item}
-					onClickGist={id => {
-						console.log('clicked ', id);
-					}}
+					onClickGist={this.handleGistItemClick}
 				/>
 			);
 		}

@@ -8,7 +8,8 @@ const MyGistsProps = [
 	'gistList',
 	'showLoader',
   'fetchGists',
-  'hasMoreData',
+	'hasMoreData',
+	'navigation',
 ];
 
 const MyGists = props => (
@@ -17,10 +18,11 @@ const MyGists = props => (
 	/>
 );
 
-const mapStateToProps = ({ userGistsData }) => ({
+const mapStateToProps = ({ userGistsData }, props) => ({
 	gistList: userGistsData.gists,
   showLoader: userGistsData.inProgress,
-  hasMoreData: userGistsData.hasMoreData,
+	hasMoreData: userGistsData.hasMoreData,
+	navigation: props.navigation,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -29,9 +29,9 @@ const DetailsText = styled.Text`
 `;
 
 class GistOverview extends React.Component {
-	shouldComponentUpdate(nextProps) {
-		return !(isEqual(this.props.gistData, nextProps.gistData));
-	}
+	// shouldComponentUpdate(nextProps) {
+	// 	return !(isEqual(this.props.gistData, nextProps.gistData));
+	// }
 
 	render() {
 		const {
@@ -42,7 +42,7 @@ class GistOverview extends React.Component {
 		const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
 		
 		return (
-			<Container onPress={() => onClickGist(gistData.id)}>
+			<Container onPress={() => onClickGist(gistData)}>
 				<Title>{title}</Title>
 				<DetailsContainer>
 					<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
