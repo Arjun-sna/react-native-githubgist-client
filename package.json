@@ -7,7 +7,11 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "node node_modules/jest/bin/jest.js"
+    "test": "node node_modules/jest/bin/jest.js",
+    "android-dev": "ENVFILE=.env.dev react-native run-android",
+    "android-staging": "ENVFILE=.env.staging react-native run-android",
+    "android-prod": "ENVFILE=.env.prod react-native run-android",
+    "build-android-prod": "export ENVFILE=.env.prod && cd android && ./gradlew assembleRelease && cd .."
   },
   "jest": {
     "preset": "react-native"
@@ -25,6 +29,7 @@
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-cardview": "^1.1.5",
+    "react-native-config": "^0.11.5",
     "react-native-cookies": "^3.2.0",
     "react-native-elements": "^0.19.1",
     "react-native-vector-icons": "^4.5.0",
