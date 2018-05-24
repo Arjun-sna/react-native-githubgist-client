@@ -5,6 +5,7 @@ import forOwn from 'lodash/forOwn'
 import Header from './components/GistDetailHeader';
 import GistFileItem from './components/GistFileItem';
 import ListEmptyComponent from './components/EmptyListComponent';
+import Toolbar from './components/Toolbar';
 
 const HeaderProps = [
 	'avatal_url',
@@ -46,6 +47,8 @@ export default class GistDetails extends React.Component {
 					description={gistData.description}
 					createdAt={gistData.created_At}
 					gistSize={totalFileSize}/>
+				<Toolbar 
+					onBackPress={() => this.props.navigation.goBack()}/>
 				<FlatList
 					data={gistFiles}
 					renderItem={this.renderItem}
