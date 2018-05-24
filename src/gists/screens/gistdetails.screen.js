@@ -1,17 +1,28 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import pick from 'lodash/pick';
 import forOwn from 'lodash/forOwn'
+import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
 import GistFileItem from './components/GistFileItem';
 import ListEmptyComponent from './components/EmptyListComponent';
 import Toolbar from './components/Toolbar';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 const HeaderProps = [
 	'avatal_url',
 	'login',
   'created_at',
 ];
+
+const ToolbarContentContainer = styled.View`
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+`;
 
 export default class GistDetails extends React.Component {
 	
@@ -38,6 +49,30 @@ export default class GistDetails extends React.Component {
 		return { filesList, totalFileSize };
 	};
 
+	renderToobarContent = () => {
+		return(
+			<ToolbarContentContainer>
+				<Icon
+					onPress={this.handleActionButtonClick}
+					name='star-o'
+					size={20}
+					/>
+				<Icon
+					name='globe'
+					size={20}
+					/>
+				<Icon
+					name='share'
+					size={20}
+					/>
+				<MaterialIcon
+					name='delete'
+					size={20}
+					/>
+			</ToolbarContentContainer>
+		)
+	}
+
 	render() {
 		const { navigation } = this.props;
 		const gistData = navigation.getParam('gistData', {});
@@ -53,6 +88,7 @@ export default class GistDetails extends React.Component {
 					createdAt={gistData.created_At}
 					gistSize={totalFileSize}/>
 				<Toolbar 
+					toolbarContent={this.renderToobarContent}
 					onBackPress={() => this.props.navigation.goBack()}/>
 				<FlatList
 					data={gistFiles}
