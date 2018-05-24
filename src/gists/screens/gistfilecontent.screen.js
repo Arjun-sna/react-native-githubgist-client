@@ -55,11 +55,15 @@ class GistFileScreen extends React.Component {
 
 	render() {
 		const { navigation } = this.props;
-		const fileType = navigation.state.params.fileData.filename.split('.').pop();
+		const fileName = navigation.state.params.fileData.filename;
+		const fileType = fileName.split('.').pop();
 
 		return(
 			<Container>
-				<Toolbar onBackPress={() => navigation.goBack()} />
+				<Toolbar 
+					toolbarContent={fileName}
+					onBackPress={() => navigation.goBack()} 
+					/>
 				<ScrollView>
 					<SyntaxHighlighter
 						language={fileType}
