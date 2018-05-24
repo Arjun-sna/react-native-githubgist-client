@@ -1,8 +1,24 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import styled from 'styled-components';
+import { Text, ScrollView } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import SyntaxHighlighter from 'react-native-syntax-highlighter';
+import { github as GithubStyle } from 'react-syntax-highlighter/dist/styles/hljs';
+import Toolbar from './components/Toolbar';
+import { normalizeFont } from '../../config';
 import { fetchFileContent } from './../../api';
+
+const Container = styled.View`
+	padding-top: 20px;
+`;
+
+const syntaxHighlighterStyle = {
+  ...GithubStyle,
+  hljs: {
+    background: 'white',
+  },
+};
 
 class GistFileScreen extends React.Component {
 	constructor(props) {
@@ -38,10 +54,24 @@ class GistFileScreen extends React.Component {
 	}
 
 	render() {
+		const { navigation } = this.props;
+		const fileType = navigation.state.params.fileData.filename.split('.').pop();
+
 		return(
-			<View>
-				<Text>{this.fileContent}</Text>
-			</View>
+			<Container>
+				<Toolbar onBackPress={() => navigation.goBack()} />
+				<ScrollView>
+					<SyntaxHighlighter
+						language={fileType}
+						CodeTag={Text}
+						codeTagProps={{ style: {paddingRight: 15, paddingBottom: 0}}}
+						style={syntaxHighlighterStyle}
+						fontSize={normalizeFont(12)}
+					>
+						{this.fileContent}
+					</SyntaxHighlighter>
+				</ScrollView>
+			</Container>
 		)
 	}
 }
