@@ -12,10 +12,19 @@ const METHOD = {
 	POST: 'POST',
 };
 
+const ACCEPT = {
+  DIFF: 'application/vnd.github.v3.diff+json',
+  FULL: 'application/vnd.github.v3.full+json',
+  HTML: 'application/vnd.github.v3.html+json',
+  JSON: 'application/vnd.github.v3+json',
+  MERCY_PREVIEW: 'application/vnd.github.mercy-preview+json',
+  RAW: 'application/vnd.github.v3.raw+json',
+};
+
 export const v3 = {
 	root: 'https://api.github.com',
 	call: async (url, parameters) => {
-		const finalUrl = url.indexOf(v3.root) === 0 ? url : `${v3.root}${url}`;
+		const finalUrl = url.indexOf('https://') === 0 ? url : `${v3.root}${url}`;
 		const response = await axios(finalUrl, parameters);
 		
 		return response;
@@ -23,7 +32,7 @@ export const v3 = {
 	parameters: (
 		accessToken,
 		method = METHOD.GET,
-		accept = 'application/vnd.github.v3+json',
+		accept = ACCEPT.JSON,
 		data = {}
 	) => {
 		const withBody = [METHOD.PUT, METHOD.POST, METHOD.PATCH];
@@ -56,6 +65,10 @@ export const v3 = {
 
 		return { headers, data };
 	},
+	getRaw: async (url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.GET, ACCEPT.RAW))
+		return response.data;
+	}
 }
 
 export const fetchAccessToken = async ({ code, state }) => {
@@ -85,3 +98,5 @@ export const requestUserGists = async (accessToken, userName, pageNo) => await v
 export const requestStarredGists = async (accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/starred?page=${pageNo}`, accessToken)
 
 export const requestPublicGists = async (accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/public?page=${pageNo}`, accessToken);
+
+export const fetchFileContent = async (accessToken, fileContentUrl) => await v3.getRaw(fileContentUrl, accessToken);

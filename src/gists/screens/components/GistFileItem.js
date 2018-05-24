@@ -35,18 +35,18 @@ const MetaDetail = styled.Text`
 	color: ${colors.greyDark}
 `;
 
-export default ({fileName, language, size}) => {
+export default ({fileData, onFileItemPress}) => {
 	return (
 		<CardContainer 
 			cardElevation={2}
 			cardMaxElevation={2}
 			cornerRadius={5}
 			>
-			<TouchableContainer>
-				<FileName>{fileName}</FileName>
+			<TouchableContainer onPress={() => onFileItemPress(fileData)}>
+				<FileName>{fileData.filename}</FileName>
 				<MetaContainer>
-					<MetaDetail>{language}</MetaDetail>
-					<MetaDetail>{fileSize(size)}</MetaDetail>
+					<MetaDetail>{fileData.language}</MetaDetail>
+					<MetaDetail>{fileSize(fileData.size)}</MetaDetail>
 				</MetaContainer>
 			</TouchableContainer>
 		</CardContainer>

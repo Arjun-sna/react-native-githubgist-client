@@ -17,12 +17,15 @@ export default class GistDetails extends React.Component {
 	
 	renderItem = ({item}) =>( 
 			<GistFileItem 
-					fileName={item.filename}
-					language={item.language}
-					size={item.size}/>
+					fileData={item}
+					onFileItemPress={this.handleFileItemPress}/>
 		);
 	
-	// handleGistFileItemClick = ()
+	handleFileItemPress = (fileData) => {
+		this.props.navigation.navigate('GistFileContentView', {
+			fileData
+		})
+	}
 
 
 	processFiles = (gistFiles) => {
