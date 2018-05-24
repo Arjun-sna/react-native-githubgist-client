@@ -21,6 +21,8 @@ export default class GistDetails extends React.Component {
 					language={item.language}
 					size={item.size}/>
 		);
+	
+	// handleGistFileItemClick = ()
 
 
 	processFiles = (gistFiles) => {

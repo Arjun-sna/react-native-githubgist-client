@@ -7,6 +7,7 @@ import PublicGistsScreen from './gists/screens/publicgists.screen';
 import StarredGistsScreen from './gists/screens/starredgists.screen';
 import ClearCacheScreen from './cache/screens/cache.screen.js';
 import GistDetailsScreen from './gists/screens/gistdetails.screen';
+import GistFileContentScreen from './gists/screens/gistfilecontent.screen';
 
 const styles = StyleSheet.create({
   tabStyle: {
@@ -61,9 +62,14 @@ const MainScreen = StackNavigator({
 		navigationOptions: {
 			header: null
 		}
+	},
+	GistFileContentView: {
+		screen: GistFileContentScreen,
+		navigationOptions: {
+			header: null
+		}
 	}
-
-})
+});
 
 const Home = DrawerNavigator({
 	Home: {

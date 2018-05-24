@@ -5,11 +5,14 @@ import fileSize from 'filesize';
 import CardView from 'react-native-cardview';
 import { colors, normalizeFont } from '../../../config';
 
-const Container = styled(CardView)`
-	display: flex;
-	flex-direction: column;
+const CardContainer = styled(CardView)`
 	padding: 8px;
 	margin: 3px 5px;
+`;
+
+const TouchableContainer = styled.TouchableOpacity`
+	display: flex;
+	flex-direction: column;
 `;
 
 const MetaContainer = styled.View`
@@ -34,14 +37,18 @@ const MetaDetail = styled.Text`
 
 export default ({fileName, language, size}) => {
 	return (
-		<Container cardElevation={2}
-		cardMaxElevation={2}
-		cornerRadius={5}>
-			<FileName>{fileName}</FileName>
-			<MetaContainer>
-				<MetaDetail>{language}</MetaDetail>
-				<MetaDetail>{fileSize(size)}</MetaDetail>
-			</MetaContainer>
-		</Container>
+		<CardContainer 
+			cardElevation={2}
+			cardMaxElevation={2}
+			cornerRadius={5}
+			>
+			<TouchableContainer>
+				<FileName>{fileName}</FileName>
+				<MetaContainer>
+					<MetaDetail>{language}</MetaDetail>
+					<MetaDetail>{fileSize(size)}</MetaDetail>
+				</MetaContainer>
+			</TouchableContainer>
+		</CardContainer>
 	)
 }
