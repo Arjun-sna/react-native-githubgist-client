@@ -1,15 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { github as GithubStyle } from 'react-syntax-highlighter/dist/styles/hljs';
 import Toolbar from './components/Toolbar';
-import { normalizeFont } from '../../config';
+import { normalizeFont, colors } from '../../config';
 import { fetchFileContent } from './../../api';
+import LoadingView from './components/LoadingView';
 
 const Container = styled.View`
+	flex: 1;
+	background: #FFFFFF;
 	padding-top: 20px;
 `;
 
@@ -19,6 +23,25 @@ const syntaxHighlighterStyle = {
     background: 'white',
   },
 };
+
+const CodeContainer = styled.View`
+	flex: 1;
+	padding-vertical: 10;
+	padding-horizontal: 10;
+	margin-bottom: 10;
+`
+
+const ErrorContainer = styled.View`
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+`;
+
+const ErrorText = styled.Text`
+	text-align: center;
+	color: ${colors.greyDark};
+	font-size: ${normalizeFont(14)};
+`
 
 class GistFileScreen extends React.Component {
 	constructor(props) {
@@ -33,6 +56,7 @@ class GistFileScreen extends React.Component {
 	componentDidMount() {
 		this.setState({
 			isLoading: true,
+			error: ''
 		})
 
 		const { navigation, accessToken } = this.props;
@@ -42,7 +66,7 @@ class GistFileScreen extends React.Component {
 			.then(response => {
 				this.fileContent = response;
 				this.setState({
-					isLoading: true,
+					isLoading: false,
 				});
 			})
 			.catch(err => {
@@ -57,6 +81,7 @@ class GistFileScreen extends React.Component {
 		const { navigation } = this.props;
 		const fileName = navigation.state.params.fileData.filename;
 		const fileType = fileName.split('.').pop();
+		const { isLoading, error } = this.state;
 
 		return(
 			<Container>
@@ -64,17 +89,27 @@ class GistFileScreen extends React.Component {
 					toolbarContent={fileName}
 					onBackPress={() => navigation.goBack()} 
 					/>
-				<ScrollView>
-					<SyntaxHighlighter
-						language={fileType}
-						CodeTag={Text}
-						codeTagProps={{ style: {paddingRight: 15, paddingBottom: 0}}}
-						style={syntaxHighlighterStyle}
-						fontSize={normalizeFont(12)}
-					>
-						{this.fileContent}
-					</SyntaxHighlighter>
-				</ScrollView>
+				{ isLoading && <LoadingView animating={true} center />}
+				{ !isLoading && !isEmpty(error) && 
+					<ErrorContainer>
+						<ErrorText>{error}</ErrorText>
+					</ErrorContainer>
+				}
+				{ !isLoading && !error &&
+					<ScrollView>
+						<CodeContainer>
+							<SyntaxHighlighter
+								language={fileType}
+								CodeTag={Text}
+								codeTagProps={{ style: {paddingRight: 15, paddingBottom: 0}}}
+								style={syntaxHighlighterStyle}
+								fontSize={normalizeFont(12)}
+							>
+								{this.fileContent}
+							</SyntaxHighlighter>
+						</CodeContainer>
+					</ScrollView>
+			}
 			</Container>
 		)
 	}

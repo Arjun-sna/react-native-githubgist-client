@@ -20,7 +20,7 @@ const Title = styled.Text`
 export default (props) => {
 	let toolbarContent;
 	if (typeof props.toolbarContent === 'string') {
-		toolbarContent = <Title>{props.toolbarContent}</Title>
+		toolbarContent = <Title numberOfLines={1}>{props.toolbarContent}</Title>
 	} else if (typeof props.toolbarContent === 'function') {
 		toolbarContent = props.toolbarContent();
 	} else {
