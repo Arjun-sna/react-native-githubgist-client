@@ -4,10 +4,11 @@ import pick from 'lodash/pick';
 import forOwn from 'lodash/forOwn';
 import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
-import ListEmptyComponent from './components/EmptyListComponent';
 import Toolbar from './components/Toolbar';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import { processFiles } from '~/src/shared/processFiles';
+import GistFileItem from '~/src/gists/screens/components/GistFileItem';
 
 const HeaderProps = [
 	'avatal_url',
@@ -29,19 +30,6 @@ export default class GistDetails extends React.Component {
 			fileData,
 		});
 	}
-
-
-	processFiles = gistFiles => {
-		const filesList = [];
-		let totalFileSize = 0;
-
-		forOwn(gistFiles, value => 	{
-			filesList.push(value);
-			totalFileSize += value.size;
-		});
-
-		return { filesList, totalFileSize };
-	};
 
 	renderItem = ({ item }) => (
 		<GistFileItem
@@ -77,7 +65,7 @@ export default class GistDetails extends React.Component {
 		const { navigation } = this.props;
 		const gistData = navigation.getParam('gistData', {});
 		const { owner } = gistData;
-		const { filesList: gistFiles, totalFileSize } = this.processFiles(gistData.files);
+		const { totalFileSize } = processFiles(gistData.files);
 
 		return (
 			<View>

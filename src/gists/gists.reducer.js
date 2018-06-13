@@ -39,7 +39,7 @@ const clearCache = () => ({
 });
 
 const setGistComments = (state, { payload }) => {
-	console.log('ab to chal jaa', payload);
+	console.log('---------------------', payload.data);
 
 	return {
 		...state,

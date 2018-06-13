@@ -18,7 +18,7 @@ class GistCommentsScreen extends React.Component {
 	componentDidMount() {
 		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
 	}
-  // 'db996abf89e2105c35091a3807b7311d'
+
   renderItem = ({ item }) => (
   	<CommentView>
   	  <Comment>{item.body}</Comment>
@@ -30,7 +30,7 @@ class GistCommentsScreen extends React.Component {
   			keyExtractor={item => item.id}
   			data={this.props.comments}
   			renderItem={this.renderItem}
-  			ListEmptyComponent={() => <ListEmptyComponent message="Gist doesn't have any file" />}
+  			ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
   		/>
   	);
   }

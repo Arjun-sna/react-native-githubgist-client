@@ -1,21 +1,10 @@
 import React from 'react';
 import { View, FlatList, Text } from 'react-native';
 import forOwn from 'lodash/forOwn';
+import { processFiles } from '~/src/shared/processFiles';
 import GistFileItem from '~/src/gists/screens/components/GistFileItem';
 
 export default class GistList extends React.Component {
-  processFiles = gistFiles => {
-  	const filesList = [];
-  	let totalFileSize = 0;
-
-  	forOwn(gistFiles, value => 	{
-  		filesList.push(value);
-  		totalFileSize += value.size;
-  	});
-
-  	return { filesList, totalFileSize };
-  };
-
 	renderItem = ({ item }) => (
 		<GistFileItem
 			fileData={item}
@@ -25,7 +14,7 @@ export default class GistList extends React.Component {
 	render() {
   	const { navigation } = this.props;
   	const gistData = navigation.getParam('gistData', {});
-		const { filesList: gistFiles, totalFileSize } = this.processFiles(gistData.files);
+		const { filesList: gistFiles } = processFiles(gistData.files);
 
   	return (
   		<FlatList
