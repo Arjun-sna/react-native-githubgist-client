@@ -7,7 +7,7 @@ import GistContent from './components/GistContent';
 const MyGistsProps = [
 	'gistList',
 	'showLoader',
-  'fetchGists',
+	'fetchGists',
 	'hasMoreData',
 	'navigation',
 ];
@@ -20,7 +20,7 @@ const MyGists = props => (
 
 const mapStateToProps = ({ userGistsData }, props) => ({
 	gistList: userGistsData.gists,
-  showLoader: userGistsData.inProgress,
+	showLoader: userGistsData.inProgress,
 	hasMoreData: userGistsData.hasMoreData,
 	navigation: props.navigation,
 });

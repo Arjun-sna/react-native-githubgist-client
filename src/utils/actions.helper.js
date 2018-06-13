@@ -15,28 +15,28 @@ function Action(actionName) {
 	this.successType = `${actionName}_SUCCESS`;
 }
 
-Action.prototype.action = function (payload) {
+Action.prototype.action = function(payload) {
 	return {
 		type: this.actionType,
 		payload,
-	}
+	};
 };
-Action.prototype.progress = function () {
+Action.prototype.progress = function() {
 	return {
 		type: this.progressType,
-	}
+	};
 };
-Action.prototype.error = function (error) {
+Action.prototype.error = function(error) {
 	return {
 		type: this.errorType,
 		error,
-	}
+	};
 };
-Action.prototype.success = function (payload) {
+Action.prototype.success = function(payload) {
 	return {
 		type: this.successType,
 		payload,
-	}
+	};
 };
 
 export const createReducer = (reducerMap, defaultState = {}) =>

@@ -18,10 +18,10 @@ const Container = styled.View`
 `;
 
 const syntaxHighlighterStyle = {
-  ...GithubStyle,
-  hljs: {
-    background: 'white',
-  },
+	...GithubStyle,
+	hljs: {
+		background: 'white',
+	},
 };
 
 const CodeContainer = styled.View`
@@ -29,7 +29,7 @@ const CodeContainer = styled.View`
 	padding-vertical: 10;
 	padding-horizontal: 10;
 	margin-bottom: 10;
-`
+`;
 
 const ErrorContainer = styled.View`
 	flex: 1;
@@ -41,27 +41,27 @@ const ErrorText = styled.Text`
 	text-align: center;
 	color: ${colors.greyDark};
 	font-size: ${normalizeFont(14)};
-`
+`;
 
 class GistFileScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isLoading: false,
-			error: ''
-		}
+			error: '',
+		};
 		this.fileContent = '';
 	}
 
 	componentDidMount() {
 		this.setState({
 			isLoading: true,
-			error: ''
-		})
+			error: '',
+		});
 
 		const { navigation, accessToken } = this.props;
 		const fileData = navigation.getParam('fileData', {});
-		
+
 		fetchFileContent(accessToken, fileData.raw_url)
 			.then(response => {
 				this.fileContent = response;
@@ -70,11 +70,11 @@ class GistFileScreen extends React.Component {
 				});
 			})
 			.catch(err => {
-				console.log('err ' + JSON.stringify(err));
+				console.log(`err ${JSON.stringify(err)}`);
 				this.setState({
 					error: err,
-				})
-			})
+				});
+			});
 	}
 
 	render() {
@@ -83,14 +83,14 @@ class GistFileScreen extends React.Component {
 		const fileType = fileName.split('.').pop();
 		const { isLoading, error } = this.state;
 
-		return(
+		return (
 			<Container>
-				<Toolbar 
+				<Toolbar
 					toolbarContent={fileName}
-					onBackPress={() => navigation.goBack()} 
-					/>
-				{ isLoading && <LoadingView animating={true} center />}
-				{ !isLoading && !isEmpty(error) && 
+					onBackPress={() => navigation.goBack()}
+				/>
+				{ isLoading && <LoadingView animating center />}
+				{ !isLoading && !isEmpty(error) &&
 					<ErrorContainer>
 						<ErrorText>{error}</ErrorText>
 					</ErrorContainer>
@@ -101,7 +101,7 @@ class GistFileScreen extends React.Component {
 							<SyntaxHighlighter
 								language={fileType}
 								CodeTag={Text}
-								codeTagProps={{ style: {paddingRight: 15, paddingBottom: 0}}}
+								codeTagProps={{ style: { paddingRight: 15, paddingBottom: 0 } }}
 								style={syntaxHighlighterStyle}
 								fontSize={normalizeFont(12)}
 							>
@@ -109,14 +109,14 @@ class GistFileScreen extends React.Component {
 							</SyntaxHighlighter>
 						</CodeContainer>
 					</ScrollView>
-			}
+				}
 			</Container>
-		)
+		);
 	}
 }
 
 const mapStateToProps = state => ({
-	accessToken: state.auth.access_token
-})
+	accessToken: state.auth.access_token,
+});
 
 export default connect(mapStateToProps, null)(GistFileScreen);

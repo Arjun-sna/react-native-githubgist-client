@@ -3,14 +3,17 @@ import { logIn, fetchAuthUser } from './auth.actiontype';
 import { fetchAccessToken, getAuthUser } from '../api';
 import navigatorService from '../utils/navigatorService';
 
-const tokenSelector = (state) => state.auth.access_token;
+const tokenSelector = state => state.auth.access_token;
 
 function* loginAndFetchUser() {
 	while (true) {
 		try {
 			const { payload } = yield take(logIn.actionType);
+
 			yield put(logIn.progress());
 			const loginResponse = yield call(fetchAccessToken, payload);
+
+			console.log('pppppppppppp', loginResponse);
 			yield put(logIn.success(loginResponse));
 			yield put(fetchAuthUser.action());
 		} catch (error) {
@@ -24,10 +27,11 @@ function* getUser() {
 		try {
 			yield take(fetchAuthUser.actionType);
 			yield put(fetchAuthUser.progress());
-			const token = yield select(tokenSelector);			
+			const token = yield select(tokenSelector);
 			const userResponse = yield call(getAuthUser, token);
-			yield put(fetchAuthUser.success(userResponse));			
-			navigatorService.reset('Home');			
+
+			yield put(fetchAuthUser.success(userResponse));
+			navigatorService.reset('Home');
 		} catch (error) {
 			yield put(fetchAuthUser.error(error));
 		}

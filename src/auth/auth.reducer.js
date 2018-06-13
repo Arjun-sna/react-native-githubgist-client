@@ -30,7 +30,7 @@ const setUserData = (state, { payload: userData }) => ({
 	displayName: userData.name,
 	userName: userData.login,
 	privateGistsCount: userData.private_gists,
-	publicGistsCount: userData.public_gists
+	publicGistsCount: userData.public_gists,
 });
 
 const setError = (state, { error }) => ({
@@ -49,5 +49,5 @@ export default {
 		[fetchAuthUser.progressType]: setUserFetchInProgress,
 		[fetchAuthUser.successType]: setUserData,
 		[fetchAuthUser.errorType]: setError,
-	})
+	}),
 };

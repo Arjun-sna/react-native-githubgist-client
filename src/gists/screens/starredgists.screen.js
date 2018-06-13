@@ -7,8 +7,8 @@ import GistContent from './components/GistContent';
 const StarredGistsProps = [
 	'gistList',
 	'showLoader',
-  'fetchGists',
-  'hasMoreData',
+	'fetchGists',
+	'hasMoreData',
 	'navigation',
 ];
 
@@ -20,12 +20,12 @@ const StarredGists = props => (
 
 const mapStateToProps = ({ starredGistsData }, props) => ({
 	gistList: starredGistsData.gists,
-  showLoader: starredGistsData.inProgress,
-  hasMoreData: starredGistsData.hasMoreData,
+	showLoader: starredGistsData.inProgress,
+	hasMoreData: starredGistsData.hasMoreData,
 	navigation: props.navigation,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
 	fetchGists: () => dispatch(starredGistsFetch.action()),
 });
 

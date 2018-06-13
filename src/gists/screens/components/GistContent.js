@@ -34,10 +34,10 @@ class GistListContent extends React.Component {
 		this.props.fetchGists();
 	}
 
-	handleGistItemClick = (gistData) => {
+	handleGistItemClick = gistData => {
 		this.props.navigation.navigate('GistDetails', {
-			'gistData': gistData,
-		})
+			gistData,
+		});
 	}
 
 	renderListItem = ({ item }) => {
@@ -70,7 +70,7 @@ class GistListContent extends React.Component {
 
 	render() {
 		const { gistList, showLoader, hasMoreData } = this.props;
-		
+
 		const toAppendData = hasMoreData ? getGistItem('preloader') : getGistItem('noData');
 
 		const uniqGists = uniqBy(concat(gistList, toAppendData), ({ id }) => (id));

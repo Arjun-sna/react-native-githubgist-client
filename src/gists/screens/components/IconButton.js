@@ -18,12 +18,12 @@ type Props = {
 }
 
 const BackButton = (props: Props) => (
-  <IconButtonContainer onPress={props.onPress}>
-		<Icon 
-			name='md-arrow-round-back'
+	<IconButtonContainer onPress={props.onPress}>
+		<Icon
+			name="md-arrow-round-back"
 			size={30}
-    />
-  </IconButtonContainer>
+		/>
+	</IconButtonContainer>
 );
 
 BackButton.defaultProps = {

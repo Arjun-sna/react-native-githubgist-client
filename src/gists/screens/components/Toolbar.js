@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import styled from 'styled-components';
 import BackButton from './BackButton';
-import { normalizeFont } from '../../../config'
+import { normalizeFont } from '../../../config';
 
 const ToolbarContainer = styled.View`
 	height: 44;
@@ -17,22 +17,23 @@ const Title = styled.Text`
 	font-weight: bold;
 `;
 
-export default (props) => {
+export default props => {
 	let toolbarContent;
+
 	if (typeof props.toolbarContent === 'string') {
-		toolbarContent = <Title numberOfLines={1}>{props.toolbarContent}</Title>
+		toolbarContent = <Title numberOfLines={1}>{props.toolbarContent}</Title>;
 	} else if (typeof props.toolbarContent === 'function') {
 		toolbarContent = props.toolbarContent();
 	} else {
 		toolbarContent = props.toolbarContent;
 	}
 
-	return(
+	return (
 		<ToolbarContainer>
-			<BackButton onPress={props.onBackPress}/>
+			<BackButton onPress={props.onBackPress} />
 			{
-				toolbarContent 
+				toolbarContent
 			}
 		</ToolbarContainer>
-	)
-}
+	);
+};

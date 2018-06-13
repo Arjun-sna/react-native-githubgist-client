@@ -7,8 +7,8 @@ import GistContent from './components/GistContent';
 const PublicGistsProps = [
 	'gistList',
 	'showLoader',
-  'fetchGists',
-  'hasMoreData',
+	'fetchGists',
+	'hasMoreData',
 	'navigation',
 ];
 
@@ -20,12 +20,12 @@ const PublicGists = props => (
 
 const mapStateToProps = ({ publicGistsData }, props) => ({
 	gistList: publicGistsData.gists,
-  showLoader: publicGistsData.inProgress,
-  hasMoreData: publicGistsData.hasMoreData,
+	showLoader: publicGistsData.inProgress,
+	hasMoreData: publicGistsData.hasMoreData,
 	navigation: props.navigation,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
 	fetchGists: () => dispatch(publicGistsFetch.action()),
 });
 

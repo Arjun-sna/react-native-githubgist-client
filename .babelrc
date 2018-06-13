@@ -2,6 +2,9 @@
   "presets": [
     "babel-preset-react-native-stage-0/decorator-support"
   ],
+  "plugins": [
+    ["babel-plugin-root-import",{}]
+  ],
   "env": {
     "development": {
       "plugins": [

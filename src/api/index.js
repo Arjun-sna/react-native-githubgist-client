@@ -13,20 +13,20 @@ const METHOD = {
 };
 
 const ACCEPT = {
-  DIFF: 'application/vnd.github.v3.diff+json',
-  FULL: 'application/vnd.github.v3.full+json',
-  HTML: 'application/vnd.github.v3.html+json',
-  JSON: 'application/vnd.github.v3+json',
-  MERCY_PREVIEW: 'application/vnd.github.mercy-preview+json',
-  RAW: 'application/vnd.github.v3.raw+json',
+	DIFF: 'application/vnd.github.v3.diff+json',
+	FULL: 'application/vnd.github.v3.full+json',
+	HTML: 'application/vnd.github.v3.html+json',
+	JSON: 'application/vnd.github.v3+json',
+	MERCY_PREVIEW: 'application/vnd.github.mercy-preview+json',
+	RAW: 'application/vnd.github.v3.raw+json',
 };
 
 export const v3 = {
 	root: 'https://api.github.com',
-	call: async (url, parameters) => {
+	call: async(url, parameters) => {
 		const finalUrl = url.indexOf('https://') === 0 ? url : `${v3.root}${url}`;
 		const response = await axios(finalUrl, parameters);
-		
+
 		return response;
 	},
 	parameters: (
@@ -54,24 +54,26 @@ export const v3 = {
 
 		return params;
 	},
-	getJson: async (url, accessToken) => {
+	getJson: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken));
-		
+
 		return response.data;
 	},
-	getJsonWithHeader: async (url, accessToken) => {
+	getJsonWithHeader: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken));
 		const { headers, data } = response;
 
 		return { headers, data };
 	},
-	getRaw: async (url, accessToken) => {
-		const response = await v3.call(url, v3.parameters(accessToken, METHOD.GET, ACCEPT.RAW))
-		return response.data;
-	}
-}
+	getRaw: async(url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.GET, ACCEPT.RAW));
 
-export const fetchAccessToken = async ({ code, state }) => {
+
+		return response.data;
+	},
+};
+
+export const fetchAccessToken = async({ code, state }) => {
 	const GITHUB_OAUTH_ENDPOINT = 'https://github.com/login/oauth/access_token';
 
 	const response = await axios(GITHUB_OAUTH_ENDPOINT, {
@@ -89,14 +91,16 @@ export const fetchAccessToken = async ({ code, state }) => {
 	});
 
 	return response.data;
-}
+};
 
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
 
-export const requestUserGists = async (accessToken, userName, pageNo) => await v3.getJsonWithHeader(`/users/${userName}/gists?page=${pageNo}`, accessToken)
+export const requestUserGists = async(accessToken, userName, pageNo) => await v3.getJsonWithHeader(`/users/${userName}/gists?page=${pageNo}`, accessToken);
 
-export const requestStarredGists = async (accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/starred?page=${pageNo}`, accessToken)
+export const requestStarredGists = async(accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/starred?page=${pageNo}`, accessToken);
 
-export const requestPublicGists = async (accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/public?page=${pageNo}`, accessToken);
+export const requestPublicGists = async(accessToken, pageNo) => await v3.getJsonWithHeader(`/gists/public?page=${pageNo}`, accessToken);
 
-export const fetchFileContent = async (accessToken, fileContentUrl) => await v3.getRaw(fileContentUrl, accessToken);
+export const fetchFileContent = async(accessToken, fileContentUrl) => await v3.getRaw(fileContentUrl, accessToken);
+
+export const requestGistComments = async(accessToken, gistId) => await v3.getJsonWithHeader(`/gists/${gistId}/comments`, accessToken);

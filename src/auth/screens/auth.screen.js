@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { Button } from 'react-native-elements';
 import CookieManager from 'react-native-cookies';
 import queryString from 'query-string';
-import { colors } from '../../config'
+import { colors } from '../../config';
 import navigatorService from '../../utils/navigatorService';
 import { CLIENT_ID } from '../../api';
 
@@ -71,15 +71,15 @@ const StyledButton = styled(Button).attrs({
 	},
 	textStyle: {
 		fontSize: 12,
-	}
-}) ``;
+	},
+})``;
 
 class Auth extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 
-		}
+		};
 	}
 
 	toggleCancelButton = (e, disabled) => {
@@ -114,7 +114,7 @@ class Auth extends React.Component {
 	}
 
 	onNavigationStateChange = navState => {
-		console.log('Navigation state change')
+		console.log('Navigation state change');
 		const url = navState.url;
 
 		this.handleOpenURL({ url });
@@ -134,16 +134,14 @@ class Auth extends React.Component {
 			// console.log('Resetting  ain');
 			// navigatorService.printRoutes();
 			navigatorService.reset('Home');
-		} else {
-			if (Platform.OS === 'android') {
-				Linking.addEventListener('url', this.handleOpenURL);
-				Linking.getInitialURL().then(url => {
-					if (url) {
-						console.log('Linking')
-						this.handleOpenURL({ url });
-					}
-				});
-			}
+		} else if (Platform.OS === 'android') {
+			Linking.addEventListener('url', this.handleOpenURL);
+			Linking.getInitialURL().then(url => {
+				if (url) {
+					console.log('Linking');
+					this.handleOpenURL({ url });
+				}
+			});
 		}
 	}
 
@@ -154,7 +152,8 @@ class Auth extends React.Component {
 	}
 
 	render() {
-		console.log('rendering aut ' + this.shouldShowLogin());
+		console.log(`rendering aut ${this.shouldShowLogin()}`);
+
 		return (
 			<ViewContainer>
 				{this.shouldShowLogin() && (
@@ -176,7 +175,7 @@ class Auth extends React.Component {
 							<StyledButton
 								title="Cancel"
 								disabled={this.state.cancelDisabled}
-								onPress={() => { console.log('press'); this.props.login('da', 'adf') }}
+								onPress={() => { console.log('press'); this.props.login('da', 'adf'); }}
 							/>
 						</ContentSection>
 					</SignInContainer>)}
@@ -186,7 +185,7 @@ class Auth extends React.Component {
 					)
 				}
 			</ViewContainer>
-		)
+		);
 	}
 
 	componentWillUnmount() {
@@ -194,11 +193,11 @@ class Auth extends React.Component {
 			Linking.removeEventListener('url', this.handleOpenURL);
 		}
 	}
-};
+}
 
 const mapStateToProps = state => ({
 	isRequestInProgress: state.auth.inprogress || state.loggedInUser.inprogress,
-	isAuthenticated: state.auth.isAuthenticated
+	isAuthenticated: state.auth.isAuthenticated,
 });
 
 const mapStateToDispatch = dispatch => ({

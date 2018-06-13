@@ -26,7 +26,7 @@ const Avatar = styled.Image`
 	height: 50;
 	border-radius: 25;
 	width: 50;
-`
+`;
 
 const Title = styled.Text`
 	font-weight: bold;
@@ -41,10 +41,12 @@ const SubTitle = styled.Text`
 	font-size: ${normalizeFont(12)};
 `;
 
-export default GistDetailsHeader = ({userImage, userName, createdAt, description, gistSize}) => {
+export default GistDetailsHeader = ({
+	userImage, userName, createdAt, description, gistSize,
+}) => {
 	return (
 		<Container>
-			<Avatar source={{uri: userImage}} />
+			<Avatar source={{ uri: userImage }} />
 			<DetailsContainer>
 				<Title numberOfLines={2}>
 					{userName}
@@ -53,5 +55,5 @@ export default GistDetailsHeader = ({userImage, userName, createdAt, description
 				<SubTitle>{`${moment(createdAt).format('MMM DD, YYYY')} - ${fileSize(gistSize)}`}</SubTitle>
 			</DetailsContainer>
 		</Container>
-	)
-}
+	);
+};

@@ -23,11 +23,12 @@ type Props = {
 }
 
 const BackButton = (props: Props) => (
-  <BackButtonContainer onPress={props.onPress}>
-    <Icon color={props.color}
-      source={{ uri: 'back_grey' }}
-    />
-  </BackButtonContainer>
+	<BackButtonContainer onPress={props.onPress}>
+		<Icon
+			color={props.color}
+			source={{ uri: 'back_grey' }}
+		/>
+	</BackButtonContainer>
 );
 
 BackButton.defaultProps = {

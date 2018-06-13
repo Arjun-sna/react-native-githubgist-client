@@ -1,3 +1,4 @@
+import React from 'react';
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import SplashScreen from './auth/screens/splash.screen';
@@ -8,16 +9,18 @@ import StarredGistsScreen from './gists/screens/starredgists.screen';
 import ClearCacheScreen from './cache/screens/cache.screen.js';
 import GistDetailsScreen from './gists/screens/gistdetails.screen';
 import GistFileContentScreen from './gists/screens/gistfilecontent.screen';
+import GistList from './gists/screens/gistList';
+import GistCommentsScreen from './gists/screens/gistComments.screen';
 
 const styles = StyleSheet.create({
-  tabStyle: {
-    backgroundColor: '#33B5E5',
-  },
-  labelStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff'
-  }
+	tabStyle: {
+		backgroundColor: '#33B5E5',
+	},
+	labelStyle: {
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: '#fff',
+	},
 });
 
 const MainTabsScreen = TabNavigator({
@@ -41,41 +44,69 @@ const MainTabsScreen = TabNavigator({
 	},
 }, {
 	tabBarOptions: {
-    showLabel: true,
-    tintColor: 'blue',
-    style: styles.tabStyle,
-    labelStyle: styles.labelStyle,
-  },
-  animationEnabled: true,
+		showLabel: true,
+		tintColor: 'blue',
+		style: styles.tabStyle,
+		labelStyle: styles.labelStyle,
+	},
+	animationEnabled: true,
 	tabBarPosition: 'top',
 });
+
+const GistFileContentAndCommentsScreen = TabNavigator({
+	GistContent: {
+		screen: GistList,
+		navigationOptions: {
+			tabBarLabel: 'Content',
+		},
+	},
+	GistComments: {
+		screen: GistCommentsScreen,
+		navigationOptions: {
+			tabBarLabel: 'Comments',
+		},
+	},
+}, {
+	tabBarOptions: {
+		showLabel: true,
+		tintColor: 'blue',
+		style: styles.tabStyle,
+		labelStyle: styles.labelStyle,
+	},
+
+});
+
+// GistFileContentAndCommentsScreen.navigationOptions = {
+// 	header: GistDetailsScreen,
+// };
 
 const MainScreen = StackNavigator({
 	MainTabs: {
 		screen: MainTabsScreen,
 		navigationOptions: {
-			header: null
-		}
+			header: null,
+		},
 	},
 	GistDetails: {
-		screen: GistDetailsScreen,
-		navigationOptions: {
-			header: null
-		}
+		screen: GistFileContentAndCommentsScreen,
+		headerMode: 'screen',
+		navigationOptions: ({ navigation }) => ({
+			header: <GistDetailsScreen navigation={navigation} />,
+		}),
 	},
 	GistFileContentView: {
 		screen: GistFileContentScreen,
 		navigationOptions: {
-			header: null
-		}
-	}
+			header: null,
+		},
+	},
 });
 
 const Home = DrawerNavigator({
 	Home: {
 		screen: MainScreen,
-  },
-  ClearCache: {
+	},
+	ClearCache: {
 		screen: ClearCacheScreen,
 	},
 });

@@ -14,7 +14,7 @@ const Title = styled.Text`
 	font-weight: bold;
 	margin: 3px 0;
 	color: ${colors.black}
-`
+`;
 
 const DetailsContainer = styled.View`;
 	display: flex;
@@ -40,7 +40,7 @@ class GistOverview extends React.Component {
 		} = this.props;
 
 		const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
-		
+
 		return (
 			<Container onPress={() => onClickGist(gistData)}>
 				<Title>{title}</Title>
@@ -49,7 +49,7 @@ class GistOverview extends React.Component {
 					<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
 				</DetailsContainer>
 			</Container>
-		)
+		);
 	}
 }
 
