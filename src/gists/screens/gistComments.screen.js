@@ -1,17 +1,47 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import styled from 'styled-components';
+import CardView from 'react-native-cardview';
+import TimeAgo from 'time-ago';
 import { fetchGistComments } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
 
-const Comment = styled.Text`
-  font-size: 15;
+const CardContainer = styled(CardView)`
+	padding: 3%;
+	margin: 3px 5px;
 `;
 
-const CommentView = styled.View`
-  flex: 1;
-  padding: 2%;
+const Comment = styled.Text`
+	font-size: 15;
+	color: black;
+	padding: 2%;
+`;
+
+const UserProfilePicture = styled.Image`
+	height: 50;
+	width: 50;
+	borderRadius: 25;
+`;
+
+const UserProfile = styled.View`
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	align-items: center;
+`;
+
+const DetailsContainer = styled.View`
+	padding: 2%;
+`;
+
+const Username = styled.Text`
+	font-size: 16;
+	padding: 2%;
+`;
+
+const CommentDate = styled.Text`
+	font-size: 14;
 `;
 
 class GistCommentsScreen extends React.Component {
@@ -20,10 +50,22 @@ class GistCommentsScreen extends React.Component {
 	}
 
   renderItem = ({ item }) => (
-  	<CommentView>
+  	<CardContainer
+  		cardElevation={2}
+  		cardMaxElevation={2}
+  		cornerRadius={5}
+  	>
+  		<UserProfile>
+  			<UserProfilePicture source={{ uri: item.user.avatar_url }} />
+  			<DetailsContainer>
+  				<Username>{item.user.login}</Username>
+  				<CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
+  			</DetailsContainer>
+  		</UserProfile>
   	  <Comment>{item.body}</Comment>
-  	</CommentView>
+  	</CardContainer>
   )
+
   render() {
   	return (
   		<FlatList
