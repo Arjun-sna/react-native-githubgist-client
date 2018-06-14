@@ -103,6 +103,7 @@ class GistCommentsScreen extends React.Component {
   	return (
   		<React.Fragment>
   			<FlatList
+  				style={{ marginBottom: '4%' }}
   				keyExtractor={item => item.id}
   				data={this.props.comments}
   				renderItem={this.renderItem}
@@ -116,8 +117,9 @@ class GistCommentsScreen extends React.Component {
   				flexDirection: 'row',
   				alignItems: 'flex-end',
   				marginHorizontal: 2,
-  				borderColor: 'red',
-  				borderRadius: 5,
+  				backgroundColor: 'white',
+  				position: 'absolute',
+  				bottom: 0,
   			}}>
   			<TextInput
   				style={{
