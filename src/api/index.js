@@ -93,22 +93,18 @@ export const fetchAccessToken = async({ code, state }) => {
 	return response.data;
 };
 
-export const addComments = async(payload, id, accessToken) => {
-	console.log('here------------------------', payload, id, accessToken);
+export const addComments = (payload, id, accessToken) => {
 	const ADD_COMMENTS_URL = `https://api.github.com/gists/${id}/comments`;
 
-	const response = await axios.post(ADD_COMMENTS_URL, { body: payload }, {
+	return axios.post(ADD_COMMENTS_URL, { body: payload }, {
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: `token ${accessToken}`,
 		},
 	})
-		.then(data => data);
-
-	console.log('oooooooooooooooooooo', response);
-
-	return response;
+		.then(data => data)
+		.catch(error => console.log(error));
 };
 
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);

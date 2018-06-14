@@ -57,6 +57,10 @@ class GistCommentsScreen extends React.Component {
 		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log('lllll', nextProps);
+	}
+
 	// onEndReachedThreshold = () => {
 	// 	this.setState({
 	// 		i: this.state.i + 6,
@@ -67,7 +71,11 @@ class GistCommentsScreen extends React.Component {
 
 
 	onPressItem = () => {
-		addComments(this.state.comment, this.props.navigation.getParam('gistData').id, this.props.accessToken);
+		addComments(this.state.comment, this.props.navigation.getParam('gistData').id, this.props.accessToken)
+			.then(() => {
+				this.setState({ comment: '' });
+				this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+			});
 	}
 
   renderItem = ({ item }) => {
@@ -99,6 +107,7 @@ class GistCommentsScreen extends React.Component {
   				data={this.props.comments}
   				renderItem={this.renderItem}
   				ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
+  				extraData={this.props}
   				// onEndReachedThreshold={0.2}
   				// onEndReachedThreshold={this.onEndReachedThreshold}
   			/>
