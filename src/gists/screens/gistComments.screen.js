@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FlatList } from 'react-native';
+import { FlatList, TextInput, Button, View, KeyboardAvoidingView } from 'react-native';
 import styled from 'styled-components';
 import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
 import { fetchGistComments } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
+import { addComments } from '~/src/api';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
@@ -44,12 +45,33 @@ const CommentDate = styled.Text`
 	font-size: 14;
 `;
 
+// const CommentBox = styled.TextInput`
+// `;
+
 class GistCommentsScreen extends React.Component {
+	state = {
+		comment: '',
+	}
 	componentDidMount() {
+		console.log('id---------------------------', this.props.navigation.getParam('gistData').id);
 		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
 	}
 
-  renderItem = ({ item }) => (
+	// onEndReachedThreshold = () => {
+	// 	this.setState({
+	// 		i: this.state.i + 6,
+	// 	}, () => {
+	// 		this.props.fetchComments(this.props.navigation.getParam('gistData').id, this.state.i);
+	// 	});
+	// }
+
+
+	onPressItem = () => {
+		addComments(this.state.comment, this.props.navigation.getParam('gistData').id, this.props.accessToken);
+	}
+
+  renderItem = ({ item }) => {
+  	return (
   	<CardContainer
   		cardElevation={2}
   		cardMaxElevation={2}
@@ -64,25 +86,51 @@ class GistCommentsScreen extends React.Component {
   		</UserProfile>
   	  <Comment>{item.body}</Comment>
   	</CardContainer>
-  )
+  	);
+  }
 
   render() {
+  	const { comments } = this.props;
+
   	return (
-  		<FlatList
-  			keyExtractor={item => item.id}
-  			data={this.props.comments}
-  			renderItem={this.renderItem}
-  			ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
-  		/>
+  		<React.Fragment>
+  			<FlatList
+  				keyExtractor={item => item.id}
+  				data={this.props.comments}
+  				renderItem={this.renderItem}
+  				ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
+  				// onEndReachedThreshold={0.2}
+  				// onEndReachedThreshold={this.onEndReachedThreshold}
+  			/>
+  			<View style={{
+  				flex: 1,
+  				flexDirection: 'row',
+  				alignItems: 'flex-end',
+  				marginHorizontal: 2,
+  				borderColor: 'red',
+  				borderRadius: 5,
+  			}}>
+  			<TextInput
+  				style={{
+  					width: '88%',
+  				}}
+  					placeholder="Add comment here"
+  					value={this.state.comment}
+  					onChangeText={comment => this.setState({ comment })}
+  			/>
+  			<Button title="Add" onPress={this.onPressItem} />
+  			</View>
+  		</React.Fragment>
   	);
   }
 }
-
+// style={{ position: 'absolute', bottom: 0, right: 0 }} />
 const mapDispatchToProps = dispatch => ({
 	fetchComments: id => dispatch(fetchGistComments.action(id)),
 });
-const mapStateToProps = ({ gistComments }) => ({
+const mapStateToProps = ({ gistComments, auth }) => ({
 	comments: gistComments.comments,
+	accessToken: auth.access_token,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GistCommentsScreen);

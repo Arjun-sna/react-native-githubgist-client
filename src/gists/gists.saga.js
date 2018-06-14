@@ -58,13 +58,16 @@ function* fetchPublicGists() {
 }
 
 function* fetchCommentsForGist(action) {
-	console.log('here');
 	try {
+		// const hasMoreComments = yield select(state => state.gistComments.hasMoreComments);
+
+		// if (hasMoreComments) {
 		yield put(fetchGistComments.progress());
 		const token = yield select(tokenSelector);
 		const { data } = yield call(requestGistComments, token, action.payload);
 
 		yield put(fetchGistComments.success({ data }));
+		// }
 	} catch (err) {
 		yield put(publicGistsFetch.error(err));
 	}

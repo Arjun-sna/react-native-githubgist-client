@@ -9,7 +9,7 @@ import StarredGistsScreen from './gists/screens/starredgists.screen';
 import ClearCacheScreen from './cache/screens/cache.screen.js';
 import GistDetailsScreen from './gists/screens/gistdetails.screen';
 import GistFileContentScreen from './gists/screens/gistfilecontent.screen';
-import GistContentsScreen from './gists/screens/gistContents.screen';
+import GistContentListScreen from './gists/screens/gistContentList.screen';
 import GistCommentsScreen from './gists/screens/gistComments.screen';
 
 const styles = StyleSheet.create({
@@ -55,7 +55,7 @@ const MainTabsScreen = TabNavigator({
 
 const GistFileContentAndCommentsScreen = TabNavigator({
 	GistContent: {
-		screen: GistContentsScreen,
+		screen: GistContentListScreen,
 		navigationOptions: {
 			tabBarLabel: 'Content',
 		},

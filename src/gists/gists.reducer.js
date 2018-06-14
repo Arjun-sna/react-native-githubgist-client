@@ -40,12 +40,15 @@ const clearCache = () => ({
 
 const setGistComments = (state, { payload }) => {
 	console.log('---------------------', payload.data);
+	const { data, error } = payload;
+	//	const initialComments = payload.data.slice(key - 6, key);
 
 	return {
 		...state,
 		inProgress: false,
-		error: payload.error,
-		comments: payload.data,
+		error,
+		comments: data, // initialComments,
+	//	hasMoreComments: key !== data.length,
 	};
 };
 
@@ -81,7 +84,7 @@ export default {
 			[fetchGistComments.errorType]: setError,
 		},
 		{
-			comments: [], inProgress: false,
+			comments: [], inProgress: false, // hasMoreComments: true,
 		}
 	),
 };

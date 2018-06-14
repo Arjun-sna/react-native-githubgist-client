@@ -5,6 +5,7 @@ import { Text, Image } from 'react-native';
 import moment from 'moment';
 import fileSize from 'filesize';
 import { colors, normalizeFont } from '../../../config';
+import defaultUserImage from '~/src/assets/default_user_image.png';
 
 const Container = styled.View`
 	display: flex;
@@ -46,7 +47,7 @@ export default GistDetailsHeader = ({
 }) => {
 	return (
 		<Container>
-			<Avatar source={{ uri: userImage }} />
+			<Avatar source={userImage ? { uri: userImage } : defaultUserImage} />
 			<DetailsContainer>
 				<Title numberOfLines={2}>
 					{userName}

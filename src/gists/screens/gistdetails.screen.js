@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, FlatList, Text } from 'react-native';
-import pick from 'lodash/pick';
-import forOwn from 'lodash/forOwn';
+import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
 import Toolbar from './components/Toolbar';
@@ -64,14 +63,14 @@ export default class GistDetails extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		const gistData = navigation.getParam('gistData', {});
-		const { owner } = gistData;
+		const { owner = {} } = gistData;
 		const { totalFileSize } = processFiles(gistData.files);
 
 		return (
 			<View>
 				<Header
-					userImage={owner.avatar_url}
-					userName={owner.login}
+					userImage={!isEmpty(owner) && owner.avatar_url}
+					userName={isEmpty(owner) ? 'Anonymous' : owner.login}
 					description={gistData.description}
 					createdAt={gistData.created_At}
 					gistSize={totalFileSize} />
