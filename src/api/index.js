@@ -68,6 +68,11 @@ export const v3 = {
 	getRaw: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.GET, ACCEPT.RAW));
 
+		return response.data;
+	},
+	getDataFromPostRequest: async(url, accessToken, body) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.POST, ACCEPT.JSON, body));
+
 
 		return response.data;
 	},
@@ -93,19 +98,8 @@ export const fetchAccessToken = async({ code, state }) => {
 	return response.data;
 };
 
-export const addComments = (payload, id, accessToken) => {
-	const ADD_COMMENTS_URL = `https://api.github.com/gists/${id}/comments`;
-
-	return axios.post(ADD_COMMENTS_URL, { body: payload }, {
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			Authorization: `token ${accessToken}`,
-		},
-	})
-		.then(data => data)
-		.catch(error => console.log(error));
-};
+export const addComments = async(payload, id, accessToken) =>
+	v3.getDataFromPostRequest(`/gists/${id}/comments`, accessToken, { body: payload });
 
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
 

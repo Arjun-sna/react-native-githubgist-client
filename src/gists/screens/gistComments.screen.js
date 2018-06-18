@@ -6,7 +6,7 @@ import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
 import { fetchGistComments } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
-import { addComments } from '~/src/api';
+import { addComments } from '../../api';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
@@ -75,7 +75,10 @@ class GistCommentsScreen extends React.Component {
 			.then(() => {
 				this.setState({ comment: '' });
 				this.props.fetchComments(this.props.navigation.getParam('gistData').id);
-			});
+				// .then(() => {})
+				// .catch(error => console.log('error---------', error));
+			})
+			.catch(error => console.log('&&&&&&&&&&&&&&&&&&&&&', error));
 	}
 
   renderItem = ({ item }) => {
