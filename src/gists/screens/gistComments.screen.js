@@ -49,11 +49,15 @@ const CommentDate = styled.Text`
 // `;
 
 class GistCommentsScreen extends React.Component {
-	state = {
-		comment: '',
+	constructor() {
+		super();
+		this.state = {
+			comment: '',
+		};
+		this.timeout = null;
 	}
 	componentDidMount() {
-		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+		this.fetchComments();
 	}
 
 	// onEndReachedThreshold = () => {
@@ -70,10 +74,18 @@ class GistCommentsScreen extends React.Component {
 			.then(() => {
 				this.setState({ comment: '' });
 				this.props.fetchComments(this.props.navigation.getParam('gistData').id);
-				// .then(() => {})
-				// .catch(error => console.log('error---------', error));
 			})
-			.catch(error => console.log('&&&&&&&&&&&&&&&&&&&&&', error));
+			.catch(console.log);
+	}
+
+	fetchComments = () => {
+		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+		this.registerForDataFetch();
+	}
+
+	registerForDataFetch = () => {
+		clearTimeout(this.timeout);
+		this.timeout = setTimeout(this.fetchComments, 20000);
 	}
 
   renderItem = ({ item }) => {
