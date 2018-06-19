@@ -5,8 +5,8 @@ import {
 	TextInput,
 	View,
 	Keyboard,
-	TouchableOpacity,
 	Text,
+	ActivityIndicator,
 } from 'react-native';
 import styled from 'styled-components';
 import CardView from 'react-native-cardview';
@@ -69,6 +69,12 @@ const Button = styled.TouchableOpacity`
 	background-color: #33B5E5;
 `;
 
+const ActivityIndicatorContainer = styled.View`
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+`;
+
 class GistCommentsScreen extends React.Component {
 	constructor() {
 		super();
@@ -83,7 +89,7 @@ class GistCommentsScreen extends React.Component {
 
 	onPressItem = () => {
 		Keyboard.dismiss();
-		 const { id } = this.props.navigation.getParam('gistData');
+		const { id } = this.props.navigation.getParam('gistData');
 
 		addComments(this.state.comment, id, this.props.accessToken)
 			.then(() => {
@@ -119,7 +125,15 @@ class GistCommentsScreen extends React.Component {
   }
 
   render() {
-  	const { comments } = this.props;
+  	const { comments, inProgress } = this.props;
+
+  	if (inProgress) {
+  		return (
+  			<ActivityIndicatorContainer>
+  				<ActivityIndicator size="large" color="#33B5E5" />
+  			</ActivityIndicatorContainer>
+  		);
+  	}
 
   	return (
   		<React.Fragment>
@@ -156,6 +170,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = ({ gistComments, auth }) => ({
 	comments: gistComments.comments,
 	accessToken: auth.access_token,
+	inProgress: gistComments.inProgress,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GistCommentsScreen);
