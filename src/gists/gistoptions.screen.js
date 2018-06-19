@@ -16,9 +16,9 @@ const GistOptions = ({ onDelete, onCancel }) => (
 				<Text style={{ color: colors.red, fontSize: 18, fontStyle: '600' }}>Delete</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
-				style={{ padding: '4%', fontStyle: '600' }}
+				style={{ padding: '4%' }}
 				onPress={onCancel}>
-				<Text style={{ color: colors.pictonBlue, fontSize: 18 }}>Cancel</Text>
+				<Text style={{ color: colors.pictonBlue, fontSize: 18, fontStyle: '600' }}>Cancel</Text>
 			</TouchableOpacity>
 		</View>
 	</View>

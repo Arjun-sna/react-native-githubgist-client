@@ -94,6 +94,8 @@ function* fetchCommentsForGist(action) {
 function* starAGist(action) {
 	try {
 		const token = yield select(tokenSelector);
+
+		yield put(starGist.progress());
 		const status = yield call(requestStarGist, token, action.payload);
 
 		if (status === 204) {

@@ -71,12 +71,16 @@ class GistDetails extends React.Component {
 	renderToobarContent = () => {
 		return (
 			<ToolbarContentContainer>
-				<TouchableOpacity	onPress={this.handleActionButtonClick}>
-					<Icon
-						name={this.state.iconName}
-						size={20}
-					/>
-				</TouchableOpacity>
+				{!this.props.inProgress &&
+					(
+						<TouchableOpacity	onPress={this.handleActionButtonClick}>
+							<Icon
+								name={this.state.iconName}
+								size={20}
+							/>
+						</TouchableOpacity>
+					)
+				}
 				<Icon
 					name="globe"
 					size={20}
@@ -122,6 +126,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = ({ initialFavoriteValue }) =>
-	({ isStarred: initialFavoriteValue.isStarred });
+	({
+		isStarred: initialFavoriteValue.isStarred,
+		inProgress: initialFavoriteValue.inProgress,
+	});
 
 export default connect(mapStateToProps, mapDispatchToProps)(GistDetails);

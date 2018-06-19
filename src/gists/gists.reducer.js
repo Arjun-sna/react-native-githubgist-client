@@ -63,6 +63,7 @@ const setFavoriteValue = (state, { payload }) => {
 	return {
 		...state,
 		isStarred: value,
+		inProgress: false,
 	};
 };
 
@@ -103,5 +104,6 @@ export default {
 	),
 	initialFavoriteValue: createReducer({
 		[fetchInitialFavoriteValue.successType]: setFavoriteValue,
-	}, { isStarred: false }),
+		[fetchInitialFavoriteValue.progressType]: setInProgressState,
+	}, { isStarred: false, inProgress: false }),
 };
