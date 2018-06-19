@@ -78,9 +78,14 @@ export const v3 = {
 	getDataFromPutRequest: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.PUT, ACCEPT.JSON));
 
+		return response.status;
+	},
+	performDeleteRequest: async(url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.DELETE));
+
 		console.log('from api', response);
 
-		return response.data;
+		return response.status;
 	},
 };
 
@@ -122,3 +127,5 @@ export const requestGistComments = async(accessToken, gistId) => await v3.getJso
 export const requestStarGist = async(accessToken, gistId) => v3.getDataFromPutRequest(`/gists/${gistId}/star`, accessToken);
 
 export const checkStarredGistFavoriteValue = async(accessToken, gistId) => v3.getJson(`/gists/${gistId}/star`, accessToken);
+
+export const requestUnstarGist = async(accessToken, gistId) => v3.performDeleteRequest(`/gists/${gistId}/star`, accessToken);

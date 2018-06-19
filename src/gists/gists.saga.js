@@ -7,6 +7,7 @@ import {
 	fetchGistComments,
 	starGist,
 	fetchInitialFavoriteValue,
+	UnstarGist,
 } from './gists.actiontype';
 import {
 	requestUserGists,
@@ -15,6 +16,7 @@ import {
 	requestGistComments,
 	requestStarGist,
 	checkStarredGistFavoriteValue,
+	requestUnstarGist,
 } from '../api';
 
 const tokenSelector = state => state.auth.access_token;
@@ -90,10 +92,12 @@ function* fetchCommentsForGist(action) {
 function* starAGist(action) {
 	try {
 		const token = yield select(tokenSelector);
-		const data = yield call(requestStarGist, token, action.payload);
+		const status = yield call(requestStarGist, token, action.payload);
 
-		if (data.status === 204) {
+		if (status === 204) {
 			yield call(fetchStarredGists, { shouldRefresh: true });
+
+			return;
 		}
 	} catch (err) {
 		console.log(err);
@@ -103,15 +107,27 @@ function* starAGist(action) {
 function* getInitialFavoriteValue(action) {
 	try {
 		const token = yield select(tokenSelector);
-		const data = yield call(checkStarredGistFavoriteValue, token, action.payload);
 
-		console.log('data', data);
+		yield call(checkStarredGistFavoriteValue, token, action.payload);
 		yield put(fetchInitialFavoriteValue.success({ value: true }));
-
-		return data;
 	} catch (err) {
 		yield put(fetchInitialFavoriteValue.success({ value: false }));
-		console.log('rrrrrrrrr', err);
+
+		return null;
+	}
+}
+
+function* unstarAGist(action) {
+	try {
+		const token = yield select(tokenSelector);
+
+		const status = yield call(requestUnstarGist, token, action.payload);
+
+		if (status === 204) {
+			yield call(fetchStarredGists, { shouldRefresh: true });
+		}
+	} catch (err) {
+		console.log(err);
 	}
 }
 
@@ -123,5 +139,6 @@ export default function* gistsSaga() {
 		takeLatest(fetchGistComments.actionType, fetchCommentsForGist),
 		takeLatest(starGist.actionType, starAGist),
 		takeLatest(fetchInitialFavoriteValue.actionType, getInitialFavoriteValue),
+		takeLatest(UnstarGist.actionType, unstarAGist),
 	]);
 }

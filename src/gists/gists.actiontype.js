@@ -6,3 +6,4 @@ export const starredGistsFetch = createSagaActionSet('FETCH_USER_STARRED_GISTS')
 export const publicGistsFetch = createSagaActionSet('FETCH_PUBLIC_GISTS');
 export const starGist = createSagaActionSet('STAR_GIST');
 export const fetchInitialFavoriteValue = createSagaActionSet('INITIAL_FAVORITE_VALUE');
+export const UnstarGist = createSagaActionSet('UNSTAR_GIST');

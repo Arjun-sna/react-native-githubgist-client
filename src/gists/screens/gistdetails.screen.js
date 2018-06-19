@@ -10,8 +10,7 @@ import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons'
 // import { processFiles } from '~/src/shared/processFiles';
 import GistFileItem from './components/GistFileItem';
 import forOwn from 'lodash/forOwn';
-import { requestStarGist, checkStarredGist } from '../../api';
-import { starGist, fetchInitialFavoriteValue } from '../gists.actiontype';
+import { starGist, fetchInitialFavoriteValue, UnstarGist } from '../gists.actiontype';
 
 const HeaderProps = [
 	'avatal_url',
@@ -29,24 +28,17 @@ const ToolbarContentContainer = styled.View`
 
 class GistDetails extends React.Component {
 	state = {
-		iconName: 'star-o',
+		iconName: this.props.isStarred ? 'star' : 'star-o',
 	}
 
 	componentWillMount() {
-		const data = this.props.checkIfGistIsStarred(this.props.navigation.getParam('gistData').id);
-
-		console.log('data------------------------------', data);
+		this.props.checkIfGistIsStarred(this.props.navigation.getParam('gistData').id);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log('(((((((((((((((((((((((((((((((', nextProps);
-		if (nextProps.isStarred) {
-			this.setState({
-				iconName: 'star',
-			});
-		} else {
-			this.setState({ iconName: 'star-o' });
-		}
+		this.setState({
+			iconName: nextProps.isStarred ? 'star' : 'star-o',
+		});
 	}
 
 	handleFileItemPress = fileData => {
@@ -56,11 +48,22 @@ class GistDetails extends React.Component {
 	}
 
 	handleActionButtonClick = () => {
-		// requestStarGist(this.props.accessToken, this.props.navigation.getParam('gistData').id)
-		// 	.then(() => this.setState({ iconName: 'star' }))
-		// 	.catch(error => console.log(error));
-		this.setState({ iconName: 'star' });
-		this.props.starThisGist(this.props.navigation.getParam('gistData').id);
+		const { id } = this.props.navigation.getParam('gistData');
+
+		if (this.state.iconName === 'star') {
+			this.props.UnstarThisGist(id);
+			this.setState({
+				iconName: 'star-o',
+			});
+		} else {
+			this.props.starThisGist(id);
+			this.setState({
+				iconName: 'star',
+			});
+		}
+
+		// this.setState({ iconName: 'star' });
+	//	this.props.starThisGist(this.props.navigation.getParam('gistData').id);
 	}
 
 	processFiles = fileData => {
@@ -82,8 +85,6 @@ class GistDetails extends React.Component {
 	);
 
 	renderToobarContent = () => {
-		console.log('777777777777777777777777777777777', this.state.iconName);
-
 		return (
 			<ToolbarContentContainer>
 				<TouchableOpacity	onPress={this.handleActionButtonClick}>
@@ -134,6 +135,7 @@ class GistDetails extends React.Component {
 const mapDispatchToProps = dispatch => ({
 	starThisGist: id => dispatch(starGist.action(id)),
 	checkIfGistIsStarred: id => dispatch(fetchInitialFavoriteValue.action(id)),
+	UnstarThisGist: id => dispatch(UnstarGist.action(id)),
 });
 
 const mapStateToProps = ({ initialFavoriteValue }) =>

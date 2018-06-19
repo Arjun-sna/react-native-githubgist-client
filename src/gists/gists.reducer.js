@@ -57,9 +57,8 @@ const setGistComments = (state, { payload }) => {
 	};
 };
 
-export const setFavoriteValue = (state, { payload }) => {
+const setFavoriteValue = (state, { payload }) => {
 	const { value } = payload;
-
 
 	return {
 		...state,
@@ -104,5 +103,5 @@ export default {
 	),
 	initialFavoriteValue: createReducer({
 		[fetchInitialFavoriteValue.successType]: setFavoriteValue,
-	}),
+	}, { isStarred: false }),
 };
