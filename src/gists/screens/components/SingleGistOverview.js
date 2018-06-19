@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import isEqual from 'lodash/isEqual';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import pluralize from 'pluralize';
 import { colors } from '../../../config';

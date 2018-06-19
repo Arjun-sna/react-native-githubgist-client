@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
-import { Text, Image } from 'react-native';
 import moment from 'moment';
 import fileSize from 'filesize';
 import { colors, normalizeFont } from '../../../config';

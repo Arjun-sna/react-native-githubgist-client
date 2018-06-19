@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
 import Toolbar from './components/Toolbar';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-// import { processFiles } from '~/src/shared/processFiles';
+import { processFiles } from '../../shared/processFiles';
 import GistFileItem from './components/GistFileItem';
-import forOwn from 'lodash/forOwn';
 import { starGist, fetchInitialFavoriteValue, UnstarGist } from '../gists.actiontype';
 
 const HeaderProps = [
@@ -61,22 +60,7 @@ class GistDetails extends React.Component {
 				iconName: 'star',
 			});
 		}
-
-		// this.setState({ iconName: 'star' });
-	//	this.props.starThisGist(this.props.navigation.getParam('gistData').id);
 	}
-
-	processFiles = fileData => {
-		const filesList = [];
-		let totalFileSize = 0;
-
-		forOwn(fileData, value => 	{
-			filesList.push(value);
-			totalFileSize += value.size;
-		});
-
-		return { filesList, totalFileSize };
-	};
 
 	renderItem = ({ item }) => (
 		<GistFileItem
@@ -109,12 +93,11 @@ class GistDetails extends React.Component {
 		);
 	}
 
-
 	render() {
 		const { navigation } = this.props;
 		const gistData = navigation.getParam('gistData', {});
 		const { owner = {} } = gistData;
-		const { totalFileSize } = this.processFiles(gistData.files);
+		const { totalFileSize } = processFiles(gistData.files);
 
 		return (
 			<View>

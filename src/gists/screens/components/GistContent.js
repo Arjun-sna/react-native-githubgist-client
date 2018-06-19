@@ -3,9 +3,7 @@ import {
 	ActivityIndicator,
 	FlatList,
 	View,
-	Text,
 	StyleSheet,
-	RefreshControl,
 } from 'react-native';
 
 import PropTypes from 'prop-types';
@@ -25,9 +23,6 @@ const Container = styled.View`
 const getGistItem = item => ({ type: item, id: item });
 
 class GistListContent extends React.Component {
-	state={
-		refreshing: false,
-	}
 	componentDidMount() {
 		if (this.props.gistList.length < 1) {
 			this.props.fetchGists();
@@ -72,19 +67,6 @@ class GistListContent extends React.Component {
 		}
 	}
 
-	onRefresh = () => {
-		this.setState({ refreshing: true });
-		this.props.fetchGists({ shouldRefresh: true });
-		// this.setState({ refreshing: false });
-	}
-
-	// renderRefreshControl = () => {
-	// 	this.setState({ refreshing: true });
-	// 	<RefreshControl
-	// 		refreshing={this.state.refreshing}
-	// 		onRefresh={this.onRefresh} />;
-	// }
-
 	render() {
 		const { gistList, showLoader, hasMoreData } = this.props;
 
@@ -102,12 +84,7 @@ class GistListContent extends React.Component {
 					onEndReachedThreshold={0.01}
 					onEndReached={this.handleListEndReached}
 					ListEmptyComponent={() => <EmptyList message={this.props.emptyListMessage} />}
-					removeClippedSubviews
-					refreshControl={
-						<RefreshControl
-							refreshing={this.state.refreshing}
-							onRefresh={this.onRefresh} />}
-				/>
+					removeClippedSubviews />
 			</View>
 		);
 	}
