@@ -53,12 +53,7 @@ class GistCommentsScreen extends React.Component {
 		comment: '',
 	}
 	componentDidMount() {
-		console.log('id---------------------------', this.props.navigation.getParam('gistData').id);
 		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		console.log('lllll', nextProps);
 	}
 
 	// onEndReachedThreshold = () => {

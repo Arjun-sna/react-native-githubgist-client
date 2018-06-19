@@ -1,6 +1,12 @@
 import array from 'lodash/array';
 import { createReducer } from '../utils';
-import { userGistsFetch, starredGistsFetch, publicGistsFetch, fetchGistComments } from './gists.actiontype';
+import {
+	userGistsFetch,
+	starredGistsFetch,
+	publicGistsFetch,
+	fetchGistComments,
+	fetchInitialFavoriteValue,
+} from './gists.actiontype';
 
 const setInProgressState = state => ({
 	...state,
@@ -39,7 +45,6 @@ const clearCache = () => ({
 });
 
 const setGistComments = (state, { payload }) => {
-	console.log('---------------------', payload.data);
 	const { data, error } = payload;
 	//	const initialComments = payload.data.slice(key - 6, key);
 
@@ -49,6 +54,16 @@ const setGistComments = (state, { payload }) => {
 		error,
 		comments: data, // initialComments,
 	//	hasMoreComments: key !== data.length,
+	};
+};
+
+export const setFavoriteValue = (state, { payload }) => {
+	const { value } = payload;
+
+
+	return {
+		...state,
+		isStarred: value,
 	};
 };
 
@@ -87,4 +102,7 @@ export default {
 			comments: [], inProgress: false, // hasMoreComments: true,
 		}
 	),
+	initialFavoriteValue: createReducer({
+		[fetchInitialFavoriteValue.successType]: setFavoriteValue,
+	}),
 };

@@ -73,6 +73,12 @@ export const v3 = {
 	getDataFromPostRequest: async(url, accessToken, body) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.POST, ACCEPT.JSON, body));
 
+		return response.data;
+	},
+	getDataFromPutRequest: async(url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.PUT, ACCEPT.JSON));
+
+		console.log('from api', response);
 
 		return response.data;
 	},
@@ -112,3 +118,7 @@ export const requestPublicGists = async(accessToken, pageNo) => await v3.getJson
 export const fetchFileContent = async(accessToken, fileContentUrl) => await v3.getRaw(fileContentUrl, accessToken);
 
 export const requestGistComments = async(accessToken, gistId) => await v3.getJsonWithHeader(`/gists/${gistId}/comments`, accessToken);
+
+export const requestStarGist = async(accessToken, gistId) => v3.getDataFromPutRequest(`/gists/${gistId}/star`, accessToken);
+
+export const checkStarredGistFavoriteValue = async(accessToken, gistId) => v3.getJson(`/gists/${gistId}/star`, accessToken);

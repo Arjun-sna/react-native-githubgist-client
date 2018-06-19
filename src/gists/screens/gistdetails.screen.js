@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
@@ -9,6 +10,8 @@ import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons'
 // import { processFiles } from '~/src/shared/processFiles';
 import GistFileItem from './components/GistFileItem';
 import forOwn from 'lodash/forOwn';
+import { requestStarGist, checkStarredGist } from '../../api';
+import { starGist, fetchInitialFavoriteValue } from '../gists.actiontype';
 
 const HeaderProps = [
 	'avatal_url',
@@ -24,11 +27,40 @@ const ToolbarContentContainer = styled.View`
 	align-items: center;
 `;
 
-export default class GistDetails extends React.Component {
+class GistDetails extends React.Component {
+	state = {
+		iconName: 'star-o',
+	}
+
+	componentWillMount() {
+		const data = this.props.checkIfGistIsStarred(this.props.navigation.getParam('gistData').id);
+
+		console.log('data------------------------------', data);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log('(((((((((((((((((((((((((((((((', nextProps);
+		if (nextProps.isStarred) {
+			this.setState({
+				iconName: 'star',
+			});
+		} else {
+			this.setState({ iconName: 'star-o' });
+		}
+	}
+
 	handleFileItemPress = fileData => {
 		this.props.navigation.navigate('GistFileContentView', {
 			fileData,
 		});
+	}
+
+	handleActionButtonClick = () => {
+		// requestStarGist(this.props.accessToken, this.props.navigation.getParam('gistData').id)
+		// 	.then(() => this.setState({ iconName: 'star' }))
+		// 	.catch(error => console.log(error));
+		this.setState({ iconName: 'star' });
+		this.props.starThisGist(this.props.navigation.getParam('gistData').id);
 	}
 
 	processFiles = fileData => {
@@ -50,13 +82,16 @@ export default class GistDetails extends React.Component {
 	);
 
 	renderToobarContent = () => {
+		console.log('777777777777777777777777777777777', this.state.iconName);
+
 		return (
 			<ToolbarContentContainer>
-				<Icon
-					onPress={this.handleActionButtonClick}
-					name="star-o"
-					size={20}
-				/>
+				<TouchableOpacity	onPress={this.handleActionButtonClick}>
+					<Icon
+						name={this.state.iconName}
+						size={20}
+					/>
+				</TouchableOpacity>
 				<Icon
 					name="globe"
 					size={20}
@@ -95,3 +130,13 @@ export default class GistDetails extends React.Component {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	starThisGist: id => dispatch(starGist.action(id)),
+	checkIfGistIsStarred: id => dispatch(fetchInitialFavoriteValue.action(id)),
+});
+
+const mapStateToProps = ({ initialFavoriteValue }) =>
+	({ isStarred: initialFavoriteValue.isStarred });
+
+export default connect(mapStateToProps, mapDispatchToProps)(GistDetails);
