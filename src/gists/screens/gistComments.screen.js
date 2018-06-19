@@ -1,12 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FlatList, TextInput, Button, View, KeyboardAvoidingView } from 'react-native';
+import {
+	FlatList,
+	TextInput,
+	View,
+	Keyboard,
+	TouchableOpacity,
+	Text,
+} from 'react-native';
 import styled from 'styled-components';
 import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
 import { fetchGistComments } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
 import { addComments } from '../../api';
+import { colors } from '../../config';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
@@ -45,8 +53,21 @@ const CommentDate = styled.Text`
 	font-size: 14;
 `;
 
-// const CommentBox = styled.TextInput`
-// `;
+const InputContainer = styled.View`
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	align-items: flex-end;
+	background-color: ${colors.white};
+	position: absolute;
+	bottom: 0;
+`;
+
+const Button = styled.TouchableOpacity`
+	padding: 3%;
+	align-self: center;
+	background-color: #33B5E5;
+`;
 
 class GistCommentsScreen extends React.Component {
 	constructor() {
@@ -60,50 +81,40 @@ class GistCommentsScreen extends React.Component {
 		this.fetchComments();
 	}
 
-	// onEndReachedThreshold = () => {
-	// 	this.setState({
-	// 		i: this.state.i + 6,
-	// 	}, () => {
-	// 		this.props.fetchComments(this.props.navigation.getParam('gistData').id, this.state.i);
-	// 	});
-	// }
-
-
 	onPressItem = () => {
-		addComments(this.state.comment, this.props.navigation.getParam('gistData').id, this.props.accessToken)
+		Keyboard.dismiss();
+		 const { id } = this.props.navigation.getParam('gistData');
+
+		addComments(this.state.comment, id, this.props.accessToken)
 			.then(() => {
 				this.setState({ comment: '' });
-				this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+				this.fetchComments();
 			})
 			.catch(console.log);
 	}
 
 	fetchComments = () => {
 		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
-		this.registerForDataFetch();
-	}
-
-	registerForDataFetch = () => {
-		clearTimeout(this.timeout);
-		this.timeout = setTimeout(this.fetchComments, 20000);
 	}
 
   renderItem = ({ item }) => {
   	return (
-  	<CardContainer
-  		cardElevation={2}
-  		cardMaxElevation={2}
-  		cornerRadius={5}
-  	>
-  		<UserProfile>
-  			<UserProfilePicture source={{ uri: item.user.avatar_url }} />
-  			<DetailsContainer>
-  				<Username>{item.user.login}</Username>
-  				<CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
-  			</DetailsContainer>
-  		</UserProfile>
-  	  <Comment>{item.body}</Comment>
-  	</CardContainer>
+  		<View style={{ flex: 1 }}>
+  			<CardContainer
+  				cardElevation={2}
+  				cardMaxElevation={2}
+  				cornerRadius={5}
+  			>
+  				<UserProfile>
+  					<UserProfilePicture source={{ uri: item.user.avatar_url }} />
+  					<DetailsContainer>
+  						<Username>{item.user.login}</Username>
+  						<CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
+  					</DetailsContainer>
+  				</UserProfile>
+  				<Comment>{item.body}</Comment>
+  			</CardContainer>
+  		</View>
   	);
   }
 
@@ -113,39 +124,32 @@ class GistCommentsScreen extends React.Component {
   	return (
   		<React.Fragment>
   			<FlatList
-  				style={{ marginBottom: '4%' }}
+  				style={{ marginBottom: '11%', flexGrow: 1 }}
   				keyExtractor={item => item.id}
   				data={this.props.comments}
   				renderItem={this.renderItem}
   				ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
   				extraData={this.props}
-  				// onEndReachedThreshold={0.2}
-  				// onEndReachedThreshold={this.onEndReachedThreshold}
   			/>
-  			<View style={{
-  				flex: 1,
-  				flexDirection: 'row',
-  				alignItems: 'flex-end',
-  				marginHorizontal: 2,
-  				backgroundColor: 'white',
-  				position: 'absolute',
-  				bottom: 0,
-  			}}>
-  			<TextInput
-  				style={{
-  					width: '88%',
-  				}}
+  			<InputContainer>
+  				<TextInput
+  					style={{
+  						width: '82%',
+  					}}
   					placeholder="Add comment here"
   					value={this.state.comment}
   					onChangeText={comment => this.setState({ comment })}
-  			/>
-  			<Button title="Add" onPress={this.onPressItem} />
-  			</View>
+  					underlineColorAndroid={colors.white}
+  				/>
+  				<Button
+  					onPress={this.onPressItem}>
+  					<Text style={{ color: colors.white, fontWeight: '600' }}>Submit</Text>
+  				</Button>
+  			</InputContainer>
   		</React.Fragment>
   	);
   }
 }
-// style={{ position: 'absolute', bottom: 0, right: 0 }} />
 const mapDispatchToProps = dispatch => ({
 	fetchComments: id => dispatch(fetchGistComments.action(id)),
 });
