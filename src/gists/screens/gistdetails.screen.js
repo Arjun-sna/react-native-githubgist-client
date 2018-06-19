@@ -9,7 +9,7 @@ import Header from './components/GistDetailHeader';
 import Toolbar from './components/Toolbar';
 import { processFiles } from '../../shared/processFiles';
 import GistFileItem from './components/GistFileItem';
-import { starGist, fetchInitialFavoriteValue, UnstarGist } from '../gists.actiontype';
+import { toggleFavoriteGist, fetchInitialFavoriteValue } from '../gists.actiontype';
 
 const HeaderProps = [
 	'avatal_url',
@@ -48,18 +48,13 @@ class GistDetails extends React.Component {
 
 	handleActionButtonClick = () => {
 		const { id } = this.props.navigation.getParam('gistData');
+		const action = (this.state.iconName === 'star') ?
+			{ type: 'unstar', iconName: 'star-o' } : { type: 'star', iconName: 'star' };
 
-		if (this.state.iconName === 'star') {
-			this.props.UnstarThisGist(id);
-			this.setState({
-				iconName: 'star-o',
-			});
-		} else {
-			this.props.starThisGist(id);
-			this.setState({
-				iconName: 'star',
-			});
-		}
+		this.props.toggleGist({ id, type: action.type });
+		this.setState({
+			iconName: action.iconName,
+		});
 	}
 
 	renderItem = ({ item }) => (
@@ -120,9 +115,8 @@ class GistDetails extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-	starThisGist: id => dispatch(starGist.action(id)),
+	toggleGist: data => dispatch(toggleFavoriteGist.action(data)),
 	checkIfGistIsStarred: id => dispatch(fetchInitialFavoriteValue.action(id)),
-	UnstarThisGist: id => dispatch(UnstarGist.action(id)),
 });
 
 const mapStateToProps = ({ initialFavoriteValue }) =>

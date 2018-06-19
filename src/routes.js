@@ -73,12 +73,7 @@ const GistFileContentAndCommentsScreen = TabNavigator({
 		style: styles.tabStyle,
 		labelStyle: styles.labelStyle,
 	},
-
 });
-
-// GistFileContentAndCommentsScreen.navigationOptions = {
-// 	header: GistDetailsScreen,
-// };
 
 const MainScreen = StackNavigator({
 	MainTabs: {

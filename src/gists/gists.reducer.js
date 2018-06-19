@@ -46,14 +46,12 @@ const clearCache = () => ({
 
 const setGistComments = (state, { payload }) => {
 	const { data, error } = payload;
-	//	const initialComments = payload.data.slice(key - 6, key);
 
 	return {
 		...state,
 		inProgress: false,
 		error,
-		comments: data, // initialComments,
-	//	hasMoreComments: key !== data.length,
+		comments: data,
 	};
 };
 

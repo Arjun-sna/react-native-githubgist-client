@@ -5,9 +5,8 @@ import {
 	starredGistsFetch,
 	publicGistsFetch,
 	fetchGistComments,
-	starGist,
+	toggleFavoriteGist,
 	fetchInitialFavoriteValue,
-	UnstarGist,
 	deleteComment,
 	addComment,
 } from './gists.actiontype';
@@ -91,12 +90,11 @@ function* fetchCommentsForGist(action) {
 	}
 }
 
-function* starAGist(action) {
+function* toggleGist(action) {
 	try {
 		const token = yield select(tokenSelector);
-
-		yield put(starGist.progress());
-		const status = yield call(requestStarGist, token, action.payload);
+		const requestUrl = (action.payload.type === 'star') ? requestStarGist : requestUnstarGist;
+		const status = yield call(requestUrl, token, action.payload.id);
 
 		if (status === 204) {
 			yield call(fetchStarredGists, { shouldRefresh: true });
@@ -110,24 +108,11 @@ function* getInitialFavoriteValue(action) {
 	try {
 		const token = yield select(tokenSelector);
 
+		yield put(fetchInitialFavoriteValue.progress());
 		yield call(checkStarredGistFavoriteValue, token, action.payload);
 		yield put(fetchInitialFavoriteValue.success({ value: true }));
 	} catch (err) {
 		yield put(fetchInitialFavoriteValue.success({ value: false }));
-	}
-}
-
-function* unstarAGist(action) {
-	try {
-		const token = yield select(tokenSelector);
-
-		const status = yield call(requestUnstarGist, token, action.payload);
-
-		if (status === 204) {
-			yield call(fetchStarredGists, { shouldRefresh: true });
-		}
-	} catch (err) {
-		console.log(err);
 	}
 }
 
@@ -172,9 +157,8 @@ export default function* gistsSaga() {
 		takeLatest(starredGistsFetch.actionType, fetchStarredGists),
 		takeLatest(publicGistsFetch.actionType, fetchPublicGists),
 		takeLatest(fetchGistComments.actionType, fetchCommentsForGist),
-		takeLatest(starGist.actionType, starAGist),
+		takeLatest(toggleFavoriteGist.actionType, toggleGist),
 		takeLatest(fetchInitialFavoriteValue.actionType, getInitialFavoriteValue),
-		takeLatest(UnstarGist.actionType, unstarAGist),
 		takeLatest(deleteComment.actionType, deleteAComment),
 		takeLatest(addComment.actionType, addAComment),
 	]);

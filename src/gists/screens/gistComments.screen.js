@@ -15,7 +15,6 @@ import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
 import { fetchGistComments, deleteComment, addComment } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
-// import { addComments } from '../../api';
 import { colors } from '../../config';
 import GistOptions from '../gistoptions.screen';
 
