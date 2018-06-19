@@ -29,16 +29,6 @@ const DetailsText = styled.Text`
 	color: ${colors.greyDark}	
 `;
 
-const TitleContainer = styled.View`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-`;
-
-const IconContainer = styled.TouchableOpacity`
-	margin: 3px 0;
-`;
-
 class GistOverview extends React.Component {
 	// shouldComponentUpdate(nextProps) {
 	// 	return !(isEqual(this.props.gistData, nextProps.gistData));
@@ -54,12 +44,7 @@ class GistOverview extends React.Component {
 
 		return (
 			<Container onPress={() => onClickGist(gistData)}>
-				<TitleContainer>
-					<Title>{title}</Title>
-					<IconContainer>
-						<Icon name="star-outline" size={18} />
-					</IconContainer>
-				</TitleContainer>
+				<Title>{title}</Title>
 				<DetailsContainer>
 					<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
 					<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>

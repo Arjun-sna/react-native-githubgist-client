@@ -84,7 +84,7 @@ class GistCommentsScreen extends React.Component {
 		this.state = {
 			comment: '',
 			isVisible: false,
-			id: null,
+			commentId: null,
 		};
 	}
 	componentDidMount() {
@@ -103,10 +103,11 @@ class GistCommentsScreen extends React.Component {
 		this.setState({ isVisible: false });
 	}
 
-	openGistOptions = id => {
+	openGistOptions = (commentId, userId) => {
+		if (userId !== this.props.currentUserId) return;
 		this.setState({
 			isVisible: true,
-			id,
+			commentId,
 		});
 	}
 
@@ -118,13 +119,15 @@ class GistCommentsScreen extends React.Component {
 		this.onCancel();
 		this.props.deleteThisComment({
 			gistId: this.props.navigation.getParam('gistData').id,
-			commentId: this.state.id,
+			commentId: this.state.commentId,
 		});
 	}
 
   renderItem = ({ item }) => {
   	return (
-  		<TouchableOpacity style={{ flex: 1 }} onLongPress={() => this.openGistOptions(item.id)}>
+  		<TouchableOpacity
+  			style={{ flex: 1 }}
+  			onLongPress={() => this.openGistOptions(item.id, item.user.id)}>
   			<CardContainer
   				cardElevation={2}
   				cardMaxElevation={2}
@@ -194,9 +197,9 @@ const mapDispatchToProps = dispatch => ({
 	deleteThisComment: data => dispatch(deleteComment.action(data)),
 	addThisComment: data => dispatch(addComment.action(data)),
 });
-const mapStateToProps = ({ gistComments, auth }) => ({
+const mapStateToProps = ({ gistComments, loggedInUser }) => ({
 	comments: gistComments.comments,
-	accessToken: auth.access_token,
+	currentUserId: loggedInUser.userId,
 	inProgress: gistComments.inProgress,
 });
 
