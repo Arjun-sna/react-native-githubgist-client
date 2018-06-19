@@ -8,6 +8,8 @@ import {
 	starGist,
 	fetchInitialFavoriteValue,
 	UnstarGist,
+	deleteComment,
+	addComment,
 } from './gists.actiontype';
 import {
 	requestUserGists,
@@ -17,10 +19,13 @@ import {
 	requestStarGist,
 	checkStarredGistFavoriteValue,
 	requestUnstarGist,
+	requestDeleteComment,
+	requestAddComment,
 } from '../api';
 
 const tokenSelector = state => state.auth.access_token;
 const userNameSelector = state => state.loggedInUser.userName;
+const commentsSelector = state => state.gistComments.comments;
 
 function* fetchUserGists() {
 	try {
@@ -75,16 +80,13 @@ function* fetchPublicGists() {
 
 function* fetchCommentsForGist(action) {
 	try {
-		// const hasMoreComments = yield select(state => state.gistComments.hasMoreComments);
-
-		// if (hasMoreComments) {
 		yield put(fetchGistComments.progress());
 		const token = yield select(tokenSelector);
 		const { data } = yield call(requestGistComments, token, action.payload);
 
 		yield put(fetchGistComments.success({ data }));
-		// }
 	} catch (err) {
+		console.log(err);
 		yield put(publicGistsFetch.error(err));
 	}
 }
@@ -96,8 +98,6 @@ function* starAGist(action) {
 
 		if (status === 204) {
 			yield call(fetchStarredGists, { shouldRefresh: true });
-
-			return;
 		}
 	} catch (err) {
 		console.log(err);
@@ -112,8 +112,6 @@ function* getInitialFavoriteValue(action) {
 		yield put(fetchInitialFavoriteValue.success({ value: true }));
 	} catch (err) {
 		yield put(fetchInitialFavoriteValue.success({ value: false }));
-
-		return null;
 	}
 }
 
@@ -131,6 +129,41 @@ function* unstarAGist(action) {
 	}
 }
 
+function* deleteAComment(action) {
+	try {
+		const token = yield select(tokenSelector);
+		const { gistId, commentId } = action.payload;
+		const status = yield call(requestDeleteComment, token, gistId, commentId);
+
+		if (status === 204) {
+			const comments = yield select(commentsSelector);
+			const data = comments.filter(comment => comment.id !== commentId);
+
+			yield put(fetchGistComments.success({ data }));
+		}
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+function* addAComment(action) {
+	try {
+		const token = yield select(tokenSelector);
+		const { gistId, comment } = action.payload;
+
+		const data = yield call(requestAddComment, token, gistId, comment);
+
+		if (data) {
+			const comments = yield select(commentsSelector);
+			const newData = [...comments, data];
+
+			yield put(fetchGistComments.success({ data: newData }));
+		}
+	} catch (err) {
+		console.log(err);
+	}
+}
+
 export default function* gistsSaga() {
 	yield all([
 		takeLatest(userGistsFetch.actionType, fetchUserGists),
@@ -140,5 +173,7 @@ export default function* gistsSaga() {
 		takeLatest(starGist.actionType, starAGist),
 		takeLatest(fetchInitialFavoriteValue.actionType, getInitialFavoriteValue),
 		takeLatest(UnstarGist.actionType, unstarAGist),
+		takeLatest(deleteComment.actionType, deleteAComment),
+		takeLatest(addComment.actionType, addAComment),
 	]);
 }

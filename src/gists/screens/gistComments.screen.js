@@ -7,14 +7,17 @@ import {
 	Keyboard,
 	Text,
 	ActivityIndicator,
+	TouchableOpacity,
+	Modal,
 } from 'react-native';
 import styled from 'styled-components';
 import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
-import { fetchGistComments } from '../gists.actiontype';
+import { fetchGistComments, deleteComment, addComment } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
-import { addComments } from '../../api';
+// import { addComments } from '../../api';
 import { colors } from '../../config';
+import GistOptions from '../gistoptions.screen';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
@@ -66,7 +69,7 @@ const InputContainer = styled.View`
 const Button = styled.TouchableOpacity`
 	padding: 3%;
 	align-self: center;
-	background-color: #33B5E5;
+	background-color: ${colors.pictonBlue};
 `;
 
 const ActivityIndicatorContainer = styled.View`
@@ -80,8 +83,9 @@ class GistCommentsScreen extends React.Component {
 		super();
 		this.state = {
 			comment: '',
+			isVisible: false,
+			id: null,
 		};
-		this.timeout = null;
 	}
 	componentDidMount() {
 		this.fetchComments();
@@ -89,23 +93,38 @@ class GistCommentsScreen extends React.Component {
 
 	onPressItem = () => {
 		Keyboard.dismiss();
+		this.setState({ comment: '' });
 		const { id } = this.props.navigation.getParam('gistData');
 
-		addComments(this.state.comment, id, this.props.accessToken)
-			.then(() => {
-				this.setState({ comment: '' });
-				this.fetchComments();
-			})
-			.catch(console.log);
+		this.props.addThisComment({ gistId: id, comment: this.state.comment });
+	}
+
+	onCancel = () => {
+		this.setState({ isVisible: false });
+	}
+
+	openGistOptions = id => {
+		this.setState({
+			isVisible: true,
+			id,
+		});
 	}
 
 	fetchComments = () => {
 		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
 	}
 
+	deleteComment = () => {
+		this.onCancel();
+		this.props.deleteThisComment({
+			gistId: this.props.navigation.getParam('gistData').id,
+			commentId: this.state.id,
+		});
+	}
+
   renderItem = ({ item }) => {
   	return (
-  		<View style={{ flex: 1 }}>
+  		<TouchableOpacity style={{ flex: 1 }} onLongPress={() => this.openGistOptions(item.id)}>
   			<CardContainer
   				cardElevation={2}
   				cardMaxElevation={2}
@@ -120,7 +139,7 @@ class GistCommentsScreen extends React.Component {
   				</UserProfile>
   				<Comment>{item.body}</Comment>
   			</CardContainer>
-  		</View>
+  		</TouchableOpacity>
   	);
   }
 
@@ -160,12 +179,20 @@ class GistCommentsScreen extends React.Component {
   					<Text style={{ color: colors.white, fontWeight: '600' }}>Submit</Text>
   				</Button>
   			</InputContainer>
+  			<Modal
+  				onRequestClose={() => {}}
+  				visible={this.state.isVisible}
+				 	transparent>
+  				<GistOptions onDelete={this.deleteComment} onCancel={this.onCancel} />
+  			</Modal>
   		</React.Fragment>
   	);
   }
 }
 const mapDispatchToProps = dispatch => ({
 	fetchComments: id => dispatch(fetchGistComments.action(id)),
+	deleteThisComment: data => dispatch(deleteComment.action(data)),
+	addThisComment: data => dispatch(addComment.action(data)),
 });
 const mapStateToProps = ({ gistComments, auth }) => ({
 	comments: gistComments.comments,

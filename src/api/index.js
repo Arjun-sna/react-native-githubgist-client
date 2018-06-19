@@ -83,8 +83,6 @@ export const v3 = {
 	performDeleteRequest: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.DELETE));
 
-		console.log('from api', response);
-
 		return response.status;
 	},
 };
@@ -109,7 +107,7 @@ export const fetchAccessToken = async({ code, state }) => {
 	return response.data;
 };
 
-export const addComments = async(payload, id, accessToken) =>
+export const requestAddComment = async(accessToken, id, payload) =>
 	v3.getDataFromPostRequest(`/gists/${id}/comments`, accessToken, { body: payload });
 
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
@@ -129,3 +127,5 @@ export const requestStarGist = async(accessToken, gistId) => v3.getDataFromPutRe
 export const checkStarredGistFavoriteValue = async(accessToken, gistId) => v3.getJson(`/gists/${gistId}/star`, accessToken);
 
 export const requestUnstarGist = async(accessToken, gistId) => v3.performDeleteRequest(`/gists/${gistId}/star`, accessToken);
+
+export const requestDeleteComment = async(accessToken, gistId, commentId) => v3.performDeleteRequest(`/gists/${gistId}/comments/${commentId}`, accessToken);

@@ -32,4 +32,5 @@ export const colors = {
 	githubDark: '#1f2327',
 	alabaster: '#f7f7f7',
 	topicLightBlue: '#f1f8ff',
+	pictonBlue: '#33B5E5',
 };
