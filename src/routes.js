@@ -97,15 +97,6 @@ const MainScreen = StackNavigator({
 	},
 });
 
-const Home = DrawerNavigator({
-	Home: {
-		screen: MainScreen,
-	},
-	ClearCache: {
-		screen: ClearCacheScreen,
-	},
-});
-
 export const GistApp = StackNavigator(
 	{
 		Splash: {
@@ -121,7 +112,7 @@ export const GistApp = StackNavigator(
 			},
 		},
 		Home: {
-			screen: Home,
+			screen: MainScreen,
 			navigationOptions: {
 				header: null,
 			},

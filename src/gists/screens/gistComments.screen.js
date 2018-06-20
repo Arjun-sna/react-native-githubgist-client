@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import {
 	FlatList,
 	TextInput,
-	View,
 	Keyboard,
 	Text,
 	ActivityIndicator,
