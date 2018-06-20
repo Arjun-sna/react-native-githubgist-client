@@ -1,12 +1,11 @@
 import React from 'react';
-import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './gists/screens/mygists.screen';
 import PublicGistsScreen from './gists/screens/publicgists.screen';
 import StarredGistsScreen from './gists/screens/starredgists.screen';
-import ClearCacheScreen from './cache/screens/cache.screen.js';
 import GistDetailsScreen from './gists/screens/gistdetails.screen';
 import GistFileContentScreen from './gists/screens/gistfilecontent.screen';
 import GistContentListScreen from './gists/screens/gistContentList.screen';
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#33B5E5',
 	},
 	labelStyle: {
-		fontSize: 18,
+		fontSize: 15,
 		fontWeight: 'bold',
 		color: '#fff',
 	},
@@ -39,7 +38,7 @@ const MainTabsScreen = TabNavigator({
 	PublicGists: {
 		screen: PublicGistsScreen,
 		navigationOptions: {
-			tabBarLabel: 'Public Gists',
+			tabBarLabel: 'Public',
 		},
 	},
 }, {
@@ -51,6 +50,7 @@ const MainTabsScreen = TabNavigator({
 	},
 	animationEnabled: true,
 	tabBarPosition: 'top',
+	lazy: true,
 });
 
 const GistFileContentAndCommentsScreen = TabNavigator({

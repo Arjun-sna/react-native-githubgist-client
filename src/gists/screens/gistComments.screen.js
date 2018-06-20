@@ -46,8 +46,8 @@ const DetailsContainer = styled.View`
 `;
 
 const Username = styled.Text`
-	font-size: 16;
-	padding: 2%;
+	font-size: 14;
+	padding-bottom: 1%;
 `;
 
 const CommentDate = styled.Text`
