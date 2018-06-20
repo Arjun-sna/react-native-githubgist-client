@@ -42,7 +42,7 @@ const UserProfile = styled.View`
 `;
 
 const DetailsContainer = styled.View`
-	padding: 2%;
+	padding-left: 2%;
 `;
 
 const Username = styled.Text`
