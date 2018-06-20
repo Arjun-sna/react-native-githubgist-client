@@ -16,7 +16,7 @@ import TimeAgo from 'time-ago';
 import { fetchGistComments, deleteComment, addComment } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
 import { colors } from '../../config';
-import GistOptions from '../gistoptions.screen';
+import GistOptions from './components/gistoptions.screen';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
