@@ -96,7 +96,7 @@ GistListContent.propTypes = {
 	showLoader: PropTypes.bool,
 	fetchGists: PropTypes.func.isRequired,
 	gistList: PropTypes.array, // eslint-disable-line
-	hasMoreData: PropTypes.bool.isRequired,
+	hasMoreData: PropTypes.bool,
 };
 
 GistListContent.defaultProps = {

@@ -19,6 +19,7 @@ import { fetchGistComments, deleteComment, addComment } from '../gists.actiontyp
 import ListEmptyComponent from './components/EmptyListComponent';
 import { colors } from '../../config';
 import GistOptions from './components/gistoptions.screen';
+import { clearCache } from '../../cache/cache.actionType';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
@@ -78,7 +79,6 @@ const ActivityIndicatorContainer = styled.View`
 	justify-content: center;
 	align-items: center;
 `;
-// padding: 20;
 const EndOfViewStyle = styled.View`
 	flex: 1;
 	justify-content: center;
@@ -99,7 +99,7 @@ class GistCommentsScreen extends React.Component {
 		};
 	}
 	componentDidMount() {
-		this.fetchComments();
+		this.fetchComments(true);
 	}
 
 	onPressItem = () => {
@@ -122,8 +122,8 @@ class GistCommentsScreen extends React.Component {
 		});
 	}
 
-	fetchComments = () => {
-		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+	fetchComments = (clearCache = false) => {
+		this.props.fetchComments({ id: this.props.navigation.getParam('gistData').id, clearCache });
 	}
 
 	deleteComment = () => {
@@ -135,11 +135,10 @@ class GistCommentsScreen extends React.Component {
 	}
 
 	handleOnEndReached = () => {
-		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+		this.fetchComments();
 	}
 
   renderItem = ({ item }) => {
-  	console.log('item type=============', item.type);
   	switch (item.type) {
   	case 'preloader':
   		return (
@@ -183,20 +182,12 @@ class GistCommentsScreen extends React.Component {
   }
 
   render() {
-  	const { inProgress, hasMoreComments, comments } = this.props;
+  	const { hasMoreComments, comments } = this.props;
 
-  	console.log('hasMoreComments', hasMoreComments);
   	const toAppendData = hasMoreComments ? getGistComments('preloader') : getGistComments('noData');
 
   	const uniqComments = uniqBy(concat(comments, toAppendData), ({ id }) => (id));
 
-  	// if (inProgress) {
-  	// 	return (
-  	// 		<ActivityIndicatorContainer>
-  	// 			<ActivityIndicator size="large" color="#33B5E5" />
-  	// 		</ActivityIndicatorContainer>
-  	// 	);
-  	// }
 
   	return (
   		<React.Fragment>
@@ -236,7 +227,7 @@ class GistCommentsScreen extends React.Component {
   }
 }
 const mapDispatchToProps = dispatch => ({
-	fetchComments: id => dispatch(fetchGistComments.action(id)),
+	fetchComments: data => dispatch(fetchGistComments.action(data)),
 	deleteThisComment: data => dispatch(deleteComment.action(data)),
 	addThisComment: data => dispatch(addComment.action(data)),
 });
@@ -248,8 +239,6 @@ const mapStateToProps = ({ gistComments, loggedInUser }) => ({
 });
 
 GistCommentsScreen.propTypes = {
-//	comments: PropTypes.arrayOf(React.PropTypes.object).isRequired,
-	inProgress: PropTypes.bool.isRequired,
 	fetchComments: PropTypes.func.isRequired,
 	addThisComment: PropTypes.func.isRequired,
 	deleteThisComment: PropTypes.func.isRequired,

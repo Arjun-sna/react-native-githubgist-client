@@ -38,11 +38,11 @@ const setError = (state, { error }) => ({
 	error,
 });
 
-const clearCache = () => ({
-	gists: [],
-	hasMoreData: true,
+const clearCache = state => ({
+	...state,
 	nextPageNo: 1,
 	comments: [],
+	hasMoreComments: true,
 });
 
 const setGistComments = (state, { payload }) => {
@@ -51,11 +51,9 @@ const setGistComments = (state, { payload }) => {
 	const isLinkAvailable = links && links.next;
 	let newComments = data;
 
-	console.log('isLinkAvailable', links, !!isLinkAvailable, 'nextPageno', state.nextPageNo);
 	if (state.nextPageNo > 1) {
 		newComments = array.concat(state.comments, data);
 	}
-	console.log('data******************', data, newComments);
 
 	return {
 		...state,
