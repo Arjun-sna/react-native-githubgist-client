@@ -42,16 +42,29 @@ const clearCache = () => ({
 	gists: [],
 	hasMoreData: true,
 	nextPageNo: 1,
+	comments: [],
 });
 
 const setGistComments = (state, { payload }) => {
-	const { data, error } = payload;
+	const { data, error, links } = payload;
+
+	const isLinkAvailable = links && links.next;
+	let newComments = data;
+
+	console.log('isLinkAvailable', links, !!isLinkAvailable, 'nextPageno', state.nextPageNo);
+	if (state.nextPageNo > 1) {
+		newComments = array.concat(state.comments, data);
+	}
+	console.log('data******************', data, newComments);
 
 	return {
 		...state,
 		inProgress: false,
+		linkToNextPage: isLinkAvailable ? links.next.url : '',
+		hasMoreComments: !!isLinkAvailable,
+		nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
+		comments: newComments,
 		error,
-		comments: data,
 	};
 };
 
@@ -95,9 +108,10 @@ export default {
 			[fetchGistComments.progressType]: setInProgressState,
 			[fetchGistComments.successType]: setGistComments,
 			[fetchGistComments.errorType]: setError,
+			CLEAR_CACHE: clearCache,
 		},
 		{
-			comments: [], inProgress: false, // hasMoreComments: true,
+			comments: [], inProgress: false, hasMoreComments: true, nextPageNo: 1,
 		}
 	),
 	initialFavoriteValue: createReducer({

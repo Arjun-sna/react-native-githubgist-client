@@ -21,6 +21,7 @@ import {
 	requestDeleteComment,
 	requestAddComment,
 } from '../api';
+import { clearCache } from '../../src/cache/cache.actionType';
 
 const tokenSelector = state => state.auth.access_token;
 const userNameSelector = state => state.loggedInUser.userName;
@@ -79,13 +80,23 @@ function* fetchPublicGists() {
 
 function* fetchCommentsForGist(action) {
 	try {
-		yield put(fetchGistComments.progress());
-		const token = yield select(tokenSelector);
-		const { data } = yield call(requestGistComments, token, action.payload);
+		const moreDataAvailabe = yield select(state => state.gistComments.hasMoreComments);
 
-		yield put(fetchGistComments.success({ data }));
+		// yield call(clearCache);
+		console.log('here');
+		// console.o;
+		 // if (moreDataAvailabe) {
+		yield put(fetchGistComments.progress());
+		// const token = yield select(tokenSelector);
+		const requestData = yield all([select(tokenSelector), select(state => state.gistComments.nextPageNo)]);
+		const { data, headers } = yield call(requestGistComments, requestData[0], action.payload, requestData[1]);
+		const links = headerparser(headers.link);
+
+		console.log('linkssssssssssssssssssssssssssssssssssssss', links);
+		yield put(fetchGistComments.success({ data, links }));
+		// }
 	} catch (err) {
-		console.log(err);
+		console.log('comments fetch', err);
 		yield put(publicGistsFetch.error(err));
 	}
 }
@@ -126,10 +137,12 @@ function* deleteAComment(action) {
 			const comments = yield select(commentsSelector);
 			const data = comments.filter(comment => comment.id !== commentId);
 
+			console.log('status-------------------------------------------', data);
+			//	yield call(fetchCommentsForGist, { payload: gistId });
 			yield put(fetchGistComments.success({ data }));
 		}
 	} catch (err) {
-		console.log(err);
+		console.log('comments delete', err);
 	}
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
 	FlatList,
@@ -12,6 +13,8 @@ import {
 import styled from 'styled-components';
 import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
+import concat from 'lodash/concat';
+import uniqBy from 'lodash/uniqBy';
 import { fetchGistComments, deleteComment, addComment } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
 import { colors } from '../../config';
@@ -75,6 +78,16 @@ const ActivityIndicatorContainer = styled.View`
 	justify-content: center;
 	align-items: center;
 `;
+// padding: 20;
+const EndOfViewStyle = styled.View`
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20;
+	margin-top: 20;
+`;
+
+const getGistComments = item => ({ type: item, id: item });
 
 class GistCommentsScreen extends React.Component {
 	constructor() {
@@ -121,7 +134,31 @@ class GistCommentsScreen extends React.Component {
 		});
 	}
 
+	handleOnEndReached = () => {
+		this.props.fetchComments(this.props.navigation.getParam('gistData').id);
+	}
+
   renderItem = ({ item }) => {
+  	console.log('item type=============', item.type);
+  	switch (item.type) {
+  	case 'preloader':
+  		return (
+  			<EndOfViewStyle>
+  				<ActivityIndicator
+  					size="large"
+  					color="#33B5E5"
+  				/>
+  			</EndOfViewStyle>
+  		);
+  	case 'noData':
+  		return (
+  			<EndOfViewStyle>
+  				<ListEmptyComponent
+  					message="No more comments found for this gist"
+  				/>
+  			</EndOfViewStyle>
+  		);
+  	default:
   	return (
   		<TouchableOpacity
   			style={{ flex: 1 }}
@@ -141,28 +178,36 @@ class GistCommentsScreen extends React.Component {
   				<Comment>{item.body}</Comment>
   			</CardContainer>
   		</TouchableOpacity>
-  	);
+  		);
+  	}
   }
 
   render() {
-  	const { comments, inProgress } = this.props;
+  	const { inProgress, hasMoreComments, comments } = this.props;
 
-  	if (inProgress) {
-  		return (
-  			<ActivityIndicatorContainer>
-  				<ActivityIndicator size="large" color="#33B5E5" />
-  			</ActivityIndicatorContainer>
-  		);
-  	}
+  	console.log('hasMoreComments', hasMoreComments);
+  	const toAppendData = hasMoreComments ? getGistComments('preloader') : getGistComments('noData');
+
+  	const uniqComments = uniqBy(concat(comments, toAppendData), ({ id }) => (id));
+
+  	// if (inProgress) {
+  	// 	return (
+  	// 		<ActivityIndicatorContainer>
+  	// 			<ActivityIndicator size="large" color="#33B5E5" />
+  	// 		</ActivityIndicatorContainer>
+  	// 	);
+  	// }
 
   	return (
   		<React.Fragment>
   			<FlatList
   				style={{ marginBottom: '11%', flexGrow: 1 }}
   				keyExtractor={item => item.id}
-  				data={this.props.comments}
+  				data={uniqComments}
   				renderItem={this.renderItem}
   				ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
+  				onEndReachedThreshold={0.01}
+  				onEndReached={this.handleOnEndReached}
   				extraData={this.props}
   			/>
   			<InputContainer>
@@ -199,6 +244,17 @@ const mapStateToProps = ({ gistComments, loggedInUser }) => ({
 	comments: gistComments.comments,
 	currentUserId: loggedInUser.userId,
 	inProgress: gistComments.inProgress,
+	hasMoreComments: gistComments.hasMoreComments,
 });
+
+GistCommentsScreen.propTypes = {
+//	comments: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+	inProgress: PropTypes.bool.isRequired,
+	fetchComments: PropTypes.func.isRequired,
+	addThisComment: PropTypes.func.isRequired,
+	deleteThisComment: PropTypes.func.isRequired,
+	currentUserId: PropTypes.number.isRequired,
+	//	navigation: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GistCommentsScreen);

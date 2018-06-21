@@ -72,6 +72,7 @@ class GistListContent extends React.Component {
 
 		const toAppendData = hasMoreData ? getGistItem('preloader') : getGistItem('noData');
 
+		console.log('toAppendData', toAppendData);
 		const uniqGists = uniqBy(concat(gistList, toAppendData), ({ id }) => (id));
 
 		return (

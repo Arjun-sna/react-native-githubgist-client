@@ -83,6 +83,8 @@ export const v3 = {
 	performDeleteRequest: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.DELETE));
 
+		console.log('from api----------', response);
+
 		return response.status;
 	},
 };
@@ -120,7 +122,7 @@ export const requestPublicGists = async(accessToken, pageNo) => await v3.getJson
 
 export const fetchFileContent = async(accessToken, fileContentUrl) => await v3.getRaw(fileContentUrl, accessToken);
 
-export const requestGistComments = async(accessToken, gistId) => await v3.getJsonWithHeader(`/gists/${gistId}/comments`, accessToken);
+export const requestGistComments = async(accessToken, gistId, pageNo) => await v3.getJsonWithHeader(`/gists/${gistId}/comments?page=${pageNo}`, accessToken);
 
 export const requestStarGist = async(accessToken, gistId) => v3.getDataFromPutRequest(`/gists/${gistId}/star`, accessToken);
 
