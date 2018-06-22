@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -10,12 +11,6 @@ import Toolbar from './components/Toolbar';
 import { processFiles } from '../../shared/processFiles';
 import GistFileItem from './components/GistFileItem';
 import { toggleFavoriteGist, fetchInitialFavoriteValue } from '../gists.actiontype';
-
-const HeaderProps = [
-	'avatal_url',
-	'login',
-	'created_at',
-];
 
 const ToolbarContentContainer = styled.View`
 	display: flex;
@@ -124,5 +119,13 @@ const mapStateToProps = ({ initialFavoriteValue }) =>
 		isStarred: initialFavoriteValue.isStarred,
 		inProgress: initialFavoriteValue.inProgress,
 	});
+
+GistDetails.propTypes = {
+	toggleGist: PropTypes.func.isRequired,
+	checkIfGistIsStarred: PropTypes.func.isRequired,
+	isStarred: PropTypes.bool.isRequired,
+	inProgress: PropTypes.bool.isRequired,
+	navigation: PropTypes.instanceOf(Object).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GistDetails);

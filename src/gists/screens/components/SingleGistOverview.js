@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import pluralize from 'pluralize';
 import { colors } from '../../../config';
 
@@ -53,5 +53,10 @@ class GistOverview extends React.Component {
 		);
 	}
 }
+
+GistOverview.propTypes = {
+	gistData: PropTypes.instanceOf(Object).isRequired,
+	onClickGist: PropTypes.func.isRequired,
+};
 
 export default GistOverview;

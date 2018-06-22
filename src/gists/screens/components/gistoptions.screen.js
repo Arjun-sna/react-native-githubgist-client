@@ -2,7 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { colors } from '../../../config';
 
-const GistOptions = ({ onDelete, onCancel }) => (
+type Props = {
+	onDelete: () => void,
+	onCancel: () => void,
+};
+const GistOptions = ({ onDelete, onCancel }: Props) => (
 	<View style={{
 		flex: 1,
 		backgroundColor: 'rgba(0, 0, 0, 0.4)',

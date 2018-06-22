@@ -46,23 +46,26 @@ const clearCache = state => ({
 });
 
 const setGistComments = (state, { payload }) => {
-	const { data, error, links } = payload;
-
+	const {
+		data, error, links, gistId,
+	} = payload;
 	const isLinkAvailable = links && links.next;
 	let newComments = data;
 
-	if (state.nextPageNo > 1) {
-		newComments = array.concat(state.comments, data);
+	if (state[gistId] && state[gistId].nextPageNo > 1) {
+		newComments = array.concat(state[gistId].comments, data);
 	}
 
 	return {
 		...state,
 		inProgress: false,
-		linkToNextPage: isLinkAvailable ? links.next.url : '',
-		hasMoreComments: !!isLinkAvailable,
-		nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
-		comments: newComments,
-		error,
+		[gistId]: {
+			linkToNextPage: isLinkAvailable ? links.next.url : '',
+			hasMoreComments: !!isLinkAvailable,
+			nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
+			comments: newComments,
+			error,
+		},
 	};
 };
 
@@ -109,7 +112,7 @@ export default {
 			CLEAR_CACHE: clearCache,
 		},
 		{
-			comments: [], inProgress: false, hasMoreComments: true, nextPageNo: 1,
+			inProgress: false, // comments: [], hasMoreComments: true, nextPageNo: 1,
 		}
 	),
 	initialFavoriteValue: createReducer({

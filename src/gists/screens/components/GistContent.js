@@ -9,16 +9,22 @@ import {
 import PropTypes from 'prop-types';
 import concat from 'lodash/concat';
 import uniqBy from 'lodash/uniqBy';
-import styled from 'styled-components';
 import GistItem from './SingleGistOverview';
 import EmptyList from './EmptyListComponent';
 import ListItemSeparator from './ListItemSeparator';
 
-const Container = styled.View`
-	flex: 1;
-	justify-content: center;
-	marginTop: 25;
-`;
+const styles = StyleSheet.create({
+	endOfViewStyle: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 20,
+		padding: 20,
+	},
+	noMoreGistText: {
+		fontSize: 25,
+	},
+});
 
 const getGistItem = item => ({ type: item, id: item });
 
@@ -68,11 +74,8 @@ class GistListContent extends React.Component {
 	}
 
 	render() {
-		const { gistList, showLoader, hasMoreData } = this.props;
-
+		const { gistList, hasMoreData } = this.props;
 		const toAppendData = hasMoreData ? getGistItem('preloader') : getGistItem('noData');
-
-		console.log('toAppendData', toAppendData);
 		const uniqGists = uniqBy(concat(gistList, toAppendData), ({ id }) => (id));
 
 		return (
@@ -93,29 +96,15 @@ class GistListContent extends React.Component {
 
 GistListContent.propTypes = {
 	emptyListMessage: PropTypes.string,
-	showLoader: PropTypes.bool,
 	fetchGists: PropTypes.func.isRequired,
 	gistList: PropTypes.array, // eslint-disable-line
-	hasMoreData: PropTypes.bool,
+	hasMoreData: PropTypes.bool.isRequired,
+	navigation: PropTypes.instanceOf(Object).isRequired,
 };
 
 GistListContent.defaultProps = {
 	emptyListMessage: 'This user has not created any Gist yet',
-	showLoader: false,
 	gistList: [],
 };
-
-const styles = StyleSheet.create({
-	endOfViewStyle: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 20,
-		padding: 20,
-	},
-	noMoreGistText: {
-		fontSize: 25,
-	},
-});
 
 export default GistListContent;

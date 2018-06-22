@@ -15,11 +15,11 @@ import CardView from 'react-native-cardview';
 import TimeAgo from 'time-ago';
 import concat from 'lodash/concat';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 import { fetchGistComments, deleteComment, addComment } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
 import { colors } from '../../config';
 import GistOptions from './components/gistoptions.screen';
-import { clearCache } from '../../cache/cache.actionType';
 
 const CardContainer = styled(CardView)`
 	padding: 3%;
@@ -153,84 +153,94 @@ class GistCommentsScreen extends React.Component {
   			</EndOfViewStyle>
   		);
   	default:
-  	return (
-  		<TouchableOpacity
-  			style={{ flex: 1 }}
-  			onLongPress={() => this.openGistOptions(item.id, item.user.id)}>
-  			<CardContainer
-  				cardElevation={2}
-  				cardMaxElevation={2}
-  				cornerRadius={5}
-  			>
-  				<UserProfile>
-  					<UserProfilePicture source={{ uri: item.user.avatar_url }} />
-  					<DetailsContainer>
-  						<Username>{item.user.login}</Username>
-  						<CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
-  					</DetailsContainer>
-  				</UserProfile>
-  				<Comment>{item.body}</Comment>
-  			</CardContainer>
-  		</TouchableOpacity>
+  		return (
+  			<TouchableOpacity
+  				style={{ flex: 1 }}
+  				onLongPress={() => this.openGistOptions(item.id, item.user.id)}>
+  				<CardContainer
+  					cardElevation={2}
+  					cardMaxElevation={2}
+  					cornerRadius={5}
+  				>
+  					<UserProfile>
+  						<UserProfilePicture source={{ uri: item.user.avatar_url }} />
+  						<DetailsContainer>
+  							<Username>{item.user.login}</Username>
+  							<CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
+  						</DetailsContainer>
+  					</UserProfile>
+  					<Comment>{item.body}</Comment>
+  				</CardContainer>
+  			</TouchableOpacity>
   		);
   	}
   }
+	renderList = comments => {
+		return (
+			<React.Fragment>
+				<FlatList
+					style={{ marginBottom: '11%', flexGrow: 1 }}
+					keyExtractor={item => item.id}
+					data={comments}
+					renderItem={this.renderItem}
+					ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
+					ListFooterComponent={this.renderFooter}
+					onEndReachedThreshold={0.01}
+					onEndReached={this.handleOnEndReached}
+					extraData={this.props}
+				/>
+				<InputContainer>
+					<TextInput
+						style={{
+							width: '82%',
+						}}
+						placeholder="Add comment here"
+						value={this.state.comment}
+						onChangeText={comment => this.setState({ comment })}
+						underlineColorAndroid={colors.white}
+					/>
+					<Button
+						onPress={this.onPressItem}>
+						<Text style={{ color: colors.white, fontWeight: '600' }}>Submit</Text>
+					</Button>
+				</InputContainer>
+				<Modal
+					onRequestClose={() => {}}
+					visible={this.state.isVisible}
+					transparent>
+					<GistOptions onDelete={this.deleteComment} onCancel={this.onCancel} />
+				</Modal>
+			</React.Fragment>
+		);
+	}
 
-  render() {
-  	const { hasMoreComments, comments } = this.props;
+	render() {
+		if (isEmpty(this.props.gistData)) {
+			return (
+				<EndOfViewStyle>
+					<ActivityIndicator size="large" color={colors.pictonBlue} />
+				</EndOfViewStyle>
+			);
+		} else if (this.props.gistData && this.props.gistData.comments) {
+			const { comments = [], hasMoreComments } = this.props.gistData;
+			const toAppendData = hasMoreComments ? getGistComments('preloader') : getGistComments('noData');
+			const uniqComments = uniqBy(concat(comments, toAppendData), ({ id }) => (id));
 
-  	const toAppendData = hasMoreComments ? getGistComments('preloader') : getGistComments('noData');
+			return this.renderList(uniqComments);
+		}
 
-  	const uniqComments = uniqBy(concat(comments, toAppendData), ({ id }) => (id));
-
-
-  	return (
-  		<React.Fragment>
-  			<FlatList
-  				style={{ marginBottom: '11%', flexGrow: 1 }}
-  				keyExtractor={item => item.id}
-  				data={uniqComments}
-  				renderItem={this.renderItem}
-  				ListEmptyComponent={() => <ListEmptyComponent message="No comments found" />}
-  				onEndReachedThreshold={0.01}
-  				onEndReached={this.handleOnEndReached}
-  				extraData={this.props}
-  			/>
-  			<InputContainer>
-  				<TextInput
-  					style={{
-  						width: '82%',
-  					}}
-  					placeholder="Add comment here"
-  					value={this.state.comment}
-  					onChangeText={comment => this.setState({ comment })}
-  					underlineColorAndroid={colors.white}
-  				/>
-  				<Button
-  					onPress={this.onPressItem}>
-  					<Text style={{ color: colors.white, fontWeight: '600' }}>Submit</Text>
-  				</Button>
-  			</InputContainer>
-  			<Modal
-  				onRequestClose={() => {}}
-  				visible={this.state.isVisible}
-				 	transparent>
-  				<GistOptions onDelete={this.deleteComment} onCancel={this.onCancel} />
-  			</Modal>
-  		</React.Fragment>
-  	);
-  }
+		return null;
+	}
 }
 const mapDispatchToProps = dispatch => ({
 	fetchComments: data => dispatch(fetchGistComments.action(data)),
 	deleteThisComment: data => dispatch(deleteComment.action(data)),
 	addThisComment: data => dispatch(addComment.action(data)),
 });
-const mapStateToProps = ({ gistComments, loggedInUser }) => ({
-	comments: gistComments.comments,
+const mapStateToProps = ({ gistComments, loggedInUser }, ownProps) => ({
+	gistData: gistComments[ownProps.navigation.getParam('gistData').id],
 	currentUserId: loggedInUser.userId,
 	inProgress: gistComments.inProgress,
-	hasMoreComments: gistComments.hasMoreComments,
 });
 
 GistCommentsScreen.propTypes = {
@@ -238,7 +248,13 @@ GistCommentsScreen.propTypes = {
 	addThisComment: PropTypes.func.isRequired,
 	deleteThisComment: PropTypes.func.isRequired,
 	currentUserId: PropTypes.number.isRequired,
-	//	navigation: PropTypes.object.isRequired,
+	hasMoreComments: PropTypes.bool,
+	navigation: PropTypes.instanceOf(Object).isRequired,
+	gistData: PropTypes.instanceOf(Object),
 };
 
+GistCommentsScreen.defaultProps = {
+	hasMoreComments: true,
+	gistData: {},
+};
 export default connect(mapStateToProps, mapDispatchToProps)(GistCommentsScreen);

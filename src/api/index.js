@@ -83,8 +83,6 @@ export const v3 = {
 	performDeleteRequest: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.DELETE));
 
-		console.log('from api----------', response);
-
 		return response.status;
 	},
 };

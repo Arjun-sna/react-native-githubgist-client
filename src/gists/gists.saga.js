@@ -24,7 +24,6 @@ import {
 
 const tokenSelector = state => state.auth.access_token;
 const userNameSelector = state => state.loggedInUser.userName;
-const commentsSelector = state => state.gistComments.comments;
 
 function* fetchUserGists() {
 	try {
@@ -79,18 +78,24 @@ function* fetchPublicGists() {
 
 function* fetchCommentsForGist(action) {
 	try {
+		let moreDataAvailabe;
+		let	pageNo;
+
 		if (action.payload.clearCache) {
-			yield put({ type: 'CLEAR_CACHE' });
+			moreDataAvailabe = true;
+			pageNo = 1;
+		} else {
+			moreDataAvailabe = yield select(state => state.gistComments[action.payload.id].hasMoreComments);
+			pageNo = yield select(state => state.gistComments[action.payload.id].nextPageNo);
 		}
-		const moreDataAvailabe = yield select(state => state.gistComments.hasMoreComments);
 
 		if (moreDataAvailabe) {
 			yield put(fetchGistComments.progress());
-			const requestData = yield all([select(tokenSelector), select(state => state.gistComments.nextPageNo)]);
-			const { data, headers } = yield call(requestGistComments, requestData[0], action.payload.id, requestData[1]);
+			const token = yield select(tokenSelector);
+			const { data, headers } = yield call(requestGistComments, token, action.payload.id, pageNo);
 			const links = headerparser(headers.link);
 
-			yield put(fetchGistComments.success({ data, links }));
+			yield put(fetchGistComments.success({ data, links, gistId: action.payload.id }));
 		}
 	} catch (err) {
 		yield put(publicGistsFetch.error(err));
@@ -130,15 +135,13 @@ function* deleteAComment(action) {
 		const status = yield call(requestDeleteComment, token, gistId, commentId);
 
 		if (status === 204) {
-			const comments = yield select(commentsSelector);
+			const comments = yield select(state => state.gistComments[gistId].comments);
 			const data = comments.filter(comment => comment.id !== commentId);
 
-			console.log('status-------------------------------------------', data);
-			//	yield call(fetchCommentsForGist, { payload: gistId });
-			yield put(fetchGistComments.success({ data }));
+			yield put(fetchGistComments.success({ data, gistId }));
 		}
 	} catch (err) {
-		console.log('comments delete', err);
+		console.log(err);
 	}
 }
 
@@ -150,10 +153,10 @@ function* addAComment(action) {
 		const data = yield call(requestAddComment, token, gistId, comment);
 
 		if (data) {
-			const comments = yield select(commentsSelector);
+			const comments = yield select(state => state.gistComments[gistId].comments);
 			const newData = [...comments, data];
 
-			yield put(fetchGistComments.success({ data: newData }));
+			yield put(fetchGistComments.success({ data: newData, gistId }));
 		}
 	} catch (err) {
 		console.log(err);

@@ -41,9 +41,17 @@ const SubTitle = styled.Text`
 	font-size: ${normalizeFont(12)};
 `;
 
+type Props = {
+	userImage: string,
+	userName: string,
+	createdAt: string,
+	description: string,
+	gistSize: string,
+}
+
 export default GistDetailsHeader = ({
 	userImage, userName, createdAt, description, gistSize,
-}) => {
+}: Props) => {
 	return (
 		<Container>
 			<Avatar source={userImage ? { uri: userImage } : defaultUserImage} />

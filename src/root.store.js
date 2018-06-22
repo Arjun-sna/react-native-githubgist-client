@@ -28,7 +28,7 @@ const getEnhancers = () => {
 const persistConfig = {
 	key: 'root',
 	storage: AsyncStorage,
-	// blacklist: ['gistReducer'],
+	blacklist: ['gistComments'],
 };
 
 export default async() => {
