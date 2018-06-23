@@ -71,7 +71,7 @@ const InputContainer = styled.View`
 const Button = styled.TouchableOpacity`
 	padding: 3%;
 	align-self: center;
-	background-color: ${colors.pictonBlue};
+	background-color: ${colors.themeBlue};
 `;
 
 const EndOfViewStyle = styled.View`
@@ -175,6 +175,7 @@ class GistCommentsScreen extends React.Component {
   		);
   	}
   }
+  
 	renderList = comments => {
 		return (
 			<React.Fragment>
@@ -197,7 +198,7 @@ class GistCommentsScreen extends React.Component {
 						placeholder="Add comment here"
 						value={this.state.comment}
 						onChangeText={comment => this.setState({ comment })}
-						underlineColorAndroid={colors.white}
+						underlineColorAndroid={'rgba(0,0,0,0)'}
 					/>
 					<Button
 						onPress={this.onPressItem}>
