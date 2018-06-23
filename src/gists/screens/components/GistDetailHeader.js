@@ -31,13 +31,13 @@ const Avatar = styled.Image`
 const Title = styled.Text`
 	font-weight: bold;
 	margin: 3px 0;
-	color: ${colors.black}
+	color: ${colors.white}
 	font-size: ${normalizeFont(16)};
 `;
 
 const SubTitle = styled.Text`
 	margin: 3px 0;
-	color: ${colors.greyDarkest}
+	color: ${colors.white}
 	font-size: ${normalizeFont(12)};
 `;
 

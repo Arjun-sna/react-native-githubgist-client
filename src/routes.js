@@ -10,10 +10,11 @@ import GistDetailsScreen from './gists/screens/gistdetails.screen';
 import GistFileContentScreen from './gists/screens/gistfilecontent.screen';
 import GistContentListScreen from './gists/screens/gistContentList.screen';
 import GistCommentsScreen from './gists/screens/gistComments.screen';
+import Navbar from './gists/screens/components/Navbar';
 
 const styles = StyleSheet.create({
 	tabStyle: {
-		backgroundColor: '#33B5E5',
+		backgroundColor: '#516790',
 	},
 	labelStyle: {
 		fontSize: 16,
@@ -43,10 +44,16 @@ const MainTabsScreen = TabNavigator({
 	},
 }, {
 	tabBarOptions: {
-		showLabel: true,
+    showLabel: true,
 		tintColor: 'blue',
 		style: styles.tabStyle,
-		labelStyle: styles.labelStyle,
+    labelStyle: styles.labelStyle,
+    inactiveTintColor: 'rgba(255, 255, 255, 0.5)',
+    activeTintColor: 'white',
+    indicatorStyle: {
+      backgroundColor: 'white',
+      height: 4,
+    },
 	},
 	animationEnabled: true,
   tabBarPosition: 'top',
@@ -73,6 +80,12 @@ const GistFileContentAndCommentsScreen = TabNavigator({
 		tintColor: 'blue',
 		style: styles.tabStyle,
     labelStyle: styles.labelStyle,
+    inactiveTintColor: 'rgba(255, 255, 255, 0.5)',
+    activeTintColor: 'white',
+    indicatorStyle: {
+      backgroundColor: 'white',
+      height: 4,
+    },
   },
   tabBarPosition: 'top',
   tabBarComponent: TabBarTop,
@@ -82,7 +95,7 @@ const MainScreen = StackNavigator({
 	MainTabs: {
 		screen: MainTabsScreen,
 		navigationOptions: {
-			header: null,
+      header: props => <Navbar {...props} />,
 		},
 	},
 	GistDetails: {

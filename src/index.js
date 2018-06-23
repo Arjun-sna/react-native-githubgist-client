@@ -40,7 +40,6 @@ export default class App extends React.Component {
 							navigatorService.setContainer(navigatorRef);
 						}}
 					>
-						<StatusBar />
 					</GistApp>
 				</PersistGate>
 			</Provider>
