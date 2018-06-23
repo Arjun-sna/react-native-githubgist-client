@@ -68,8 +68,22 @@ export const v3 = {
 	getRaw: async(url, accessToken) => {
 		const response = await v3.call(url, v3.parameters(accessToken, METHOD.GET, ACCEPT.RAW));
 
+		return response.data;
+	},
+	getDataFromPostRequest: async(url, accessToken, body) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.POST, ACCEPT.JSON, body));
 
 		return response.data;
+	},
+	getDataFromPutRequest: async(url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.PUT, ACCEPT.JSON));
+
+		return response.status;
+	},
+	performDeleteRequest: async(url, accessToken) => {
+		const response = await v3.call(url, v3.parameters(accessToken, METHOD.DELETE));
+
+		return response.status;
 	},
 };
 
@@ -93,6 +107,9 @@ export const fetchAccessToken = async({ code, state }) => {
 	return response.data;
 };
 
+export const requestAddComment = async(accessToken, id, payload) =>
+	v3.getDataFromPostRequest(`/gists/${id}/comments`, accessToken, { body: payload });
+
 export const getAuthUser = async accessToken => await v3.getJson('/user', accessToken);
 
 export const requestUserGists = async(accessToken, userName, pageNo) => await v3.getJsonWithHeader(`/users/${userName}/gists?page=${pageNo}`, accessToken);
@@ -103,4 +120,12 @@ export const requestPublicGists = async(accessToken, pageNo) => await v3.getJson
 
 export const fetchFileContent = async(accessToken, fileContentUrl) => await v3.getRaw(fileContentUrl, accessToken);
 
-export const requestGistComments = async(accessToken, gistId) => await v3.getJsonWithHeader(`/gists/${gistId}/comments`, accessToken);
+export const requestGistComments = async(accessToken, gistId, pageNo) => await v3.getJsonWithHeader(`/gists/${gistId}/comments?page=${pageNo}`, accessToken);
+
+export const requestStarGist = async(accessToken, gistId) => v3.getDataFromPutRequest(`/gists/${gistId}/star`, accessToken);
+
+export const checkStarredGistFavoriteValue = async(accessToken, gistId) => v3.getJson(`/gists/${gistId}/star`, accessToken);
+
+export const requestUnstarGist = async(accessToken, gistId) => v3.performDeleteRequest(`/gists/${gistId}/star`, accessToken);
+
+export const requestDeleteComment = async(accessToken, gistId, commentId) => v3.performDeleteRequest(`/gists/${gistId}/comments/${commentId}`, accessToken);

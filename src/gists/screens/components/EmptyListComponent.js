@@ -13,7 +13,11 @@ const Message = styled.Text`
 	color: ${colors.greyDark}
 `;
 
-export default ({ message }) => (
+type Props = {
+	message: string,
+}
+
+export default ({ message }: Props) => (
 	<Container>
 		<Message>{message}</Message>
 	</Container>

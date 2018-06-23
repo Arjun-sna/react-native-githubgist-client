@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import styled from 'styled-components';
 import fileSize from 'filesize';
 import CardView from 'react-native-cardview';
@@ -35,7 +34,12 @@ const MetaDetail = styled.Text`
 	color: ${colors.greyDark}
 `;
 
-export default ({ fileData, onFileItemPress }) => {
+type Props = {
+	fileData: Object,
+	onFileItemPress: () => void,
+}
+
+export default ({ fileData, onFileItemPress }: Props) => {
 	return (
 		<CardContainer
 			cardElevation={2}

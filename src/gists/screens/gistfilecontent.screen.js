@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Text, ScrollView, View } from 'react-native';
-import axios from 'axios';
+import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
@@ -53,7 +53,7 @@ class GistFileScreen extends React.Component {
 		this.fileContent = '';
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		this.setState({
 			isLoading: true,
 			error: '',
@@ -118,5 +118,10 @@ class GistFileScreen extends React.Component {
 const mapStateToProps = state => ({
 	accessToken: state.auth.access_token,
 });
+
+GistFileScreen.propTypes = {
+	navigation: PropTypes.instanceOf(Object).isRequired,
+	accessToken: PropTypes.string.isRequired,
+};
 
 export default connect(mapStateToProps, null)(GistFileScreen);

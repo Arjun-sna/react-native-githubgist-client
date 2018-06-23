@@ -13,7 +13,6 @@ function* loginAndFetchUser() {
 			yield put(logIn.progress());
 			const loginResponse = yield call(fetchAccessToken, payload);
 
-			console.log('pppppppppppp', loginResponse);
 			yield put(logIn.success(loginResponse));
 			yield put(fetchAuthUser.action());
 		} catch (error) {

@@ -1,6 +1,12 @@
 import array from 'lodash/array';
 import { createReducer } from '../utils';
-import { userGistsFetch, starredGistsFetch, publicGistsFetch, fetchGistComments } from './gists.actiontype';
+import {
+	userGistsFetch,
+	starredGistsFetch,
+	publicGistsFetch,
+	fetchGistComments,
+	fetchInitialFavoriteValue,
+} from './gists.actiontype';
 
 const setInProgressState = state => ({
 	...state,
@@ -32,20 +38,44 @@ const setError = (state, { error }) => ({
 	error,
 });
 
-const clearCache = () => ({
-	gists: [],
-	hasMoreData: true,
+const clearCache = state => ({
+	...state,
 	nextPageNo: 1,
+	comments: [],
+	hasMoreComments: true,
 });
 
 const setGistComments = (state, { payload }) => {
-	console.log('---------------------', payload.data);
+	const {
+		data, error, links, gistId,
+	} = payload;
+	const isLinkAvailable = links && links.next;
+	let newComments = data;
+
+	if (state[gistId] && state[gistId].nextPageNo > 1) {
+		newComments = array.concat(state[gistId].comments, data);
+	}
 
 	return {
 		...state,
 		inProgress: false,
-		error: payload.error,
-		comments: payload.data,
+		[gistId]: {
+			linkToNextPage: isLinkAvailable ? links.next.url : '',
+			hasMoreComments: !!isLinkAvailable,
+			nextPageNo: isLinkAvailable ? links.next.page : state.nextPageNo,
+			comments: newComments,
+			error,
+		},
+	};
+};
+
+const setFavoriteValue = (state, { payload }) => {
+	const { value } = payload;
+
+	return {
+		...state,
+		isStarred: value,
+		inProgress: false,
 	};
 };
 
@@ -79,9 +109,14 @@ export default {
 			[fetchGistComments.progressType]: setInProgressState,
 			[fetchGistComments.successType]: setGistComments,
 			[fetchGistComments.errorType]: setError,
+			CLEAR_CACHE: clearCache,
 		},
 		{
-			comments: [], inProgress: false,
+			inProgress: false, // comments: [], hasMoreComments: true, nextPageNo: 1,
 		}
 	),
+	initialFavoriteValue: createReducer({
+		[fetchInitialFavoriteValue.successType]: setFavoriteValue,
+		[fetchInitialFavoriteValue.progressType]: setInProgressState,
+	}, { isStarred: false, inProgress: false }),
 };

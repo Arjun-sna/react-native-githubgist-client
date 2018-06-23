@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
-import { Text, Image } from 'react-native';
 import moment from 'moment';
 import fileSize from 'filesize';
 import { colors, normalizeFont } from '../../../config';
+import defaultUserImage from '../../../assets/default_user_image.png';
 
 const Container = styled.View`
 	display: flex;
@@ -41,12 +41,20 @@ const SubTitle = styled.Text`
 	font-size: ${normalizeFont(12)};
 `;
 
+type Props = {
+	userImage: string,
+	userName: string,
+	createdAt: string,
+	description: string,
+	gistSize: string,
+}
+
 export default GistDetailsHeader = ({
 	userImage, userName, createdAt, description, gistSize,
-}) => {
+}: Props) => {
 	return (
 		<Container>
-			<Avatar source={{ uri: userImage }} />
+			<Avatar source={userImage ? { uri: userImage } : defaultUserImage} />
 			<DetailsContainer>
 				<Title numberOfLines={2}>
 					{userName}

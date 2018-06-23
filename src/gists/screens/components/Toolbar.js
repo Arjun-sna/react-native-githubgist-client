@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import BackButton from './BackButton';
 import { normalizeFont } from '../../../config';
@@ -17,7 +17,7 @@ const Title = styled.Text`
 	font-weight: bold;
 `;
 
-export default props => {
+const Toolbar = props => {
 	let toolbarContent;
 
 	if (typeof props.toolbarContent === 'string') {
@@ -25,7 +25,7 @@ export default props => {
 	} else if (typeof props.toolbarContent === 'function') {
 		toolbarContent = props.toolbarContent();
 	} else {
-		toolbarContent = props.toolbarContent;
+		toolbarContent = { ...props };
 	}
 
 	return (
@@ -37,3 +37,14 @@ export default props => {
 		</ToolbarContainer>
 	);
 };
+
+Toolbar.propTypes = {
+	toolbarContent: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.func,
+		// PropTypes.instanceOf(Object),
+	]).isRequired,
+	onBackPress: PropTypes.func.isRequired,
+};
+
+export default Toolbar;

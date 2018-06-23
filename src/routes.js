@@ -1,15 +1,14 @@
 import React from 'react';
-import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './gists/screens/mygists.screen';
 import PublicGistsScreen from './gists/screens/publicgists.screen';
 import StarredGistsScreen from './gists/screens/starredgists.screen';
-import ClearCacheScreen from './cache/screens/cache.screen.js';
 import GistDetailsScreen from './gists/screens/gistdetails.screen';
 import GistFileContentScreen from './gists/screens/gistfilecontent.screen';
-import GistContentsScreen from './gists/screens/gistContents.screen';
+import GistContentListScreen from './gists/screens/gistContentList.screen';
 import GistCommentsScreen from './gists/screens/gistComments.screen';
 
 const styles = StyleSheet.create({
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#33B5E5',
 	},
 	labelStyle: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: 'bold',
 		color: '#fff',
 	},
@@ -39,7 +38,7 @@ const MainTabsScreen = TabNavigator({
 	PublicGists: {
 		screen: PublicGistsScreen,
 		navigationOptions: {
-			tabBarLabel: 'Public Gists',
+			tabBarLabel: 'Public',
 		},
 	},
 }, {
@@ -51,11 +50,12 @@ const MainTabsScreen = TabNavigator({
 	},
 	animationEnabled: true,
 	tabBarPosition: 'top',
+	lazy: true,
 });
 
 const GistFileContentAndCommentsScreen = TabNavigator({
 	GistContent: {
-		screen: GistContentsScreen,
+		screen: GistContentListScreen,
 		navigationOptions: {
 			tabBarLabel: 'Content',
 		},
@@ -73,12 +73,7 @@ const GistFileContentAndCommentsScreen = TabNavigator({
 		style: styles.tabStyle,
 		labelStyle: styles.labelStyle,
 	},
-
 });
-
-// GistFileContentAndCommentsScreen.navigationOptions = {
-// 	header: GistDetailsScreen,
-// };
 
 const MainScreen = StackNavigator({
 	MainTabs: {
@@ -102,15 +97,6 @@ const MainScreen = StackNavigator({
 	},
 });
 
-const Home = DrawerNavigator({
-	Home: {
-		screen: MainScreen,
-	},
-	ClearCache: {
-		screen: ClearCacheScreen,
-	},
-});
-
 export const GistApp = StackNavigator(
 	{
 		Splash: {
@@ -126,7 +112,7 @@ export const GistApp = StackNavigator(
 			},
 		},
 		Home: {
-			screen: Home,
+			screen: MainScreen,
 			navigationOptions: {
 				header: null,
 			},

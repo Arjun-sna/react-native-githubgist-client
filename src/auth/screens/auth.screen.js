@@ -114,7 +114,6 @@ class Auth extends React.Component {
 	}
 
 	onNavigationStateChange = navState => {
-		console.log('Navigation state change');
 		const url = navState.url;
 
 		this.handleOpenURL({ url });

@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
-import isEqual from 'lodash/isEqual';
 import pluralize from 'pluralize';
 import { colors } from '../../../config';
 
@@ -13,6 +13,7 @@ const Container = styled.TouchableOpacity`
 const Title = styled.Text`
 	font-weight: bold;
 	margin: 3px 0;
+	width: 80%;
 	color: ${colors.black}
 `;
 
@@ -52,5 +53,10 @@ class GistOverview extends React.Component {
 		);
 	}
 }
+
+GistOverview.propTypes = {
+	gistData: PropTypes.instanceOf(Object).isRequired,
+	onClickGist: PropTypes.func.isRequired,
+};
 
 export default GistOverview;

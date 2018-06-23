@@ -1,20 +1,16 @@
 import React from 'react';
-import { View, FlatList, Text } from 'react-native';
-import pick from 'lodash/pick';
-import forOwn from 'lodash/forOwn';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
 import Toolbar from './components/Toolbar';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { processFiles } from '~/src/shared/processFiles';
-import GistFileItem from '~/src/gists/screens/components/GistFileItem';
-
-const HeaderProps = [
-	'avatal_url',
-	'login',
-	'created_at',
-];
+import { processFiles } from '../../shared/processFiles';
+import GistFileItem from './components/GistFileItem';
+import { toggleFavoriteGist, fetchInitialFavoriteValue } from '../gists.actiontype';
 
 const ToolbarContentContainer = styled.View`
 	display: flex;
@@ -24,10 +20,35 @@ const ToolbarContentContainer = styled.View`
 	align-items: center;
 `;
 
-export default class GistDetails extends React.Component {
+class GistDetails extends React.Component {
+	state = {
+		iconName: this.props.isStarred ? 'star' : 'star-o',
+	}
+
+	componentWillMount() {
+		this.props.checkIfGistIsStarred(this.props.navigation.getParam('gistData').id);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			iconName: nextProps.isStarred ? 'star' : 'star-o',
+		});
+	}
+
 	handleFileItemPress = fileData => {
 		this.props.navigation.navigate('GistFileContentView', {
 			fileData,
+		});
+	}
+
+	handleActionButtonClick = () => {
+		const { id } = this.props.navigation.getParam('gistData');
+		const action = (this.state.iconName === 'star') ?
+			{ type: 'unstar', iconName: 'star-o' } : { type: 'star', iconName: 'star' };
+
+		this.props.toggleGist({ id, type: action.type });
+		this.setState({
+			iconName: action.iconName,
 		});
 	}
 
@@ -40,11 +61,16 @@ export default class GistDetails extends React.Component {
 	renderToobarContent = () => {
 		return (
 			<ToolbarContentContainer>
-				<Icon
-					onPress={this.handleActionButtonClick}
-					name="star-o"
-					size={20}
-				/>
+				{!this.props.inProgress &&
+					(
+						<TouchableOpacity	onPress={this.handleActionButtonClick}>
+							<Icon
+								name={this.state.iconName}
+								size={20}
+							/>
+						</TouchableOpacity>
+					)
+				}
 				<Icon
 					name="globe"
 					size={20}
@@ -64,14 +90,14 @@ export default class GistDetails extends React.Component {
 	render() {
 		const { navigation } = this.props;
 		const gistData = navigation.getParam('gistData', {});
-		const { owner } = gistData;
+		const { owner = {} } = gistData;
 		const { totalFileSize } = processFiles(gistData.files);
 
 		return (
 			<View>
 				<Header
-					userImage={owner.avatar_url}
-					userName={owner.login}
+					userImage={!isEmpty(owner) && owner.avatar_url}
+					userName={isEmpty(owner) ? 'Anonymous' : owner.login}
 					description={gistData.description}
 					createdAt={gistData.created_At}
 					gistSize={totalFileSize} />
@@ -82,3 +108,24 @@ export default class GistDetails extends React.Component {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	toggleGist: data => dispatch(toggleFavoriteGist.action(data)),
+	checkIfGistIsStarred: id => dispatch(fetchInitialFavoriteValue.action(id)),
+});
+
+const mapStateToProps = ({ initialFavoriteValue }) =>
+	({
+		isStarred: initialFavoriteValue.isStarred,
+		inProgress: initialFavoriteValue.inProgress,
+	});
+
+GistDetails.propTypes = {
+	toggleGist: PropTypes.func.isRequired,
+	checkIfGistIsStarred: PropTypes.func.isRequired,
+	isStarred: PropTypes.bool.isRequired,
+	inProgress: PropTypes.bool.isRequired,
+	navigation: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GistDetails);
