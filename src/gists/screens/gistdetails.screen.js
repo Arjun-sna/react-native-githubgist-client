@@ -35,12 +35,6 @@ class GistDetails extends React.Component {
 		});
 	}
 
-	handleFileItemPress = fileData => {
-		this.props.navigation.navigate('GistFileContentView', {
-			fileData,
-		});
-	}
-
 	handleActionButtonClick = () => {
 		const { id } = this.props.navigation.getParam('gistData');
 		const action = (this.state.iconName === 'star') ?
@@ -51,12 +45,6 @@ class GistDetails extends React.Component {
 			iconName: action.iconName,
 		});
 	}
-
-	renderItem = ({ item }) => (
-		<GistFileItem
-			fileData={item}
-			onFileItemPress={this.handleFileItemPress} />
-	);
 
 	renderToobarContent = () => {
 		return (

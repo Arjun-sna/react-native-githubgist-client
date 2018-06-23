@@ -34,7 +34,7 @@ export default class App extends React.Component {
 
 		return (
 			<Provider store={this.state.store}>
-				<PersistGate persistor={this.state.persistor}>
+				<PersistGate loading={null} persistor={this.state.persistor}>
 					<GistApp
 						ref={navigatorRef => {
 							navigatorService.setContainer(navigatorRef);

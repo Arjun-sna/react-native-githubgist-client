@@ -10,7 +10,13 @@ export default class GistList extends React.Component {
 		<GistFileItem
 			fileData={item}
 			onFileItemPress={this.handleFileItemPress} />
-	);
+  );
+  
+  handleFileItemPress = fileData => {
+		this.props.navigation.navigate('GistFileContentView', {
+			fileData,
+		});
+	}
 
 	render() {
 		const { navigation } = this.props;
