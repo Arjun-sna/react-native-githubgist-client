@@ -1,7 +1,5 @@
 import axios from 'axios';
-
-export const CLIENT_ID = '9ad8569261681e200601';
-export const CLIENT_SECRET = '3b825b8ab987cfce15404837ac3dc0abdbdae4cc';
+import Config from 'react-native-config';
 
 const METHOD = {
 	GET: 'GET',
@@ -97,8 +95,8 @@ export const fetchAccessToken = async({ code, state }) => {
 			'Content-Type': 'application/json',
 		},
 		data: JSON.stringify({
-			client_id: CLIENT_ID,
-			client_secret: CLIENT_SECRET,
+			client_id: Config.CLIENT_ID,
+			client_secret: Config.CLIENT_SECRET,
 			code,
 			state,
 		}),

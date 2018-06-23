@@ -12,10 +12,10 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
 import CookieManager from 'react-native-cookies';
+import Config from 'react-native-config'; 
 import queryString from 'query-string';
 import { colors } from '../../config';
 import navigatorService from '../../utils/navigatorService';
-import { CLIENT_ID } from '../../api';
 
 let stateRandom = Math.random().toString();
 
@@ -107,7 +107,7 @@ class Auth extends React.Component {
 				this.props.login(code, state);
 				// resetNavigationTo('Main', this.props.navigation);
 				// CookieManager.clearAll().then(() => {
-				this.props.login(code, state);
+				// this.props.login(code, state);
 				// });
 			}
 		}
@@ -160,7 +160,7 @@ class Auth extends React.Component {
 						<BrowserSection>
 							<WebView
 								source={{
-									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
+									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${Config.CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
 								}}
 								onLoadStart={e => this.toggleCancelButton(e, true)}
 								onLoadEnd={e => this.toggleCancelButton(e, false)}
