@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator, TabBarTop } from 'react-navigation';
 import { StyleSheet } from 'react-native';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
@@ -49,7 +49,8 @@ const MainTabsScreen = TabNavigator({
 		labelStyle: styles.labelStyle,
 	},
 	animationEnabled: true,
-	tabBarPosition: 'top',
+  tabBarPosition: 'top',
+  tabBarComponent: TabBarTop,
 	lazy: true,
 });
 
@@ -71,8 +72,10 @@ const GistFileContentAndCommentsScreen = TabNavigator({
 		showLabel: true,
 		tintColor: 'blue',
 		style: styles.tabStyle,
-		labelStyle: styles.labelStyle,
-	},
+    labelStyle: styles.labelStyle,
+  },
+  tabBarPosition: 'top',
+  tabBarComponent: TabBarTop,
 });
 
 const MainScreen = StackNavigator({

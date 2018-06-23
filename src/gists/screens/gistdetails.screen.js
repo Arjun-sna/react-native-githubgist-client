@@ -82,7 +82,7 @@ class GistDetails extends React.Component {
 		const { totalFileSize } = processFiles(gistData.files);
 
 		return (
-			<View>
+			<View style={{backgroundColor: '#FFFFFF'}}>
 				<Header
 					userImage={!isEmpty(owner) && owner.avatar_url}
 					userName={isEmpty(owner) ? 'Anonymous' : owner.login}
