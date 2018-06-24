@@ -29,6 +29,7 @@
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-cardview": "^1.1.5",
+    "react-native-code-push": "^5.3.4",
     "react-native-config": "^0.11.5",
     "react-native-cookies": "^3.2.0",
     "react-native-elements": "^0.19.1",
