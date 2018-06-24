@@ -34,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG),
+            new CodePush(BuildConfig.CODEPUSH_ANDROID_KEY, getApplicationContext(), BuildConfig.DEBUG),
             new ReactNativeConfigPackage(),
             new VectorIconsPackage(),
             new RNCardViewPackage(),
