@@ -1502,7 +1502,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.codebrahma.githubgist.dev;
-				PRODUCT_NAME = githubgist;
+				PRODUCT_NAME = GithubGist;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1532,7 +1532,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.codebrahma.githubgist;
-				PRODUCT_NAME = githubgist;
+				PRODUCT_NAME = GithubGist;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1830,7 +1830,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.codebrahma.githubgist.staging;
-				PRODUCT_NAME = githubgist;
+				PRODUCT_NAME = GithubGist;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Staging;
