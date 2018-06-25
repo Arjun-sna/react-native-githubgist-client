@@ -59,18 +59,6 @@ class GistDetails extends React.Component {
 						</TouchableOpacity>
 					)
 				}
-				<Icon
-					name="globe"
-					size={20}
-				/>
-				<Icon
-					name="share"
-					size={20}
-				/>
-				<MaterialIcon
-					name="delete"
-					size={20}
-				/>
 			</ToolbarContentContainer>
 		);
 	}
