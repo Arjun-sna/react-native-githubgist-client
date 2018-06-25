@@ -38,7 +38,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "githubgist.app"
+               BuildableName = "GithubGist.app"
                BlueprintName = "githubgist"
                ReferencedContainer = "container:githubgist.xcodeproj">
             </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "githubgist.app"
+            BuildableName = "GithubGist.app"
             BlueprintName = "githubgist"
             ReferencedContainer = "container:githubgist.xcodeproj">
          </BuildableReference>
@@ -103,7 +103,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "githubgist.app"
+            BuildableName = "GithubGist.app"
             BlueprintName = "githubgist"
             ReferencedContainer = "container:githubgist.xcodeproj">
          </BuildableReference>
@@ -122,7 +122,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "githubgist.app"
+            BuildableName = "GithubGist.app"
             BlueprintName = "githubgist"
             ReferencedContainer = "container:githubgist.xcodeproj">
          </BuildableReference>
