@@ -4,7 +4,6 @@ import { AsyncStorage } from 'react-native';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import Reactotron from 'reactotron-react-native'
 import { rootReducer } from './root.reducer';
 import rootSaga from './root.saga';
 
@@ -16,6 +15,7 @@ const getMiddlewares = () => {
 	if (__DEV__) {
 		middlewares.push(createLogger());
 	}
+
 	return applyMiddleware(...middlewares);
 };
 
@@ -28,9 +28,10 @@ const getEnhancers = () => {
 const persistConfig = {
 	key: 'root',
 	storage: AsyncStorage,
-}
+	blacklist: ['gistComments'],
+};
 
-export default getStore = async () => {
+export default async() => {
 	let store;
 
 	if (__DEV__) {

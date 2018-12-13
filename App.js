@@ -1,18 +1,15 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
+import { View } from 'react-native';
+import codePush from 'react-native-code-push';
 import Root from './src/index';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
+const CodePushApp = codePush(codePushOptions)(Root);
 
 const App = () => (
-  <View style={styles.container}>
-    <Root />
-  </View>
+	<View style={{ flex: 1 }}>
+		<CodePushApp />
+	</View>
 );
 
 export default App;

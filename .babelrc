@@ -2,10 +2,19 @@
   "presets": [
     "babel-preset-react-native-stage-0/decorator-support"
   ],
+  "plugins": [["babel-plugin-root-import",[{
+    "rootPathPrefix": "~",
+    "rootPathSuffix": "src"
+  }]]],
   "env": {
     "development": {
       "plugins": [
-        "transform-react-jsx-source"
+				"transform-react-jsx-source",
+        "functional-hmr",
+        ["babel-plugin-root-import",{
+          "rootPathPrefix": "~",
+          "rootPathSuffix": "src"
+        }]
       ]
     }
   }

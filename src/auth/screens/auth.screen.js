@@ -12,10 +12,10 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
 import CookieManager from 'react-native-cookies';
+import Config from 'react-native-config'; 
 import queryString from 'query-string';
-import { colors } from '../../config'
+import { colors } from '../../config';
 import navigatorService from '../../utils/navigatorService';
-import { CLIENT_ID } from '../../api';
 
 let stateRandom = Math.random().toString();
 
@@ -52,11 +52,11 @@ const LoaderText = styled.Text`
 `;
 
 const ViewContainer = styled.View`
-  flex: 1;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-  background-color: ${colors.white};
+	flex: 1;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: stretch;
+	background-color: ${colors.white};
 `;
 
 const StyledButton = styled(Button).attrs({
@@ -71,16 +71,15 @@ const StyledButton = styled(Button).attrs({
 	},
 	textStyle: {
 		fontSize: 12,
-	}
-}) ``;
+	},
+})``;
 
 class Auth extends React.Component {
 	constructor(props) {
-		console.log('New created')
 		super(props);
 		this.state = {
 
-		}
+		};
 	}
 
 	toggleCancelButton = (e, disabled) => {
@@ -92,7 +91,6 @@ class Auth extends React.Component {
 	}
 
 	handleOpenURL = ({ url }) => {
-		console.log('handle url method ' + url)
 		if (url && url.substring(0, 12) === 'gitgistrn://') {
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
 			const { state, code } = queryString.parse(queryStringFromUrl);
@@ -107,23 +105,21 @@ class Auth extends React.Component {
 
 				stateRandom = Math.random().toString();
 				this.props.login(code, state);
-				console.log('Here handle url ' + code + ' ' + state)
 				// resetNavigationTo('Main', this.props.navigation);
 				// CookieManager.clearAll().then(() => {
-					this.props.login(code, state);
+				// this.props.login(code, state);
 				// });
 			}
 		}
 	}
 
 	onNavigationStateChange = navState => {
-		console.log('Navigation state change')
 		const url = navState.url;
 
 		this.handleOpenURL({ url });
 	};
 
-	renderLoading() {
+	renderLoading = () => {
 		return (
 			<BrowserLoader>
 				<LoaderText>Loading...</LoaderText>
@@ -136,18 +132,15 @@ class Auth extends React.Component {
 		if (this.props.isAuthenticated) {
 			// console.log('Resetting  ain');
 			// navigatorService.printRoutes();
-			navigatorService.reset('Main');
-		} else {
-			if (Platform.OS === 'android') {
-				Linking.addEventListener('url', this.handleOpenURL);
-				Linking.getInitialURL().then(url => {
-					if (url) {
-						console.log('Linking')
-
-						this.handleOpenURL({ url });
-					}
-				});
-			}
+			navigatorService.reset('Home');
+		} else if (Platform.OS === 'android') {
+			Linking.addEventListener('url', this.handleOpenURL);
+			Linking.getInitialURL().then(url => {
+				if (url) {
+					console.log('Linking');
+					this.handleOpenURL({ url });
+				}
+			});
 		}
 	}
 
@@ -158,7 +151,8 @@ class Auth extends React.Component {
 	}
 
 	render() {
-		console.log('rendering aut ' + this.shouldShowLogin());
+		console.log(`rendering aut ${this.shouldShowLogin()}`);
+
 		return (
 			<ViewContainer>
 				{this.shouldShowLogin() && (
@@ -166,7 +160,7 @@ class Auth extends React.Component {
 						<BrowserSection>
 							<WebView
 								source={{
-									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
+									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${Config.CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
 								}}
 								onLoadStart={e => this.toggleCancelButton(e, true)}
 								onLoadEnd={e => this.toggleCancelButton(e, false)}
@@ -180,7 +174,7 @@ class Auth extends React.Component {
 							<StyledButton
 								title="Cancel"
 								disabled={this.state.cancelDisabled}
-								onPress={() => { console.log('press'); this.props.login('da', 'adf') }}
+								onPress={() => { console.log('press'); this.props.login('da', 'adf'); }}
 							/>
 						</ContentSection>
 					</SignInContainer>)}
@@ -190,7 +184,7 @@ class Auth extends React.Component {
 					)
 				}
 			</ViewContainer>
-		)
+		);
 	}
 
 	componentWillUnmount() {
@@ -198,11 +192,11 @@ class Auth extends React.Component {
 			Linking.removeEventListener('url', this.handleOpenURL);
 		}
 	}
-};
+}
 
 const mapStateToProps = state => ({
 	isRequestInProgress: state.auth.inprogress || state.loggedInUser.inprogress,
-	isAuthenticated: state.auth.isAuthenticated
+	isAuthenticated: state.auth.isAuthenticated,
 });
 
 const mapStateToDispatch = dispatch => ({

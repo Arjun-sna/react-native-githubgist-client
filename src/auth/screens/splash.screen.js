@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Image } from 'react-native';
-import { colors } from '../../config'
+import { colors } from '../../config';
 
 const LogoContainer = styled.View`
 	background-color: ${colors.white};

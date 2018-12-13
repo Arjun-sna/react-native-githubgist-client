@@ -83,3 +83,7 @@ haste-map-react-native-packager*
 .idea
 
 coverage
+
+.env.dev
+.env.staging
+.env.prod
