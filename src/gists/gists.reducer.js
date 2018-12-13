@@ -8,6 +8,10 @@ import {
 	fetchInitialFavoriteValue,
 } from './gists.actiontype';
 
+const gistListInitialState = {
+  gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true,
+}
+
 const setInProgressState = state => ({
 	...state,
 	inProgress: true,
@@ -85,25 +89,19 @@ export default {
 		[userGistsFetch.successType]: setGistData,
 		[userGistsFetch.errorType]: setError,
 		CLEAR_CACHE: clearCache,
-	}, {
-		gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true,
-	}),
+	}, gistListInitialState),
 	publicGistsData: createReducer({
 		[publicGistsFetch.progressType]: setInProgressState,
 		[publicGistsFetch.successType]: setGistData,
 		[publicGistsFetch.errorType]: setError,
 		CLEAR_CACHE: clearCache,
-	}, {
-		gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true,
-	}),
+	}, gistListInitialState),
 	starredGistsData: createReducer({
 		[starredGistsFetch.progressType]: setInProgressState,
 		[starredGistsFetch.successType]: setGistData,
 		[starredGistsFetch.errorType]: setError,
 		CLEAR_CACHE: clearCache,
-	}, {
-		gists: [], inProgress: false, nextPageNo: 1, hasMoreData: true,
-	}),
+	}, gistListInitialState),
 	gistComments: createReducer(
 		{
 			[fetchGistComments.progressType]: setInProgressState,
