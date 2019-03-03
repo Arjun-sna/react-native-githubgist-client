@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  View,
   Image,
   TouchableOpacity,
   StatusBar,
@@ -7,6 +8,7 @@ import {
   StyleSheet
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
+import Icon from 'react-native-vector-icons/Octicons'
 
 type Props = {
   navigation: {
@@ -41,24 +43,29 @@ class Navbar extends Component<Props> {
     }
     StatusBar.setBarStyle('light-content');
     return (
-      <NavigationBar
-        statusBar={{
-          tintColor: '#5481b8',
-          style: 'light-content',
-        }}
-        title={{
-          title: 'GithubGist',
-          style: styles.navBarTitle,
-        }}
-        style={styles.navBar}
-      />
+      <View style={styles.navBar}>
+        <Icon
+          name="logo-github"
+          size={100}
+          color='#FFFFFF'
+          style={{height: 40}}/>
+        <Icon
+          name="logo-gist"
+          size={58}
+          color='#FFFFFF'          
+          style={{height: 40}} />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   navBar: {
-    backgroundColor: '#5481b8',
+    backgroundColor: '#000000',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    height: 50,
   },
   navBarTitle: {
     fontSize: 20,
