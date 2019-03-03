@@ -1501,7 +1501,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.codebrahma.githubgist.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.githubgist.staging;
 				PRODUCT_NAME = GithubGist;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1531,7 +1531,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.codebrahma.githubgist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.githubgist;
 				PRODUCT_NAME = GithubGist;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1829,7 +1829,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.codebrahma.githubgist.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = com.githubgist.staging;
 				PRODUCT_NAME = GithubGist;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
