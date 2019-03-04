@@ -14,12 +14,12 @@ import Navbar from './gists/screens/components/Navbar';
 
 const styles = StyleSheet.create({
 	tabStyle: {
-		backgroundColor: '#516790',
+		backgroundColor: '#000000',
 	},
 	labelStyle: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		color: '#fff',
+		color: '#FFFFFF',
 	},
 });
 

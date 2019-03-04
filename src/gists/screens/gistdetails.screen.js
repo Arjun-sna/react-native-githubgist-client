@@ -11,6 +11,7 @@ import Toolbar from './components/Toolbar';
 import { processFiles } from '../../shared/processFiles';
 import GistFileItem from './components/GistFileItem';
 import { toggleFavoriteGist, fetchInitialFavoriteValue } from '../gists.actiontype';
+import { colors } from '../../config';
 
 const ToolbarContentContainer = styled.View`
 	display: flex;
@@ -70,7 +71,7 @@ class GistDetails extends React.Component {
 		const { totalFileSize } = processFiles(gistData.files);
 
 		return (
-			<View style={{backgroundColor: '#5481b8'}}>
+			<View style={{backgroundColor: colors.black}}>
 				<Header
 					userImage={!isEmpty(owner) && owner.avatar_url}
 					userName={isEmpty(owner) ? 'Anonymous' : owner.login}
