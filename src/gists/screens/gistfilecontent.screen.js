@@ -14,7 +14,6 @@ import LoadingView from './components/LoadingView';
 const Container = styled.View`
 	flex: 1;
 	background: #FFFFFF;
-	padding-top: 20px;
 `;
 
 const syntaxHighlighterStyle = {

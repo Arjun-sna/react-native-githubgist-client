@@ -22,8 +22,7 @@ import { colors } from '../../config';
 import GistOptions from './components/gistoptions.screen';
 
 const CardContainer = styled(CardView)`
-	padding: 3%;
-	margin: 3px 5px;
+	padding: 2%;
 `;
 
 const Comment = styled.Text`
@@ -153,27 +152,34 @@ class GistCommentsScreen extends React.Component {
   				/>
   			</EndOfViewStyle>
   		);
-  	default:
-  		return (
-  			<TouchableOpacity
-  				style={{ flex: 1 }}
-  				onLongPress={() => this.openGistOptions(item.id, item.user.id)}>
-  				<CardContainer
-  					cardElevation={2}
-  					cardMaxElevation={2}
-  					cornerRadius={5}
-  				>
-  					<UserProfile>
-  						<UserProfilePicture source={{ uri: item.user.avatar_url }} />
-  						<DetailsContainer>
-  							<Username>{item.user.login}</Username>
-  							<CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
-  						</DetailsContainer>
-  					</UserProfile>
-  					<Comment>{item.body}</Comment>
-  				</CardContainer>
-  			</TouchableOpacity>
-  		);
+    default: {
+      const { currentUserId } = this.props;
+      const commentUserId = item.user.id;
+
+      return (
+        <TouchableOpacity
+          activeOpacity={commentUserId === currentUserId ? 0.8 : 1}
+          onLongPress={
+              commentUserId === currentUserId ? 
+                () => this.openGistOptions(item.id, item.user.id) : undefined
+            }
+          >
+          <CardContainer
+            cardElevation={2}
+            cardMaxElevation={2}
+            cornerRadius={5}
+          >
+            <UserProfile>
+              <UserProfilePicture source={{ uri: item.user.avatar_url }} />
+              <DetailsContainer>
+                <Username>{item.user.login}</Username>
+                <CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
+              </DetailsContainer>
+            </UserProfile>
+            <Comment>{item.body}</Comment>
+          </CardContainer>
+        </TouchableOpacity>
+      )}
   	}
   }
   

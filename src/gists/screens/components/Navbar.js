@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Icon from 'react-native-vector-icons/Octicons'
+import { colors } from '../../../config'; 
 
 type Props = {
   navigation: {
@@ -38,7 +39,7 @@ class Navbar extends Component<Props> {
 
   render() {
     if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor('#516790', true);
+      StatusBar.setBackgroundColor(colors.black, true);
       StatusBar.setTranslucent(false);
     }
     StatusBar.setBarStyle('light-content');
