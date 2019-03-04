@@ -29,13 +29,13 @@ const CardContainer = styled(CardView)`
 const Comment = styled.Text`
 	font-size: 15;
 	color: black;
-	padding: 2%;
+	padding: 2% 0;
 `;
 
 const UserProfilePicture = styled.Image`
-	height: 50;
-	width: 50;
-	borderRadius: 25;
+	height: 30;
+	width: 30;
+	borderRadius: 15;
 `;
 
 const UserProfile = styled.View`
@@ -51,11 +51,12 @@ const DetailsContainer = styled.View`
 
 const Username = styled.Text`
 	font-size: 14;
-	padding-bottom: 1%;
+  padding-bottom: 1%;
+  fontWeight: bold;
 `;
 
 const CommentDate = styled.Text`
-	font-size: 14;
+	fontSize: 12;
 `;
 
 const InputContainer = styled.View`
