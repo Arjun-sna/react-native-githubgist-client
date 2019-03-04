@@ -2,19 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import BackButton from './BackButton';
-import { normalizeFont } from '../../../config';
+import { normalizeFont, colors } from '../../../config';
 
 const ToolbarContainer = styled.View`
 	height: 44;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
-	align-items: center;
+  align-items: center;
+  background-color: ${colors.black}
 `;
 
 const Title = styled.Text`
 	font-size: ${normalizeFont(16)}
-	font-weight: bold;
+  font-weight: bold;
+  color: ${colors.white}
 `;
 
 const Toolbar = props => {
