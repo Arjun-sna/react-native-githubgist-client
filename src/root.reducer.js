@@ -5,7 +5,7 @@ import initReducer from './init/init.reducer';
 
 export const rootReducer = combineReducers({
   ...initReducer,
-	...authReducer,
-	...gistsReducer,
+  ...authReducer,
+  ...gistsReducer,
 });
 

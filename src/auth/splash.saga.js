@@ -22,7 +22,7 @@ export default function* appLoader() {
       ]);
     }
     navigatorService.reset('Login');
-  } catch(e) {
+  } catch (e) {
     console.log('error in sage', e.message);
   }
 }

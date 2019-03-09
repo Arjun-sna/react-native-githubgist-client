@@ -10,43 +10,43 @@ import rootSaga from './root.saga';
 const sagaMiddleware = createSagaMiddleware();
 
 const getMiddlewares = () => {
-	const middlewares = [sagaMiddleware];
+  const middlewares = [sagaMiddleware];
 
-	if (__DEV__) {
-		middlewares.push(createLogger());
-	}
+  if (__DEV__) {
+    middlewares.push(createLogger());
+  }
 
-	return applyMiddleware(...middlewares);
+  return applyMiddleware(...middlewares);
 };
 
 const getEnhancers = () => {
-	const enhancers = [];
+  const enhancers = [];
 
-	return enhancers;
+  return enhancers;
 };
 
 const persistConfig = {
-	key: 'root',
-	storage: AsyncStorage,
-	blacklist: ['gistComments'],
+  key: 'root',
+  storage: AsyncStorage,
+  blacklist: ['gistComments'],
 };
 
 export default async() => {
-	let store;
+  let store;
 
-	if (__DEV__) {
-		store = createStore(
-			persistReducer(persistConfig, rootReducer),
-			compose(getMiddlewares(), ...getEnhancers())
-		);
-	} else {
-		store = createStore(
-			persistReducer(persistConfig, rootReducer),
-			composeWithDevTools(getMiddlewares(), ...getEnhancers())
-		);
-	}
-	sagaMiddleware.run(rootSaga);
-	const persistor = persistStore(store);
+  if (__DEV__) {
+    store = createStore(
+      persistReducer(persistConfig, rootReducer),
+      compose(getMiddlewares(), ...getEnhancers())
+    );
+  } else {
+    store = createStore(
+      persistReducer(persistConfig, rootReducer),
+      composeWithDevTools(getMiddlewares(), ...getEnhancers())
+    );
+  }
+  sagaMiddleware.run(rootSaga);
+  const persistor = persistStore(store);
 
-	return { persistor, store };
+  return { persistor, store };
 };

@@ -6,57 +6,57 @@ import pluralize from 'pluralize';
 import { colors } from '../../../config';
 
 const Container = styled.TouchableOpacity`
-	flex-direction: column;
-	padding: 5px 10px;
+  flex-direction: column;
+  padding: 5px 10px;
 `;
 
 const Title = styled.Text`
-	font-weight: bold;
-	margin: 3px 0;
-	width: 80%;
-	color: ${colors.black}
+  font-weight: bold;
+  margin: 3px 0;
+  width: 80%;
+  color: ${colors.black}
 `;
 
 const DetailsContainer = styled.View`;
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  flex-direction: row;
 `;
 
 const DetailsText = styled.Text`
-	flex: 1;
-	margin-right: 5px;
-	text-align: ${props => props.right ? 'right' : 'left'};
-	color: ${colors.greyDark}	
+  flex: 1;
+  margin-right: 5px;
+  text-align: ${props => props.right ? 'right' : 'left'};
+  color: ${colors.greyDark}	
 `;
 
 class GistOverview extends React.Component {
-	// shouldComponentUpdate(nextProps) {
-	// 	return !(isEqual(this.props.gistData, nextProps.gistData));
-	// }
+  // shouldComponentUpdate(nextProps) {
+  // 	return !(isEqual(this.props.gistData, nextProps.gistData));
+  // }
 
-	render() {
-		const {
-			gistData,
-			onClickGist,
-		} = this.props;
+  render() {
+    const {
+      gistData,
+      onClickGist,
+    } = this.props;
 
-		const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
+    const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
 
-		return (
-			<Container onPress={() => onClickGist(gistData)}>
-				<Title>{title}</Title>
-				<DetailsContainer>
-					<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
-					<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
-				</DetailsContainer>
-			</Container>
-		);
-	}
+    return (
+      <Container onPress={() => onClickGist(gistData)}>
+        <Title>{title}</Title>
+        <DetailsContainer>
+          <DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
+          <DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
+        </DetailsContainer>
+      </Container>
+    );
+  }
 }
 
 GistOverview.propTypes = {
-	gistData: PropTypes.instanceOf(Object).isRequired,
-	onClickGist: PropTypes.func.isRequired,
+  gistData: PropTypes.instanceOf(Object).isRequired,
+  onClickGist: PropTypes.func.isRequired,
 };
 
 export default GistOverview;

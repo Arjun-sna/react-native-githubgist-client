@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   StatusBar,
   Platform,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
-import Icon from 'react-native-vector-icons/Octicons'
-import { colors } from '../../../config'; 
+import Icon from 'react-native-vector-icons/Octicons';
+import { colors } from '../../../config';
 
 type Props = {
   navigation: {
@@ -20,6 +20,7 @@ type Props = {
 class Navbar extends Component<Props> {
   onMenuPress() {
     const { navigation } = this.props;
+
     navigation.navigate('DrawerOpen');
   }
 
@@ -43,18 +44,19 @@ class Navbar extends Component<Props> {
       StatusBar.setTranslucent(false);
     }
     StatusBar.setBarStyle('light-content');
+
     return (
       <View style={styles.navBar}>
         <Icon
           name="logo-github"
           size={100}
-          color='#FFFFFF'
-          style={{height: 40}}/>
+          color="#FFFFFF"
+          style={{ height: 40 }} />
         <Icon
           name="logo-gist"
           size={58}
-          color='#FFFFFF'          
-          style={{height: 40}} />
+          color="#FFFFFF"
+          style={{ height: 40 }} />
       </View>
     );
   }
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
   navBarTitle: {
     fontSize: 20,
     color: 'white',
-    alignSelf: 'stretch',    
+    alignSelf: 'stretch',
     textAlign: 'center',
   },
   touchableOpacity: {

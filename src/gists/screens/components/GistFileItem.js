@@ -15,31 +15,31 @@ const CardContainer = styled(CardView)`
 // `;
 
 const MetaContainer = styled.View`
-	flex: 1;
-	display: flex;
+  flex: 1;
+  display: flex;
   flex-direction: row;
   padding: 2% 0;
 `;
 
 const FileName = styled.Text`
-	flex: 1;
-	font-weight: bold;
-	font-size: ${normalizeFont(14)};
+  flex: 1;
+  font-weight: bold;
+  font-size: ${normalizeFont(14)};
 `;
 
 const MetaDetail = styled.Text`
-	flex: 1;
-	font-size: ${normalizeFont(12)};
-	color: ${colors.greyDark}
+  flex: 1;
+  font-size: ${normalizeFont(12)};
+  color: ${colors.greyDark}
 `;
 
 type Props = {
-	fileData: Object,
-	onFileItemPress: () => void,
+  fileData: Object,
+  onFileItemPress: () => void,
 }
 
 export default ({ fileData, onFileItemPress }: Props) => {
-	return (
+  return (
     <TouchableOpacity onPress={() => onFileItemPress(fileData)}>
       <CardContainer
         cardElevation={2}
@@ -51,7 +51,7 @@ export default ({ fileData, onFileItemPress }: Props) => {
           <MetaDetail>{fileData.language}</MetaDetail>
           <MetaDetail>{fileSize(fileData.size)}</MetaDetail>
         </MetaContainer>
-		  </CardContainer>
+      </CardContainer>
     </TouchableOpacity>
-	);
+  );
 };

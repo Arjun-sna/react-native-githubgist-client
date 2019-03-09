@@ -1,3 +1,3 @@
 export const clearCache = () => ({
-	type: 'CLEAR_CACHE',
+  type: 'CLEAR_CACHE',
 });

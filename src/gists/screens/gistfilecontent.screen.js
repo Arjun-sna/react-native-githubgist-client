@@ -12,115 +12,115 @@ import { fetchFileContent } from './../../api';
 import LoadingView from './components/LoadingView';
 
 const Container = styled.View`
-	flex: 1;
-	background: #FFFFFF;
+  flex: 1;
+  background: #FFFFFF;
 `;
 
 const syntaxHighlighterStyle = {
-	...GithubStyle,
-	hljs: {
-		background: 'white',
-	},
+  ...GithubStyle,
+  hljs: {
+    background: 'white',
+  },
 };
 
 const CodeContainer = styled.View`
-	flex: 1;
-	padding-vertical: 10;
-	padding-horizontal: 10;
-	margin-bottom: 10;
+  flex: 1;
+  padding-vertical: 10;
+  padding-horizontal: 10;
+  margin-bottom: 10;
 `;
 
 const ErrorContainer = styled.View`
-	flex: 1;
-	align-items: center;
-	justify-content: center;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ErrorText = styled.Text`
-	text-align: center;
-	color: ${colors.greyDark};
-	font-size: ${normalizeFont(14)};
+  text-align: center;
+  color: ${colors.greyDark};
+  font-size: ${normalizeFont(14)};
 `;
 
 class GistFileScreen extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isLoading: false,
-			error: '',
-		};
-		this.fileContent = '';
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      error: '',
+    };
+    this.fileContent = '';
+  }
 
-	componentWillMount() {
-		this.setState({
-			isLoading: true,
-			error: '',
-		});
+  componentWillMount() {
+    this.setState({
+      isLoading: true,
+      error: '',
+    });
 
-		const { navigation, accessToken } = this.props;
-		const fileData = navigation.getParam('fileData', {});
+    const { navigation, accessToken } = this.props;
+    const fileData = navigation.getParam('fileData', {});
 
-		fetchFileContent(accessToken, fileData.raw_url)
-			.then(response => {
-				this.fileContent = response;
-				this.setState({
-					isLoading: false,
-				});
-			})
-			.catch(err => {
-				console.log(`err ${JSON.stringify(err)}`);
-				this.setState({
-					error: err,
-				});
-			});
-	}
+    fetchFileContent(accessToken, fileData.raw_url)
+      .then(response => {
+        this.fileContent = response;
+        this.setState({
+          isLoading: false,
+        });
+      })
+      .catch(err => {
+        console.log(`err ${JSON.stringify(err)}`);
+        this.setState({
+          error: err,
+        });
+      });
+  }
 
-	render() {
-		const { navigation } = this.props;
-		const fileName = navigation.state.params.fileData.filename;
-		const fileType = fileName.split('.').pop();
-		const { isLoading, error } = this.state;
+  render() {
+    const { navigation } = this.props;
+    const fileName = navigation.state.params.fileData.filename;
+    const fileType = fileName.split('.').pop();
+    const { isLoading, error } = this.state;
 
-		return (
-			<Container>
-				<Toolbar
-					toolbarContent={fileName}
-					onBackPress={() => navigation.goBack()}
-				/>
-				{ isLoading && <LoadingView animating center />}
-				{ !isLoading && !isEmpty(error) &&
-					<ErrorContainer>
-						<ErrorText>{error}</ErrorText>
-					</ErrorContainer>
-				}
-				{ !isLoading && !error &&
-					<ScrollView>
-						<CodeContainer>
-							<SyntaxHighlighter
-								language={fileType}
-								CodeTag={Text}
-								codeTagProps={{ style: { paddingRight: 15, paddingBottom: 0 } }}
-								style={syntaxHighlighterStyle}
-								fontSize={normalizeFont(12)}
-							>
-								{this.fileContent}
-							</SyntaxHighlighter>
-						</CodeContainer>
-					</ScrollView>
-				}
-			</Container>
-		);
-	}
+    return (
+      <Container>
+        <Toolbar
+          toolbarContent={fileName}
+          onBackPress={() => navigation.goBack()}
+        />
+        { isLoading && <LoadingView animating center />}
+        { !isLoading && !isEmpty(error) &&
+          <ErrorContainer>
+            <ErrorText>{error}</ErrorText>
+          </ErrorContainer>
+        }
+        { !isLoading && !error &&
+          <ScrollView>
+            <CodeContainer>
+              <SyntaxHighlighter
+                language={fileType}
+                CodeTag={Text}
+                codeTagProps={{ style: { paddingRight: 15, paddingBottom: 0 } }}
+                style={syntaxHighlighterStyle}
+                fontSize={normalizeFont(12)}
+              >
+                {this.fileContent}
+              </SyntaxHighlighter>
+            </CodeContainer>
+          </ScrollView>
+        }
+      </Container>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-	accessToken: state.auth.access_token,
+  accessToken: state.auth.access_token,
 });
 
 GistFileScreen.propTypes = {
-	navigation: PropTypes.instanceOf(Object).isRequired,
-	accessToken: PropTypes.string.isRequired,
+  navigation: PropTypes.instanceOf(Object).isRequired,
+  accessToken: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, null)(GistFileScreen);
