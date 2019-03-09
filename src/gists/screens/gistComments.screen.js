@@ -11,7 +11,7 @@ import {
   Modal,
 } from 'react-native';
 import styled from 'styled-components';
-import CardView from 'react-native-cardview';
+import CardContainer from './components/CardContainer';
 import TimeAgo from 'time-ago';
 import concat from 'lodash/concat';
 import uniqBy from 'lodash/uniqBy';
@@ -21,43 +21,36 @@ import ListEmptyComponent from './components/EmptyListComponent';
 import { colors } from '../../config';
 import GistOptions from './components/gistoptions.screen';
 
-const CardContainer = styled(CardView)`
-  padding: 2%;
-`;
-
+const Container = styled(CardContainer)`
+  padding: 8px;
+`
 const Comment = styled.Text`
   font-size: 15;
   color: black;
-  padding: 2% 0;
+  padding: 0 0 2% 0;
 `;
-
 const UserProfilePicture = styled.Image`
   height: 30;
   width: 30;
   borderRadius: 15;
 `;
-
 const UserProfile = styled.View`
   display: flex;
   flex: 1;
   flex-direction: row;
   align-items: center;
 `;
-
 const DetailsContainer = styled.View`
   padding-left: 2%;
 `;
-
 const Username = styled.Text`
   font-size: 14;
   padding-bottom: 1%;
   fontWeight: bold;
 `;
-
 const CommentDate = styled.Text`
   fontSize: 12;
 `;
-
 const InputContainer = styled.View`
   display: flex;
   flex: 1;
@@ -67,13 +60,11 @@ const InputContainer = styled.View`
   position: absolute;
   bottom: 0;
 `;
-
 const Button = styled.TouchableOpacity`
   padding: 3%;
   align-self: center;
   background-color: ${colors.themeBlue};
 `;
-
 const EndOfViewStyle = styled.View`
   flex: 1;
   justify-content: center;
@@ -93,6 +84,7 @@ class GistCommentsScreen extends React.Component {
       commentId: null,
     };
   }
+
   componentDidMount() {
     this.fetchComments(true);
   }
@@ -157,29 +149,23 @@ class GistCommentsScreen extends React.Component {
       const commentUserId = item.user.id;
 
       return (
-        <TouchableOpacity
+        <Container
           activeOpacity={commentUserId === currentUserId ? 0.8 : 1}
-          onLongPress={
+          onPress={
             commentUserId === currentUserId ?
               () => this.openGistOptions(item.id, item.user.id) : undefined
-          }
-        >
-          <CardContainer
-            cardElevation={2}
-            cardMaxElevation={2}
-            cornerRadius={5}
-          >
-            <UserProfile>
-              <UserProfilePicture source={{ uri: item.user.avatar_url }} />
-              <DetailsContainer>
-                <Username>{item.user.login}</Username>
-                <CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
-              </DetailsContainer>
-            </UserProfile>
-            <Comment>{item.body}</Comment>
-          </CardContainer>
-        </TouchableOpacity>
-      ); }
+          }>
+          <UserProfile>
+            <UserProfilePicture source={{ uri: item.user.avatar_url }} />
+            <DetailsContainer>
+              <Username>{item.user.login}</Username>
+              <CommentDate>{TimeAgo.ago(item.created_at)}</CommentDate>
+            </DetailsContainer>
+          </UserProfile>
+          <Comment>{item.body}</Comment>
+        </Container>
+        ); 
+      }
     }
   }
 
