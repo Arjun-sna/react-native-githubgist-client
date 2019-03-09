@@ -11,7 +11,6 @@ import {
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from 'react-native-elements';
-import CookieManager from 'react-native-cookies';
 import Config from 'react-native-config';
 import queryString from 'query-string';
 import { colors } from '../../config';

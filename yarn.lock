@@ -3336,7 +3336,7 @@ inquirer@^6.2.2:
     strip-ansi "^5.0.0"
     through "^2.3.6"
 
-invariant@^2.0.0, invariant@^2.1.0, invariant@^2.2.2:
+invariant@^2.0.0, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -4836,12 +4836,6 @@ react-native-code-push@^5.3.4:
 react-native-config@0.11.7:
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.7.tgz#a2b323f2ecd76a4df88cbb6bc86eaa2ef9febee7"
-
-react-native-cookies@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-cookies/-/react-native-cookies-3.2.0.tgz#1079d4d368bb287d1c8a93f3b9b60a4bde659966"
-  dependencies:
-    invariant "^2.1.0"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
