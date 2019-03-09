@@ -11,97 +11,98 @@ import Toolbar from './components/Toolbar';
 import { processFiles } from '../../shared/processFiles';
 import GistFileItem from './components/GistFileItem';
 import { toggleFavoriteGist, fetchInitialFavoriteValue } from '../gists.actiontype';
+import { colors } from '../../config';
 
 const ToolbarContentContainer = styled.View`
-	display: flex;
-	flex: 1;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 class GistDetails extends React.Component {
-	state = {
-		iconName: this.props.isStarred ? 'star' : 'star-o',
-	}
+  state = {
+    iconName: this.props.isStarred ? 'star' : 'star-o',
+  }
 
-	componentWillMount() {
-		this.props.checkIfGistIsStarred(this.props.navigation.getParam('gistData').id);
-	}
+  componentWillMount() {
+    this.props.checkIfGistIsStarred(this.props.navigation.getParam('gistData').id);
+  }
 
-	componentWillReceiveProps(nextProps) {
-		this.setState({
-			iconName: nextProps.isStarred ? 'star' : 'star-o',
-		});
-	}
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      iconName: nextProps.isStarred ? 'star' : 'star-o',
+    });
+  }
 
-	handleActionButtonClick = () => {
-		const { id } = this.props.navigation.getParam('gistData');
-		const action = (this.state.iconName === 'star') ?
-			{ type: 'unstar', iconName: 'star-o' } : { type: 'star', iconName: 'star' };
+  handleActionButtonClick = () => {
+    const { id } = this.props.navigation.getParam('gistData');
+    const action = (this.state.iconName === 'star') ?
+      { type: 'unstar', iconName: 'star-o' } : { type: 'star', iconName: 'star' };
 
-		this.props.toggleGist({ id, type: action.type });
-		this.setState({
-			iconName: action.iconName,
-		});
-	}
+    this.props.toggleGist({ id, type: action.type });
+    this.setState({
+      iconName: action.iconName,
+    });
+  }
 
-	renderToobarContent = () => {
-		return (
-			<ToolbarContentContainer>
-				{!this.props.inProgress &&
-					(
-						<TouchableOpacity	onPress={this.handleActionButtonClick}>
-							<Icon
-								name={this.state.iconName}
-								size={20}
-							/>
-						</TouchableOpacity>
-					)
-				}
-			</ToolbarContentContainer>
-		);
-	}
+  renderToobarContent = () => {
+    return (
+      <ToolbarContentContainer>
+        {!this.props.inProgress &&
+          (
+            <TouchableOpacity	onPress={this.handleActionButtonClick}>
+              <Icon
+                name={this.state.iconName}
+                size={20}
+              />
+            </TouchableOpacity>
+          )
+        }
+      </ToolbarContentContainer>
+    );
+  }
 
-	render() {
-		const { navigation } = this.props;
-		const gistData = navigation.getParam('gistData', {});
-		const { owner = {} } = gistData;
-		const { totalFileSize } = processFiles(gistData.files);
+  render() {
+    const { navigation } = this.props;
+    const gistData = navigation.getParam('gistData', {});
+    const { owner = {} } = gistData;
+    const { totalFileSize } = processFiles(gistData.files);
 
-		return (
-			<View style={{backgroundColor: '#5481b8'}}>
-				<Header
-					userImage={!isEmpty(owner) && owner.avatar_url}
-					userName={isEmpty(owner) ? 'Anonymous' : owner.login}
-					description={gistData.description}
-					createdAt={gistData.created_At}
-					gistSize={totalFileSize} />
-				<Toolbar
-					toolbarContent={this.renderToobarContent}
-					onBackPress={() => this.props.navigation.goBack()} />
-			</View>
-		);
-	}
+    return (
+      <View style={{ backgroundColor: colors.black }}>
+        <Header
+          userImage={!isEmpty(owner) && owner.avatar_url}
+          userName={isEmpty(owner) ? 'Anonymous' : owner.login}
+          description={gistData.description}
+          createdAt={gistData.created_At}
+          gistSize={totalFileSize} />
+        <Toolbar
+          toolbarContent={this.renderToobarContent}
+          onBackPress={() => this.props.navigation.goBack()} />
+      </View>
+    );
+  }
 }
 
 const mapDispatchToProps = dispatch => ({
-	toggleGist: data => dispatch(toggleFavoriteGist.action(data)),
-	checkIfGistIsStarred: id => dispatch(fetchInitialFavoriteValue.action(id)),
+  toggleGist: data => dispatch(toggleFavoriteGist.action(data)),
+  checkIfGistIsStarred: id => dispatch(fetchInitialFavoriteValue.action(id)),
 });
 
 const mapStateToProps = ({ initialFavoriteValue }) =>
-	({
-		isStarred: initialFavoriteValue.isStarred,
-		inProgress: initialFavoriteValue.inProgress,
-	});
+  ({
+    isStarred: initialFavoriteValue.isStarred,
+    inProgress: initialFavoriteValue.inProgress,
+  });
 
 GistDetails.propTypes = {
-	toggleGist: PropTypes.func.isRequired,
-	checkIfGistIsStarred: PropTypes.func.isRequired,
-	isStarred: PropTypes.bool.isRequired,
-	inProgress: PropTypes.bool.isRequired,
-	navigation: PropTypes.instanceOf(Object).isRequired,
+  toggleGist: PropTypes.func.isRequired,
+  checkIfGistIsStarred: PropTypes.func.isRequired,
+  isStarred: PropTypes.bool.isRequired,
+  inProgress: PropTypes.bool.isRequired,
+  navigation: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GistDetails);

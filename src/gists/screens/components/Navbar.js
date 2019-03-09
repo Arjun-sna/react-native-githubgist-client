@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {
+  View,
   Image,
   TouchableOpacity,
   StatusBar,
   Platform,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
+import Icon from 'react-native-vector-icons/Octicons';
+import { colors } from '../../../config';
 
 type Props = {
   navigation: {
@@ -17,6 +20,7 @@ type Props = {
 class Navbar extends Component<Props> {
   onMenuPress() {
     const { navigation } = this.props;
+
     navigation.navigate('DrawerOpen');
   }
 
@@ -36,34 +40,40 @@ class Navbar extends Component<Props> {
 
   render() {
     if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor('#516790', true);
+      StatusBar.setBackgroundColor(colors.black, true);
       StatusBar.setTranslucent(false);
     }
     StatusBar.setBarStyle('light-content');
+
     return (
-      <NavigationBar
-        statusBar={{
-          tintColor: '#5481b8',
-          style: 'light-content',
-        }}
-        title={{
-          title: 'GithubGist',
-          style: styles.navBarTitle,
-        }}
-        style={styles.navBar}
-      />
+      <View style={styles.navBar}>
+        <Icon
+          name="logo-github"
+          size={100}
+          color="#FFFFFF"
+          style={{ height: 40 }} />
+        <Icon
+          name="logo-gist"
+          size={58}
+          color="#FFFFFF"
+          style={{ height: 40 }} />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   navBar: {
-    backgroundColor: '#5481b8',
+    backgroundColor: '#000000',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    height: 50,
   },
   navBarTitle: {
     fontSize: 20,
     color: 'white',
-    alignSelf: 'stretch',    
+    alignSelf: 'stretch',
     textAlign: 'center',
   },
   touchableOpacity: {

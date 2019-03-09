@@ -4,59 +4,46 @@ import styled from 'styled-components';
 import moment from 'moment';
 import pluralize from 'pluralize';
 import { colors } from '../../../config';
-
-const Container = styled.TouchableOpacity`
-	flex-direction: column;
-	padding: 5px 10px;
-`;
+import CardContainer from './CardContainer';
 
 const Title = styled.Text`
-	font-weight: bold;
-	margin: 3px 0;
-	width: 80%;
-	color: ${colors.black}
+  font-weight: bold;
+  margin: 3px 0;
+  width: 80%;
+  color: ${colors.black}
 `;
 
 const DetailsContainer = styled.View`;
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  flex-direction: row;
 `;
 
 const DetailsText = styled.Text`
-	flex: 1;
-	margin-right: 5px;
-	text-align: ${props => props.right ? 'right' : 'left'};
-	color: ${colors.greyDark}	
+  flex: 1;
+  margin-right: 5px;
+  text-align: ${props => props.right ? 'right' : 'left'};
+  color: ${colors.greyDark}	
 `;
 
-class GistOverview extends React.Component {
-	// shouldComponentUpdate(nextProps) {
-	// 	return !(isEqual(this.props.gistData, nextProps.gistData));
-	// }
-
-	render() {
-		const {
-			gistData,
-			onClickGist,
-		} = this.props;
-
-		const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
-
-		return (
-			<Container onPress={() => onClickGist(gistData)}>
-				<Title>{title}</Title>
-				<DetailsContainer>
-					<DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
-					<DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
-				</DetailsContainer>
-			</Container>
-		);
-	}
-}
+const GistOverview = ({ gistData, onClickGist, dark }) => (
+  <CardContainer
+    dark={dark}
+    activeOpacity={0.8}
+    onPress={() => onClickGist(gistData)}>
+    <Title>
+      {gistData.description ? gistData.description : Object.keys(gistData.files)[0]}
+    </Title>
+    <DetailsContainer>
+      <DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
+      <DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
+    </DetailsContainer>
+  </CardContainer>
+);
 
 GistOverview.propTypes = {
-	gistData: PropTypes.instanceOf(Object).isRequired,
-	onClickGist: PropTypes.func.isRequired,
+  gistData: PropTypes.instanceOf(Object).isRequired,
+  onClickGist: PropTypes.func.isRequired,
+  dark: PropTypes.bool.isRequired,
 };
 
 export default GistOverview;

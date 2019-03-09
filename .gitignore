@@ -87,3 +87,6 @@ coverage
 .env.dev
 .env.staging
 .env.prod
+
+GithubGist.jks
+keystore.properties
