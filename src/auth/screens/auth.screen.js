@@ -91,24 +91,19 @@ class Auth extends React.Component {
 	}
 
 	handleOpenURL = ({ url }) => {
-		if (url && url.substring(0, 12) === 'gitgistrn://') {
+		if (url.startsWith(Config.REDIRECT_URI)) {
 			const [, queryStringFromUrl] = url.match(/\?(.*)/);
 			const { state, code } = queryString.parse(queryStringFromUrl);
-			const { auth, getUser, navigation } = this.props;
+			const { login, getUser, navigation } = this.props;
 
-			if (stateRandom === state) {
+      if (stateRandom === state) {
 				this.setState({
 					code,
 					showLoader: true,
 					loaderText: 'Please wait...',
 				});
-
-				stateRandom = Math.random().toString();
-				this.props.login(code, state);
-				// resetNavigationTo('Main', this.props.navigation);
-				// CookieManager.clearAll().then(() => {
-				// this.props.login(code, state);
-				// });
+        stateRandom = Math.random().toString();
+				login(code, state);
 			}
 		}
 	}
@@ -160,7 +155,7 @@ class Auth extends React.Component {
 						<BrowserSection>
 							<WebView
 								source={{
-									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${Config.CLIENT_ID}&redirect_uri=gitgistrn://welcome&scope=user%20gist&state=${stateRandom}`,
+									uri: `https://github.com/login/oauth/authorize?response_type=token&client_id=${Config.CLIENT_ID}&redirect_uri=${Config.REDIRECT_URI}&scope=user%20gist&state=${stateRandom}`,
 								}}
 								onLoadStart={e => this.toggleCancelButton(e, true)}
 								onLoadEnd={e => this.toggleCancelButton(e, false)}
