@@ -4,12 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import pluralize from 'pluralize';
 import { colors } from '../../../config';
-
-const Container = styled.TouchableOpacity`
-  flex-direction: column;
-  padding: 5px 10px;
-  background-color: ${props => props.dark ? colors.greyLight : colors.white}
-`;
+import CardContainer from './CardContainer';
 
 const Title = styled.Text`
   font-weight: bold;
@@ -31,7 +26,7 @@ const DetailsText = styled.Text`
 `;
 
 const GistOverview = ({ gistData, onClickGist, dark }) => (
-  <Container
+  <CardContainer
     dark={dark}
     activeOpacity={0.8}
     onPress={() => onClickGist(gistData)}>
@@ -42,7 +37,7 @@ const GistOverview = ({ gistData, onClickGist, dark }) => (
       <DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
       <DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
     </DetailsContainer>
-  </Container>
+  </CardContainer>
 );
 
 GistOverview.propTypes = {

@@ -85,7 +85,6 @@ class GistListContent extends React.Component {
           data={uniqGists}
           keyExtractor={item => item.id}
           renderItem={this.renderListItem}
-          ItemSeparatorComponent={() => <ListItemSeparator />}
           onEndReachedThreshold={0.01}
           onEndReached={this.handleListEndReached}
           ListEmptyComponent={() => <EmptyList message={this.props.emptyListMessage} />}
