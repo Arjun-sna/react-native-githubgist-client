@@ -1,6 +1,7 @@
 import React from 'react';
 import { StackNavigator, TabNavigator, TabBarTop } from 'react-navigation';
 import { StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Octicons';
 import SplashScreen from './auth/screens/splash.screen';
 import LoginScreen from './auth/screens/auth.screen';
 import MyGistsScreen from './gists/screens/mygists.screen';
@@ -28,23 +29,27 @@ const MainTabsScreen = TabNavigator({
     screen: MyGistsScreen,
     navigationOptions: {
       tabBarLabel: 'My Gists',
+      tabBarIcon: ({ tintColor }) => <Icon color={tintColor} size={25} name="gist" />
     },
   },
   StarredGists: {
     screen: StarredGistsScreen,
     navigationOptions: {
       tabBarLabel: 'Starred',
+      tabBarIcon: ({ tintColor }) => <Icon color={tintColor} size={25} name="star" />
     },
   },
   PublicGists: {
     screen: PublicGistsScreen,
     navigationOptions: {
       tabBarLabel: 'Public',
+      tabBarIcon: ({ tintColor }) => <Icon color={tintColor} size={23} name="globe" />
     },
   },
 }, {
   tabBarOptions: {
-    showLabel: true,
+    showIcon: true,
+    showLabel: false,
     tintColor: 'blue',
     style: styles.tabStyle,
     labelStyle: styles.labelStyle,
@@ -66,17 +71,20 @@ const GistFileContentAndCommentsScreen = TabNavigator({
     screen: GistContentListScreen,
     navigationOptions: {
       tabBarLabel: 'Content',
+      tabBarIcon: ({ tintColor }) => <Icon color={tintColor} size={30} name="file" />
     },
   },
   GistComments: {
     screen: GistCommentsScreen,
     navigationOptions: {
       tabBarLabel: 'Comments',
+      tabBarIcon: ({ tintColor }) => <Icon color={tintColor} size={30} name="comment-discussion" />
     },
   },
 }, {
   tabBarOptions: {
-    showLabel: true,
+    showLabel: false,
+    showIcon: true,
     tintColor: 'blue',
     style: styles.tabStyle,
     labelStyle: styles.labelStyle,
