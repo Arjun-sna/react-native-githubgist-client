@@ -8,6 +8,7 @@ import { colors } from '../../../config';
 const Container = styled.TouchableOpacity`
   flex-direction: column;
   padding: 5px 10px;
+  background-color: ${props => props.dark ? colors.greyLight : colors.white}
 `;
 
 const Title = styled.Text`
@@ -29,34 +30,25 @@ const DetailsText = styled.Text`
   color: ${colors.greyDark}	
 `;
 
-class GistOverview extends React.Component {
-  // shouldComponentUpdate(nextProps) {
-  // 	return !(isEqual(this.props.gistData, nextProps.gistData));
-  // }
-
-  render() {
-    const {
-      gistData,
-      onClickGist,
-    } = this.props;
-
-    const title = gistData.description ? gistData.description : Object.keys(gistData.files)[0];
-
-    return (
-      <Container onPress={() => onClickGist(gistData)}>
-        <Title>{title}</Title>
-        <DetailsContainer>
-          <DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
-          <DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
-        </DetailsContainer>
-      </Container>
-    );
-  }
-}
+const GistOverview = ({ gistData, onClickGist, dark }) => (
+  <Container
+    dark={dark}
+    activeOpacity={0.8}
+    onPress={() => onClickGist(gistData)}>
+    <Title>
+      {gistData.description ? gistData.description : Object.keys(gistData.files)[0]}
+    </Title>
+    <DetailsContainer>
+      <DetailsText>{moment(gistData.created_at).format('DD MMM YYYY')}</DetailsText>
+      <DetailsText right>{pluralize('File', Object.keys(gistData.files).length, true)}</DetailsText>
+    </DetailsContainer>
+  </Container>
+);
 
 GistOverview.propTypes = {
   gistData: PropTypes.instanceOf(Object).isRequired,
   onClickGist: PropTypes.func.isRequired,
+  dark: PropTypes.bool.isRequired,
 };
 
 export default GistOverview;

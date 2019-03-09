@@ -45,7 +45,7 @@ class GistListContent extends React.Component {
     });
   }
 
-  renderListItem = ({ item }) => {
+  renderListItem = ({ item, index }) => {
     switch (item.type) {
     case 'preloader':
       return (
@@ -66,6 +66,7 @@ class GistListContent extends React.Component {
     default:
       return (
         <GistItem
+          dark={index % 2 == 0}
           gistData={item}
           onClickGist={this.handleGistItemClick}
         />
