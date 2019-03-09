@@ -4822,12 +4822,6 @@ react-lifecycles-compat@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-native-cardview@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/react-native-cardview/-/react-native-cardview-1.1.5.tgz#c068fa7bf57c3dcd35af4327cc5173cea51baa62"
-  dependencies:
-    prop-types "^15.6.0"
-
 react-native-code-push@^5.3.4:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-5.5.2.tgz#b394e8f92f8bc4d184d73ff8d066406def24c1e8"
@@ -4839,9 +4833,9 @@ react-native-code-push@^5.3.4:
     plist "3.0.1"
     xcode "1.0.0"
 
-react-native-config@^0.11.5:
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.5.tgz#516cb7b6ec437c7739236ca075971db3aabdcb95"
+react-native-config@0.11.7:
+  version "0.11.7"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.7.tgz#a2b323f2ecd76a4df88cbb6bc86eaa2ef9febee7"
 
 react-native-cookies@^3.2.0:
   version "3.2.0"

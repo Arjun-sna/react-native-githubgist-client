@@ -6,7 +6,6 @@ import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.kishanjvaghela.cardview.RNCardViewPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -37,7 +36,6 @@ public class MainApplication extends Application implements ReactApplication {
             new CodePush(BuildConfig.CODEPUSH_ANDROID_KEY, getApplicationContext(), BuildConfig.DEBUG),
             new ReactNativeConfigPackage(),
             new VectorIconsPackage(),
-            new RNCardViewPackage(),
             new CookieManagerPackage()
       );
     }
