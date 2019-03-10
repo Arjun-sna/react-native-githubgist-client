@@ -8,10 +8,11 @@ export const rehydratedSelector = state => state.app.autoRehydrated;
 
 export default function* appLoader() {
   try {
-    yield call(codePush.sync, {
-      // install them immediately
-      installMode: codePush.InstallMode.IMMEDIATE,
-    });
+    if (!__DEV__) {
+      codePush.sync({
+        installMode: codePush.InstallMode.IMMEDIATE,
+      });
+    }
     const rehydrated = yield select(rehydratedSelector);
 
     if (!rehydrated) {
