@@ -7,9 +7,10 @@ import {
   Keyboard,
   Text,
   ActivityIndicator,
-  TouchableOpacity,
   Modal,
+  View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components';
 import CardContainer from './components/CardContainer';
 import TimeAgo from 'time-ago';
@@ -52,18 +53,12 @@ const CommentDate = styled.Text`
   fontSize: 12;
 `;
 const InputContainer = styled.View`
-  display: flex;
-  flex: 1;
   flex-direction: row;
-  align-items: flex-end;
   background-color: ${colors.white};
-  position: absolute;
-  bottom: 0;
 `;
 const Button = styled.TouchableOpacity`
   padding: 3%;
-  align-self: center;
-  background-color: ${colors.themeBlue};
+  background-color: ${colors.black};
 `;
 const EndOfViewStyle = styled.View`
   flex: 1;
@@ -171,9 +166,9 @@ class GistCommentsScreen extends React.Component {
 
   renderList = comments => {
     return (
-      <React.Fragment>
+      <View style={{ flex: 1 }}>
         <FlatList
-          style={{ marginBottom: '11%', flexGrow: 1 }}
+          style={{ marginBottom: '11%', flex: 1 }}
           keyExtractor={item => item.id}
           data={comments}
           renderItem={this.renderItem}
@@ -186,7 +181,7 @@ class GistCommentsScreen extends React.Component {
         <InputContainer>
           <TextInput
             style={{
-              width: '82%',
+              flex: 1,
             }}
             placeholder="Add comment here"
             value={this.state.comment}
@@ -195,7 +190,7 @@ class GistCommentsScreen extends React.Component {
           />
           <Button
             onPress={this.onPressItem}>
-            <Text style={{ color: colors.white, fontWeight: '600' }}>Submit</Text>
+            <Icon color={colors.white} size={25} name="send" />
           </Button>
         </InputContainer>
         <Modal
@@ -204,7 +199,7 @@ class GistCommentsScreen extends React.Component {
           transparent>
           <GistOptions onDelete={this.deleteComment} onCancel={this.onCancel} />
         </Modal>
-      </React.Fragment>
+      </View>
     );
   }
 
