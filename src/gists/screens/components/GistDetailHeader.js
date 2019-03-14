@@ -28,13 +28,14 @@ const Avatar = styled.Image`
 `;
 
 const Title = styled.Text`
-  font-weight: bold;
+  font-family: Nunito-Bold;
   margin: 3px 0;
   color: ${colors.white}
   font-size: ${normalizeFont(16)};
 `;
 
 const SubTitle = styled.Text`
+  font-family: Nunito-Regular;
   margin: 3px 0;
   color: ${colors.white}
   font-size: ${normalizeFont(12)};

@@ -11,11 +11,12 @@ const MetaContainer = styled.View`
   padding: 2% 0;
 `;
 const FileName = styled.Text`
+  font-family: Nunito-Bold;
   flex: 1;
-  font-weight: bold;
-  font-size: ${normalizeFont(14)};
+  font-size: ${normalizeFont(16)};
 `;
 const MetaDetail = styled.Text`
+  font-family: Nunito-Regular;
   flex: 1;
   font-size: ${normalizeFont(12)};
   color: ${colors.greyDark}

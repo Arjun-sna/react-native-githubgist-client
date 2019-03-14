@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 import pluralize from 'pluralize';
-import { colors } from '../../../config';
+import { colors, normalizeFont } from '../../../config';
 import CardContainer from './CardContainer';
 
 const Title = styled.Text`
-  font-weight: bold;
+  font-family: Nunito-Bold;
+  font-size: ${normalizeFont(16)}
   margin: 3px 0;
   width: 80%;
-  color: ${colors.black}
+  color: ${colors.greyDarkest}
 `;
 
 const DetailsContainer = styled.View`;
@@ -19,6 +20,8 @@ const DetailsContainer = styled.View`;
 `;
 
 const DetailsText = styled.Text`
+  font-family: Nunito-Regular;
+  font-size: ${normalizeFont(12)}
   flex: 1;
   margin-right: 5px;
   text-align: ${props => props.right ? 'right' : 'left'};

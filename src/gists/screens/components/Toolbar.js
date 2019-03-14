@@ -15,7 +15,7 @@ const ToolbarContainer = styled.View`
 
 const Title = styled.Text`
   font-size: ${normalizeFont(16)}
-  font-weight: bold;
+  font-family: Nunito-Bold;
   color: ${colors.white}
 `;
 

@@ -19,15 +19,16 @@ import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 import { fetchGistComments, deleteComment, addComment } from '../gists.actiontype';
 import ListEmptyComponent from './components/EmptyListComponent';
-import { colors } from '../../config';
+import { colors, normalizeFont } from '../../config';
 import GistOptions from './components/gistoptions.screen';
 
 const Container = styled(CardContainer)`
   padding: 8px;
 `
 const Comment = styled.Text`
-  font-size: 15;
-  color: black;
+  font-family: Nunito-Regular;
+  font-size: ${normalizeFont(15)};
+  color: ${colors.black};
   padding: 0 0 2% 0;
 `;
 const UserProfilePicture = styled.Image`
@@ -45,12 +46,13 @@ const DetailsContainer = styled.View`
   padding-left: 2%;
 `;
 const Username = styled.Text`
-  font-size: 14;
+  font-family: Nunito-Bold;
+  font-size: ${normalizeFont(14)};
   padding-bottom: 1%;
-  fontWeight: bold;
 `;
 const CommentDate = styled.Text`
-  fontSize: 12;
+  font-family: Nunito-Regular;
+  font-size: ${normalizeFont(11)};
 `;
 const InputContainer = styled.View`
   flex-direction: row;

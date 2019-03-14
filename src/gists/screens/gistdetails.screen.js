@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import Header from './components/GistDetailHeader';
 import Toolbar from './components/Toolbar';
 import { processFiles } from '../../shared/processFiles';
-import GistFileItem from './components/GistFileItem';
 import { toggleFavoriteGist, fetchInitialFavoriteValue } from '../gists.actiontype';
 import { colors } from '../../config';
 
