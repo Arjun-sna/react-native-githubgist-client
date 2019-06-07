@@ -19,4 +19,4 @@ Take an issue, resolve it and raise a PR.
 
 ## Screen Shots
 
-<img src="https://arjun-sna.github.io/raw/IMG_0037.PNG" width="250" /> <img src="https://arjun-sna.github.io/raw/IMG_0038.PNG" width="250" /> <img src="https://arjun-sna.github.io/raw/IMG_0039.PNG" width="250" /> <img src="https://arjun-sna.github.io/raw/IMG_0040.PNG" width="250" /> <img src="https://arjun-sna.github.io/raw/IMG_0041.PNG" width="250" />
+<img src="https://i.imgur.com/srFOMkH.jpg" width="250" /> <img src="https://i.imgur.com/uqsPLKu.jpg" width="250" /> <img src="https://i.imgur.com/G0XpL37.jpg" width="250" /> <img src="https://i.imgur.com/j6Bq3KR.jpg" width="250" /> <img src="https://i.imgur.com/qab4iWq.jpg" width="250" />
