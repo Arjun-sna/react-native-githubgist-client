@@ -21,7 +21,7 @@
     "filesize": "^3.6.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
-    "parse-link-header": "^1.0.1",
+    "parse-link-header": "^2.0.0",
     "pluralize": "^7.0.0",
     "prop-types": "^15.6.1",
     "query-string": "^5.1.0",
